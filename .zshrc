@@ -78,7 +78,7 @@ alias tokei='tokei --hidden'
 
 alias unmount='diskutil eject'
 alias untar='tar -xzvf'
-alias unzip='7z x'
+alias unzip='7zz x'
 
 alias vim=nvim
 alias v=nvim
