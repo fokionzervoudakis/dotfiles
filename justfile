@@ -1,76 +1,97 @@
+# Homebrew-driven setup for these dotfiles. See README.md for the bootstrap order.
+#
+# Recipes are quiet by default; run `just --no-quiet <recipe>` to echo commands.
+set quiet
+
+# List available recipes
+default:
+    just --list
+
+# Run every recipe; note that postgres starts a background service
+all: stow zsh brew git nvim tmux fonts util go lua java ruby postgres copilot
+
+# Install stow and link the dotfiles into $HOME
+[group('setup')]
+stow:
+    brew install stow
+    stow -R --no-folding . # --no-folding links contents, not parent directories
+
 # Configure Homebrew aliases
+[group('setup')]
 brew:
-    @brew tap homebrew/aliases
-    @brew alias clean='cleanup && brew doctor'
+    brew alias | grep -q "clean=" || brew alias clean='cleanup && brew doctor' # `brew alias` is built in; the homebrew/aliases tap is deprecated
 
 # Install zsh prompt, plugins, and version managers
+[group('shell')]
 zsh:
-    @brew install starship zoxide zsh-autosuggestions zsh-syntax-highlighting
-    @brew install fnm rbenv # Node and Ruby version managers, initialized in .zshrc
-
-# Install stow
-# Use --no-folding so Stow links contents, not parent directories.
-stow:
-    @brew install stow
-    @stow -R --no-folding .
+    brew install starship zoxide zsh-autosuggestions zsh-syntax-highlighting
+    brew install fzf # .zshrc sources `fzf --zsh` at startup, so it must land here
+    brew install fnm rbenv # Node and Ruby version managers, initialized in .zshrc
 
 # Install tmux and plugin manager
+[group('shell')]
 tmux:
-    @brew install tmux
-    @git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm || true # install a plugin manager
+    brew install tmux
+    [ -d "$HOME/.tmux/plugins/tpm" ] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 
 # Install fonts
+[group('shell')]
 fonts:
-    @brew install --cask font-hack-nerd-font
+    brew install --cask font-hack-nerd-font
 
-# Install PostgreSQL and pgcli
-postgres:
-    @brew install postgresql@18
-    @brew services start postgresql@18
-    @brew install pgcli
+# Install various utilities
+[group('shell')]
+util:
+    brew install bat colordiff eza jq tokei
+    brew install sevenzip # provides 7zz, used by the unzip alias in .zshrc
 
-# Install Go
-go:
-    @brew install go
-
-# Install Lua and its package manager
-lua:
-    @brew install lua luarocks lua-language-server stylua
+# Install Copilot CLI
+[group('shell')]
+copilot:
+    brew install copilot-cli
 
 # Configure Git and install related tools
 [group('git')]
-git: commitizen
-    @brew install gitleaks # required by hooks/pre-push
-    @brew install lazygit # required by lazygit.nvim and .config/lazygit
-    @git config core.hooksPath hooks
+git:
+    brew install czg # Conventional Commits prompt, aliased to `git cz`
+    brew install gh # provides the zsh completions .zshrc picks up
+    brew install gitleaks # required by hooks/pre-push
+    brew install lazygit # required by lazygit.nvim and .config/lazygit
+    git config core.hooksPath hooks
 
-# Install Git commit message formatter
-[group('git')]
-commitizen:
-    @brew install npm
-    @npm install -g czg
-    @npm list -g
-
-# Install Copilot CLI
-copilot:
-    @brew install copilot-cli
-
-# Install Neovim and dependencies
+# Install Neovim and its external dependencies
 [group('nvim')]
-nvim: telescope formatters
-    @brew install nvim tree-sitter-cli
+nvim:
+    brew install neovim tree-sitter-cli
+    brew install make # telescope-fzf-native and LuaSnip have `build = 'make'` steps
+    brew install fd ripgrep # required by Telescope
+    brew install buf prettier shfmt sql-formatter # conform.nvim; the rest come from the go, lua and ruby recipes
 
-# Install dependencies for Telescope, a Neovim plugin
-[group('nvim')]
-telescope:
-    @brew install fd ripgrep
+# Install Go and its formatter
+[group('lang')]
+go:
+    brew install go goimports # goimports is used by conform.nvim
 
-# Install formatters used by conform.nvim, a Neovim plugin
-[group('nvim')]
-formatters:
-    @brew install buf prettier shfmt sql-formatter # the rest come from the lua and go recipes
+# Install Lua and its package manager
+[group('lang')]
+lua:
+    brew install lua luarocks lua-language-server stylua
 
-# Install various utilities
-util:
-    @brew install bat colordiff eza fzf jq tokei
-    @brew install sevenzip # provides 7z, used by the unzip alias in .zshrc
+# Install a JDK for nvim-jdtls
+[group('lang')]
+java:
+    brew install openjdk # keg-only, so .zprofile puts it on PATH
+
+# Install Ruby and its formatter
+[group('lang')]
+ruby:
+    rbenv install --skip-existing 3.4.2 # rbenv comes from the zsh recipe
+    rbenv global 3.4.2
+    gem install rubocop # used by conform.nvim
+
+# Install PostgreSQL and pgcli
+[group('data')]
+postgres:
+    brew install postgresql@18
+    brew services start postgresql@18
+    brew install pgcli

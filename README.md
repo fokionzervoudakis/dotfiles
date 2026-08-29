@@ -17,7 +17,7 @@ rm -f ~/.zprofile # stow will not overwrite a regular file
 just stow
 just zsh
 exec zsh
-just --list # remaining recipes
+just all # or `just --list` to pick recipes individually
 ```
 
 ## Configure Neovim
@@ -26,7 +26,7 @@ just --list # remaining recipes
 vim
 :Lazy # followed by shift-u to update all
 :Mason # followed by shift-u to update all
-:MasonInstall copilot-language-server
+:MasonInstall copilot-language-server jdtls
 :LspCopilotSignIn
 ```
 
