@@ -1,4 +1,5 @@
-# Prompt configuration. Requires a Nerd Font (see `just fonts`).
+# Prompt configuration. Needs emoji support, but not a Nerd Font - every glyph here
+# is plain Unicode. Neovim's icons do need one; see `just fonts`.
 
 add_newline = true
 palette = "catppuccin_mocha"
