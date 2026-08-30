@@ -26,7 +26,7 @@ Good candidates, roughly in order of how often they pay off:
 - **A real gap** - a capability the setup lacks that the user's *own existing choices* imply they'd want. The justification has to come from this repo, not from a "top 10 plugins" list. If you can't point at something already here that makes the gap felt, it's not a gap, it's a suggestion.
 - **Non-nvim stack choices** - zsh plugins and aliases, overlap between tmux and wezterm, the CLI utilities installed by `just util`, git aliases and hooks. These get less attention than the nvim config and drift just as much.
 
-Lower value, usually skip: cosmetic swaps, "this plugin is popular" with no argument for why it fits *this* setup, anything requiring the user to relearn their workflow for a marginal gain, and migrating to a config distro or framework. The repo's `CLAUDE.md` is explicit - minimum change that solves a real problem, nothing speculative. A good proposal honors that: it should be something the user would call *worth doing*, not just *doable*.
+Lower value, usually skip: cosmetic swaps, "this plugin is popular" with no argument for why it fits *this* setup, anything requiring the user to relearn their workflow for a marginal gain, and migrating to a config distro or framework. Aim for the minimum change that solves a real problem, nothing speculative - it should be something the user would call *worth doing*, not just *doable*.
 
 **Weigh switching cost honestly.** This is the thing that separates a real dotfiles proposal from a bad one. Config is muscle memory. A plugin that is 20% better but rebinds keys the user has typed ten thousand times is a *bad* trade, and a proposal that ignores that is not credible. Say plainly what the user would have to relearn.
 
@@ -34,7 +34,7 @@ Lower value, usually skip: cosmetic swaps, "this plugin is popular" with no argu
 
 ### 1. Survey what's actually here
 
-Read `CLAUDE.md` first - it sets the house style and constraints. Then map the setup as it stands, so your proposal is genuinely new and actually fits:
+Map the setup as it stands, so your proposal is genuinely new and actually fits:
 
 ```sh
 ls .config/nvim/lua/custom/plugins/          # the plugins the user deliberately chose
