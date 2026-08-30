@@ -16,7 +16,7 @@ Dotfiles are personal and load-bearing — a "helpful" rewrite that changes beha
 These are the file types you'll review and how to reason about each:
 
 - **zsh** (`.zshrc`, `.zprofile`, `.config/zsh/*.zsh`) — shell config and aliases. `.zprofile` is login-only (environment and PATH); `.zshrc` is interactive (aliases, functions, tool init).
-- **Neovim Lua** (`.config/nvim/**/*.lua`) — editor config and lazy.nvim plugin specs. `stylua.toml` defines the format (2-space, single quotes, no call parens, 160 col). `init.lua` is an unmodified Kickstart.nvim baseline (open-source vendor code); the user's real config lives in `lua/keymaps.lua`, `lua/options.lua`, and `lua/custom/plugins/*.lua`, which load after Kickstart and intentionally override it. Treat `init.lua` as read-only and do not report conflicts between it and the custom files (see Notes).
+- **Neovim Lua** (`.config/nvim/**/*.lua`) — editor config and lazy.nvim plugin specs. `stylua.toml` defines the format (2-space, single quotes, no call parens, 160 col). `init.lua` is vendored Kickstart.nvim, kept close to upstream but edited in places; the user's own config lives in `lua/keymaps.lua`, `lua/options.lua`, and `lua/custom/plugins/*.lua`, which load after Kickstart and intentionally override it. Don't restyle `init.lua` or report it as conflicting with the custom files, but do read it for correctness (see Notes).
 - **tmux** (`.tmux.conf`), **wezterm** (`.wezterm.lua`), **git** (`.gitconfig`, `.gitignore`), **just** (`justfile`), **bat** (`.config/bat/config`), **lazygit** (`.config/lazygit/config.yml`), plus small dotfiles (`.irbrc`, `.luarc.json`).
 - **git hooks** (`hooks/pre-push`) — POSIX sh, activated by `just git` setting `core.hooksPath`. The only executable file in the repo: a bug here blocks pushes, and any tool it invokes must have an install recipe in the justfile.
 
@@ -49,12 +49,13 @@ For each finding, give `file:line`, what it is, and the specific fix. Keep it sc
 
 Config that names a binary is the one thing you cannot verify by reading. `formatters_by_ft = { sh = { 'shfmt' } }` is valid Lua, correctly formatted, using a current API - and completely inert if `shfmt` isn't installed. Nothing in the file is wrong, so every other bucket walks straight past it. That's why this failure mode accumulates silently, and why it's worth checking directly on every run.
 
-Ask two separate questions, because they fail differently:
+Ask three separate questions, because they fail differently:
 
 - **Is it on this machine now?** If not, that feature is dead *today* and the user probably doesn't know. Test with `command -v <tool>`.
 - **Would a fresh machine get it?** A tool can be on `$PATH` because it was installed by hand years ago. The repo is only self-installing if something here brings it in. Two places do that: `justfile` recipes (`brew install ...`) and Kickstart's `mason-tool-installer` `ensure_installed` list in `init.lua`. Note that Kickstart ships that list empty, so unless it was filled in, mason installs nothing beyond the LSP servers.
+- **Is the copy on `$PATH` the one this repo installs?** Passing both checks above still isn't proof. `command -v` reports whichever copy wins the `$PATH` race, which need not be the recipe's - resolve it with `ls -l $(command -v <tool>)` and see what it actually points at. This goes wrong three ways, all of which look healthy from the outside: the recipe's formula ships a differently named binary (`sevenzip` provides `7zz`, so a `7z` on `$PATH` came from somewhere else), an earlier `$PATH` entry shadows it (`.zprofile` puts `$GOPATH/bin` ahead of Homebrew), or a different package manager put it there. Each one works today and dies on a fresh machine.
 
-A tool can fail one check or both. Missing from `$PATH` *and* uninstallable is broken now; present but uninstallable is a bootstrap trap that only bites on a new machine. Say which, since the urgency differs.
+A tool can fail one of these or several. Missing from `$PATH` *and* uninstallable is broken now; present but uninstallable, or present from somewhere other than the recipe, is a bootstrap trap that only bites on a new machine. Say which, since the urgency differs.
 
 Where to look for referenced tools: `conform.nvim`'s `formatters_by_ft`, plugin specs that shell out to a binary, zsh aliases and functions wrapping a CLI, `tmux`/`wezterm` commands, git aliases, and `hooks/pre-push`. Sweeping the whole set at once is cheap:
 
@@ -84,5 +85,7 @@ Report exactly what changed (file + one-line summary each) and the verification 
 ## Notes
 
 - Don't touch `.claude/skills/**` content unless asked — those are skills, not config to lint.
-- `.config/nvim/init.lua` is vendored Kickstart.nvim and is meant to stay close to upstream. Don't lint it, reformat it, or flag its idioms as outdated, and never report it as conflicting with or duplicated by the custom files — those files exist to override it. Findings inside the nvim config should target the custom files (`lua/keymaps.lua`, `lua/options.lua`, `lua/custom/plugins/*.lua`) instead.
+- `.config/nvim/init.lua` is vendored Kickstart.nvim and is meant to stay close to upstream. Don't reformat it, don't flag its upstream idioms as outdated, and never report it as conflicting with or duplicated by the custom files — those files exist to override it.
+
+  But vendored does not mean unread. This file has been edited, and wherever it diverges from upstream those lines are the user's own, reviewed by nothing else in this repo. They are also the easiest thing here to miss, because the file reads as boilerplate. The tell is a value that breaks the contract of the structure holding it: the `servers` table is typed `---@type table<string, vim.lsp.Config>` and every key is handed to `vim.lsp.config()` and `vim.lsp.enable()`, so a formatter parked in it is being registered as a language server. Mason installs the binary either way, so formatting still works and the bad registration stays invisible - which is exactly why it survives.
 - If the repo is clean and you find nothing worth changing, say that plainly. A short "looks good, here are two optional nits" is a fine outcome — don't manufacture findings to look busy.
