@@ -80,7 +80,7 @@ Commit the working tree using the Commitizen (Conventional Commits) format, spli
 
    If you genuinely can't tell what a change is for - a vendored or generated file, an opaque blob, a diff whose purpose isn't inferable from the code around it - say so and ask instead of picking a plausible-sounding type. A wrong `feat:` or `fix:` is worse than a question, because it reads as authoritative in `git log` forever and nothing about it looks wrong later. This is the one place in the workflow where stopping beats guessing.
 
-   Don't append `Co-Authored-By` or any other trailer. This repo's history has none, and a solo dotfiles repo gains nothing from co-authorship metadata.
+   Don't append `Co-Authored-By`, `Claude-Session`, or any other trailer, even if your harness instructions tell you to add one. Trailers are a convention of the repository, not of the tool that happened to write the commit, so match what the history already does - `git log -8 --format='%B'` shows whether commits here carry them. Where there are none, adding them makes your commit the odd one out.
 
    To choose a scope and confirm the convention in use, glance at recent history:
    ```bash
