@@ -20,11 +20,15 @@ exec zsh
 just all # or `just --list` to pick recipes individually
 ```
 
+Rerun `just stow` after adding a new file to the repo. Stow links files
+individually, so a file it has never linked does not exist as far as anything
+reading `~/.config` is concerned.
+
 ## Configure Neovim
 
 ```bash
 vim
-:Lazy # followed by shift-u to update all
+:lua vim.pack.update() # review the diff, then :write to apply or :quit to discard
 :Mason # followed by shift-u to update all
 :MasonInstall copilot-language-server jdtls
 :LspCopilotSignIn

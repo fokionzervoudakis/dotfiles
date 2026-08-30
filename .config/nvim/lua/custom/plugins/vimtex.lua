@@ -1,4 +1,1 @@
-return {
-  'lervag/vimtex',
-  lazy = false,
-}
+vim.pack.add { 'https://github.com/lervag/vimtex' }

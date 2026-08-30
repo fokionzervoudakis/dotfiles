@@ -16,7 +16,7 @@ Dotfiles are personal and load-bearing — a "helpful" rewrite that changes beha
 These are the file types you'll review and how to reason about each:
 
 - **zsh** (`.zshrc`, `.zprofile`, `.config/zsh/*.zsh`) — shell config and aliases. `.zprofile` is login-only (environment and PATH); `.zshrc` is interactive (aliases, functions, tool init).
-- **Neovim Lua** (`.config/nvim/**/*.lua`) — editor config and lazy.nvim plugin specs. `stylua.toml` defines the format (2-space, single quotes, no call parens, 160 col). `init.lua` is vendored Kickstart.nvim, kept close to upstream but edited in places; the user's own config lives in `lua/keymaps.lua`, `lua/options.lua`, and `lua/custom/plugins/*.lua`, which load after Kickstart and intentionally override it. Don't restyle `init.lua` or report it as conflicting with the custom files, but do read it for correctness (see Notes).
+- **Neovim Lua** (`.config/nvim/**/*.lua`) — editor config and `vim.pack` plugin modules. `stylua.toml` defines the format (2-space, single quotes, no call parens, 160 col). `init.lua` is vendored Kickstart.nvim, held within a few lines of upstream on purpose; the user's own config lives in `lua/keymaps.lua`, `lua/options.lua`, and `lua/custom/plugins/*.lua`, which `init.lua` requires at the end. Each file under `lua/custom/plugins/` calls `vim.pack.add` and then its own `setup` — there are no lazy.nvim spec tables any more. Don't restyle `init.lua`, but do read it (see Notes).
 - **tmux** (`.tmux.conf`), **wezterm** (`.wezterm.lua`), **git** (`.gitconfig`, `.gitignore`), **just** (`justfile`), **bat** (`.config/bat/config`), **lazygit** (`.config/lazygit/config.yml`), plus small dotfiles (`.irbrc`, `.luarc.json`).
 - **git hooks** (`hooks/pre-push`) — POSIX sh, activated by `just git` setting `core.hooksPath`. The only executable file in the repo: a bug here blocks pushes, and any tool it invokes must have an install recipe in the justfile.
 
@@ -87,5 +87,14 @@ Report exactly what changed (file + one-line summary each) and the verification 
 - Don't touch `.claude/skills/**` content unless asked — those are skills, not config to lint.
 - `.config/nvim/init.lua` is vendored Kickstart.nvim and is meant to stay close to upstream. Don't reformat it, don't flag its upstream idioms as outdated, and never report it as conflicting with or duplicated by the custom files — those files exist to override it.
 
-  But vendored does not mean unread. This file has been edited, and wherever it diverges from upstream those lines are the user's own, reviewed by nothing else in this repo. They are also the easiest thing here to miss, because the file reads as boilerplate. The tell is a value that breaks the contract of the structure holding it: the `servers` table is typed `---@type table<string, vim.lsp.Config>` and every key is handed to `vim.lsp.config()` and `vim.lsp.enable()`, so a formatter parked in it is being registered as a language server. Mason installs the binary either way, so formatting still works and the bad registration stays invisible - which is exactly why it survives.
+  But vendored does not mean unread, and the divergences are the point. The file is deliberately held within a few lines of upstream so it can be replaced wholesale when Kickstart updates - personal config lives in `lua/` instead. Confirm that still holds:
+
+  ```sh
+  gh api repos/nvim-lua/kickstart.nvim/contents/init.lua --jq .content | base64 -d > /tmp/up.lua
+  /usr/bin/diff /tmp/up.lua .config/nvim/init.lua    # /usr/bin/ because `diff` is aliased to colordiff
+  ```
+
+  A handful of differing lines is the intended state; a large diff means personal config has crept back in, and *that* is the finding. What survives there today is the `require 'keymaps'` / `require 'options'` pair at the end and two entries in the `servers` table.
+
+  Judge a divergence before reporting it, because Kickstart's own idioms look wrong out of context. `stylua` sits in that `servers` table upstream too - not as a language server, but because `ensure_installed` is `vim.tbl_keys(servers)`, so parking a formatter there is simply how Kickstart gets Mason to install it. Check upstream before calling something a bug; the same trick is why `shfmt` is there.
 - If the repo is clean and you find nothing worth changing, say that plainly. A short "looks good, here are two optional nits" is a fine outcome — don't manufacture findings to look busy.

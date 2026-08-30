@@ -11,7 +11,7 @@ This is the sibling of `/improve`, aimed one level up. `improve` asks "is this c
 
 ## Hard rule: propose, don't execute
 
-This skill is read-only on the working tree. Do **not** create, edit, or delete config files, do **not** run `just` recipes (every one of them installs software via `brew` or `npm`), do **not** run `stow`, and do **not** touch `.config/nvim/lazy-lock.json` or run any `:Lazy` command that would install, update, or remove a plugin. Surveying with read-only commands (`ls`, `grep`, `cat`, `git log`, `just --list`, `nvim --headless` startup profiling, web research) is expected and encouraged - you need to understand the setup to propose well. But the run ends with a written proposal, not a change.
+This skill is read-only on the working tree. Do **not** create, edit, or delete config files, do **not** run `just` recipes (every one of them installs software via `brew` or `npm`), do **not** run `stow`, do **not** touch the `vim.pack` lockfile at `~/.config/nvim/nvim-pack-lock.json`, and do **not** call `vim.pack.add`, `vim.pack.update` or `vim.pack.del`, which install, update, or remove plugins. Surveying with read-only commands (`ls`, `grep`, `cat`, `git log`, `just --list`, `nvim --headless` startup profiling, web research) is expected and encouraged - you need to understand the setup to propose well. But the run ends with a written proposal, not a change.
 
 If you catch yourself editing a `.lua` or `.zsh` file, stop - that's out of scope for this skill. If the user likes the proposal, *they* will green-light building it.
 
@@ -38,7 +38,7 @@ Map the setup as it stands, so your proposal is genuinely new and actually fits:
 
 ```sh
 ls .config/nvim/lua/custom/plugins/          # the plugins the user deliberately chose
-cat .config/nvim/lazy-lock.json              # everything installed, including transitive deps
+cat ~/.config/nvim/nvim-pack-lock.json       # everything installed, including transitive deps
 grep -rn 'vim.keymap.set' .config/nvim/lua/  # the keymaps in play - the collision surface
 grep -rn 'alias ' .zshrc .config/zsh/        # shell shortcuts, i.e. what the user types most
 just --list                                  # the install surface (see below)
@@ -47,7 +47,7 @@ git log --oneline -20                        # what the user has been changing l
 
 Two structural facts about this repo that shape what you can propose:
 
-- `.config/nvim/init.lua` is vendored Kickstart.nvim, kept close to upstream. It is not the user's config and is not where proposals land. The real surface is `lua/keymaps.lua`, `lua/options.lua`, and `lua/custom/plugins/*.lua`, which load after Kickstart and intentionally override it. But **do read `init.lua`** during the survey - it's what installs mini.nvim, telescope, treesitter, LSP and friends, so a plugin you think is missing may already be there, and a redundancy may span the Kickstart/custom boundary.
+- `.config/nvim/init.lua` is vendored Kickstart.nvim, deliberately kept within a few lines of upstream so it can be replaced wholesale on update. It is not where proposals land. The real surface is `lua/keymaps.lua`, `lua/options.lua`, and `lua/custom/plugins/*.lua`, which load at the end of `init.lua` and intentionally override it. But **do read `init.lua`** during the survey - it's what installs mini.nvim, telescope, treesitter, LSP and friends, so a plugin you think is missing may already be there, and a redundancy may span the Kickstart/custom boundary. Plugins are managed by Neovim's built-in `vim.pack`, not lazy.nvim: each file under `lua/custom/plugins/` calls `vim.pack.add` and then its own `setup`.
 - Anything requiring a new binary needs a `just` recipe to install it. A proposal that adds a dependency without saying which recipe changes is incomplete.
 
 Don't over-survey. Enough to know the vocabulary and spot a real candidate. If two or three compete, pick the best value-to-disruption ratio and note the others at the end.
@@ -88,8 +88,8 @@ This is the deliverable. Keep it concrete and grounded in the actual files - ref
 - **What** - the change, in one or two sentences. Add, remove, replace, or consolidate what, exactly?
 - **Why** - the value, and the evidence behind it. What does the user get, and what specifically did you verify (archived repo, core coverage, the two plugins that overlap)?
 - **How it fits** - which files change (`lua/custom/plugins/<name>.lua`, `.zshrc`, the `justfile`), which existing settings and keymaps it touches, and what it interacts with. Enough that the reader can picture the shape without you writing it.
-- **Sketch** - the shape, not the finished config: the plugin spec skeleton, the keymaps that would change, or the abbreviation. Illustrative snippets are fine; a complete drop-in file is not. **Keep any command you recommend as narrow as the change.** The user will paste what you write, so a command wider than the proposal is a hazard rather than a convenience: `:Lazy sync` updates every plugin and churns the whole lockfile when `:Lazy update <plugin>` was the actual need, and `brew upgrade` is not `brew upgrade <formula>`. Reach for the narrowest form that does the job, and if a wide command genuinely is required, say what else it will touch. Where you can, include the command that *verifies* the change landed - it's the difference between the user hoping it worked and knowing.
-- **Cost & risk** - rough size (small/medium/large), what the user has to relearn, what could break, whether it needs a `just` recipe or a new binary, whether `lazy-lock.json` churns. Call out anything that would make it *not* worth it. Be straight here; a proposal that only lists upside isn't a proposal, it's a pitch.
+- **Sketch** - the shape, not the finished config: the plugin spec skeleton, the keymaps that would change, or the abbreviation. Illustrative snippets are fine; a complete drop-in file is not. **Keep any command you recommend as narrow as the change.** The user will paste what you write, so a command wider than the proposal is a hazard rather than a convenience: `vim.pack.update()` updates every plugin and churns the whole lockfile when `vim.pack.update { 'name' }` was the actual need, and `brew upgrade` is not `brew upgrade <formula>`. Reach for the narrowest form that does the job, and if a wide command genuinely is required, say what else it will touch. Where you can, include the command that *verifies* the change landed - it's the difference between the user hoping it worked and knowing.
+- **Cost & risk** - rough size (small/medium/large), what the user has to relearn, what could break, whether it needs a `just` recipe or a new binary, whether `nvim-pack-lock.json` churns. Call out anything that would make it *not* worth it. Be straight here; a proposal that only lists upside isn't a proposal, it's a pitch.
 - **Open questions** - the decisions the user needs to make for this to proceed.
 
 ### 5. Hand it back

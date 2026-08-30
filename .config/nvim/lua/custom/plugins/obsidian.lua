@@ -1,18 +1,16 @@
-return {
-  'obsidian-nvim/obsidian.nvim',
-  version = '*', -- use latest release, remove to use latest commit
-  ---@module 'obsidian'
-  ---@type obsidian.config
-  opts = {
-    legacy_commands = false, -- this will be removed in 4.0.0
-    workspaces = {
-      {
-        name = 'my-notes',
-        path = '~/repos/notes',
-      },
+vim.pack.add { { src = 'https://github.com/obsidian-nvim/obsidian.nvim', version = vim.version.range '*' } }
+
+---@module 'obsidian'
+---@type obsidian.config
+require('obsidian').setup {
+  legacy_commands = false,
+  workspaces = {
+    {
+      name = 'my-notes',
+      path = '~/repos/notes',
     },
-    frontmatter = {
-      enabled = false,
-    },
+  },
+  frontmatter = {
+    enabled = false,
   },
 }
