@@ -279,6 +279,10 @@ do
   --  In this section we set up some autocommands to run build
   --  steps for certain plugins after they are installed or updated.
 
+  vim.api.nvim_create_user_command('PackUpdate', function() vim.pack.update(nil, { force = true }) end, {
+    desc = 'Update all vim.pack plugins without a confirmation buffer',
+  })
+
   local function run_build(name, cmd, cwd)
     local result = vim.system(cmd, { cwd = cwd }):wait()
     if result.code ~= 0 then
