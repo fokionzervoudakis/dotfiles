@@ -1,0 +1,1 @@
+`.config/nvim/init.lua` is the Kickstart baseline with deliberate local edits (gopls enabled, stylua and shfmt in the servers table). A diff against upstream is expected to be non-empty; only divergence beyond those edits is a candidate for cleanup.

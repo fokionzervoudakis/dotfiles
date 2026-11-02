@@ -1,6 +1,5 @@
-# commit is absent on purpose: it is linked into ~/.claude to work in every repo
+# commit and improve are absent on purpose: they are linked into ~/.claude to work in every repo
 .claude/skills/cleanup
-.claude/skills/improve
 .claude/skills/propose
 
 /.git
@@ -11,3 +10,4 @@
 
 README.md
 justfile
+CLAUDE.md
