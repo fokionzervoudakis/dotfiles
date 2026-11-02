@@ -8,7 +8,7 @@ default:
     just --list
 
 # Run every recipe
-all: stow zsh brew git nvim tmux ghostty fonts util cloud go java
+all: stow zsh brew git nvim tmux ghostty fonts util claude cloud go java
 
 # Install stow and link the dotfiles into $HOME
 [group('setup')]
@@ -47,6 +47,11 @@ fonts:
 util:
     brew install bat eza jq
     brew install sevenzip # provides 7zz, used by the unzip alias in .zshrc
+
+# Install Claude Code
+[group('shell')]
+claude:
+    curl -fsSL https://claude.ai/install.sh | bash # installs to ~/.local/bin, which .zprofile puts on PATH; configured by .claude
 
 # Install the AWS and Kubernetes CLIs
 [group('shell')]
