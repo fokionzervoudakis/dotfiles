@@ -52,9 +52,6 @@ keymap.set('n', '<leader>mk', '<cmd>mkview<CR>', { desc = 'Save view of current 
 -- Open new tab
 keymap.set('n', '<leader>to', '<cmd>tabedit<CR>', { desc = 'Open new tab' })
 
--- Clear search highlights
-keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlights' })
-
 -- Disable movement with arrow keys
 keymap.set('n', '<up>', '<nop>')
 keymap.set('n', '<down>', '<nop>')
