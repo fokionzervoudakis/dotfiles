@@ -10,6 +10,8 @@
 
 !.config/bat/
 
+!.config/git/
+
 !.config/ghostty/
 
 !.config/nvim
