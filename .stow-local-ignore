@@ -4,6 +4,8 @@
 
 /.git
 /.gitignore
+# Finder creates these; a real ~/.DS_Store makes stow abort the whole run
+.DS_Store
 
 /hooks
 /docs
