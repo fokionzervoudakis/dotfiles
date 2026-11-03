@@ -14,7 +14,7 @@ all: stow zsh brew git nvim tmux ghostty fonts util claude cloud go java
 [group('setup')]
 stow:
     brew install stow
-    stow -R --no-folding . # --no-folding links contents, not parent directories
+    stow -R --no-folding --target ~ . # link each file into $HOME; --no-folding links only the files in the repo, so new files in $HOME stay out of the repo
 
 # Configure Homebrew aliases
 [group('setup')]
