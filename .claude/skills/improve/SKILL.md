@@ -23,6 +23,20 @@ Lower value, usually skip: cosmetic reformatting (the formatter handles it), spe
 
 ### 1. Survey
 
+Start with the leftovers from the last run, if there are any. Step 6 writes the candidates it found but did not fix to `docs/improve.md`, best first, each stamped with the commit it was found at and the files it concerns:
+
+```sh
+cat docs/improve.md 2>/dev/null
+```
+
+An entry is live only while its files are unchanged since its stamp - the check compares against the working tree, so uncommitted edits count too:
+
+```sh
+git diff --stat <hash> -- <files>    # empty output: the entry is live
+```
+
+Delete every entry whose files have moved; it was found in a tree that no longer exists. Take the first live entry and verify the claim itself with one check - run the command, read the function, resolve the binary. If it holds, delete its line, skip the build, lint, coverage and reading passes below that exist to find candidates, and go to step 2; you still need `just --list` (or its equivalent) and the formatter configs, because step 4 runs them. If it doesn't hold, delete the line and try the next live entry. An empty or missing file, or no entry that survives, means the full survey.
+
 Get oriented before you touch anything. Derive the map instead of trusting one written down here - a hardcoded list of paths and commands goes stale the moment the tree moves, and a stale map is worse than no map:
 
 ```sh
@@ -70,7 +84,7 @@ Before editing, say in one or two sentences what you're going to improve and *wh
 
 ### 3. Apply it surgically
 
-Make the change and nothing else. The test to hold yourself to: every changed line should trace directly to the improvement you named. Don't "improve" adjacent code along the way, don't reformat untouched lines, match the surrounding style even where you'd personally do it differently. If your change orphans something - an import, a helper, a PATH entry, an install line, a README mention - clean up that orphan, but only that.
+Make the change and nothing else. The test to hold yourself to: every changed line should trace directly to the improvement you named, with `docs/improve.md` as the one exception - steps 1 and 6 maintain it. Don't "improve" adjacent code along the way, don't reformat untouched lines, match the surrounding style even where you'd personally do it differently. If your change orphans something - an import, a helper, a PATH entry, an install line, a README mention - clean up that orphan, but only that.
 
 If the change alters an interface something else depends on - a data file's columns or units, a CLI flag, a config schema - update the doc that describes it in the same change. A stale doc turns into wrong behavior wherever it is read.
 
@@ -96,11 +110,29 @@ Read `git diff` as if someone else wrote it and you're the reviewer. This pass i
 
 ### 6. Report, uncommitted
 
-Leave the changes in the working tree - **do not commit**. The user reviews before anything lands. End with a short summary:
+Leave the changes in the working tree - **do not commit**. The user reviews before anything lands.
+
+First save the candidates you found and left, so the next run can start from them instead of re-auditing. Write them to `docs/improve.md`, best first, one line each:
+
+```
+- <YYYY-MM-DD> | <short HEAD hash> | <files, space-separated> | <title> - <the claim in one sentence, and how to check it>
+```
+
+Only create the file when you have something to write; a repo that was surveyed once and came up clean should not grow an empty log. When creating it, start with the heading:
+
+```markdown
+# Improve
+
+Leftovers from /improve, so the next run can start here instead of re-auditing. Each line is stamped with the commit it was found at; a run deletes a line once its files have changed or it has acted on it.
+```
+
+Stamp with `git rev-parse --short HEAD`. Name every file whose change would make the claim stale, and no more - the check in step 1 only looks at the files you name, and everything else you read along the way just adds false invalidations. Don't stage or commit the file; the user decides whether it goes in the repo.
+
+End with a short summary:
 
 - **What** you changed (the files, one line each)
 - **Why** it was the highest-value pick
 - **Verification** - what you ran and that it's clean, plus anything you could not run
-- **Also noticed** (optional) - other candidates you deliberately left for a future run
+- **Leftovers** - the entries you wrote to `docs/improve.md`, or that there were none
 
 Keep the summary tight. The diff tells most of the story; your job is to explain the judgment behind it.
