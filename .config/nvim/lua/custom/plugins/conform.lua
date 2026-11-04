@@ -2,7 +2,7 @@ require('conform').setup {
   formatters_by_ft = {
     bash = { 'shfmt' },
     css = { 'prettier' },
-    go = { 'gofmt', 'goimports' },
+    go = { 'goimports' },
     html = { 'prettier' },
     javascript = { 'prettier' },
     json = { 'jq' },
