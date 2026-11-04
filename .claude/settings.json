@@ -1,7 +1,8 @@
 {
-  "skipDangerousModePermissionPrompt": true,
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.jq"
-  }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "model": "opus"
 }
