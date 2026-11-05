@@ -77,7 +77,7 @@ nvim:
     brew install ripgrep # Telescope file search and live grep
     brew install node
 
-# Install Go and its formatter
+# Install Go
 [group('lang')]
 go:
     brew install go
