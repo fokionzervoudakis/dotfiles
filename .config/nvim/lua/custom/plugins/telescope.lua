@@ -15,10 +15,6 @@ require('telescope').setup {
       i = {
         ['<C-k>'] = actions.cycle_history_prev,
         ['<C-j>'] = actions.cycle_history_next,
-        ['<C-o>'] = function(p_bufnr)
-          actions.send_selected_to_qflist(p_bufnr)
-          vim.cmd.cfdo 'edit'
-        end,
         ['<C-f>'] = actions.to_fuzzy_refine,
       },
     },
