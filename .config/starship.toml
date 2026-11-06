@@ -5,7 +5,6 @@ add_newline = true
 palette = "catppuccin_mocha"
 
 format = """
-$os\
 $directory\
 $git_branch\
 $git_commit\
@@ -24,13 +23,6 @@ $line_break\
 $character"""
 
 right_format = """$cmd_duration$jobs$time"""
-
-[os]
-disabled = false
-style = "text"
-
-[os.symbols]
-Macos = " "
 
 # Tag the prompt with the vi mode. starship's zsh integration only forwards
 # $KEYMAP, so insert and normal are all it can tell apart - visual and replace
