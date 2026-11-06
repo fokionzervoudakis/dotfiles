@@ -28,7 +28,7 @@ reading `~/.config` is concerned.
 
 ```bash
 vim
-:lua vim.pack.update() # review the diff, then :write to apply or :quit to discard
+:PackUpdate # review the diff, then :write to apply or :quit to discard; :PackUpdate! applies without review
 :Mason # followed by shift-u to update all
 :LspCopilotSignIn
 ```
