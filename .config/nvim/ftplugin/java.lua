@@ -1,5 +1,7 @@
 local config = {
   cmd = { 'jdtls' },
-  root_dir = require('jdtls.setup').find_root { '.git', 'pom.xml', 'build.gradle', 'build.gradle.kts' },
+  -- Only markers that exist once per project: every module of a multi-module
+  -- build has its own pom.xml or build.gradle, which would make the module the root.
+  root_dir = vim.fs.root(0, { 'gradlew', '.git', 'mvnw' }),
 }
 require('jdtls').start_or_attach(config)
