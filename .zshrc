@@ -105,12 +105,10 @@ alias hc=history_clear
 # several). Only real directories are listed, which leaves out the
 # "Macintosh HD" symlink to / and keeps external disks, disk images and shares.
 unmount() {
-    if (( $# )); then
-        diskutil eject "$@"
-        return
-    fi
-    local vol
-    for vol in ${(f)"$(find /Volumes -mindepth 1 -maxdepth 1 -type d | fzf --multi)"}; do
+    local vols=("$@") vol
+    (( $# )) || vols=(${(f)"$(find /Volumes -mindepth 1 -maxdepth 1 -type d | fzf --multi)"})
+    # diskutil eject takes one volume per call
+    for vol in $vols; do
         diskutil eject "$vol"
     done
 }
