@@ -12,14 +12,6 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_REDUCE_BLANKS
 
-# Don't save a line whose first word is a plain name zsh can't resolve
-# (a typo like `gti`). Paths, assignments, $vars and syntax pass through.
-zshaddhistory() {
-    emulate -L zsh -o extended_glob
-    local first=${${(z)1}[1]}
-    [[ $first != [[:alnum:]_.+-]## ]] || whence -- $first >/dev/null
-}
-
 # Completions
 #
 # brew shellenv in .zprofile puts Homebrew's site-functions (brew, git, just, eza,
