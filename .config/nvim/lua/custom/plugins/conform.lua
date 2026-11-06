@@ -12,9 +12,5 @@ require('conform').setup {
     sql = { 'sql_formatter' },
     typescript = { 'prettier' },
   },
-  format_on_save = function(bufnr)
-    local disable_filetypes = { c = true, cpp = true }
-    if disable_filetypes[vim.bo[bufnr].filetype] then return nil end
-    return { timeout_ms = 500 }
-  end,
+  format_on_save = { timeout_ms = 500 },
 }
