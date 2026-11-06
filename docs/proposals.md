@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-06 | built | Pick volumes to eject with fzf - turn the unmount alias in .zshrc into a function that, with no arguments, lists the real directories under /Volumes (external disks, disk images, shares; not the Macintosh HD symlink) in fzf --multi and runs diskutil eject on each pick, and still passes any arguments straight to diskutil eject.
 - 2026-11-04 | built | Install several dark schemes, enable gruvbox - add gruvbox.nvim and kanagawa.nvim next to catppuccin in custom/plugins/colorscheme.lua with gruvbox as the active scheme.
 - 2026-11-01 | rejected | Drop the cloud recipe - remove the cloud recipe (awscli, kubernetes-cli, kubectx) and its slot in `just all`, and delete .config/zsh/aws.zsh and .config/zsh/kubectl.zsh, since none of the three tools is installed and there is no ~/.aws or ~/.kube on this machine.
 - 2026-10-31 | rejected | Debug Go tests inside Neovim - add custom/plugins/debug.lua with nvim-dap, nvim-dap-go and nvim-dap-view, have Mason install delve, and map breakpoints, stepping and debug-nearest-test to free keys.

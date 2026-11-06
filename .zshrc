@@ -85,7 +85,6 @@ alias rmds='find . -name .DS_Store -delete'
 
 alias tm=tmux
 
-alias unmount='diskutil eject'
 alias untar='tar -xzvf'
 alias unzip='7zz x'
 
@@ -101,6 +100,20 @@ history_clear() {
     exec zsh
 }
 alias hc=history_clear
+
+# With arguments, eject those. Without, pick from /Volumes with fzf (Tab marks
+# several). Only real directories are listed, which leaves out the
+# "Macintosh HD" symlink to / and keeps external disks, disk images and shares.
+unmount() {
+    if (( $# )); then
+        diskutil eject "$@"
+        return
+    fi
+    local vol
+    for vol in ${(f)"$(find /Volumes -mindepth 1 -maxdepth 1 -type d | fzf --multi)"}; do
+        diskutil eject "$vol"
+    done
+}
 
 # takes source and destination; trailing arguments are passed through to rsync.
 # The source is normalized to always end in / so a bare directory (e.g. `back
