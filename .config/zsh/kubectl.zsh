@@ -1,7 +1,10 @@
 # Kubernetes aliases
 #
-# Bodies are single-quoted so the command substitutions run when the alias is
-# invoked rather than when it is defined.
+# Single quotes, so the pod picker runs when you type the alias,
+# not once when the shell starts.
+
+# stop reading this file on machines without kubectl
+[[ -x $commands[kubectl] ]] || return
 
 # kubens and kubectx open fzf themselves when run without arguments
 alias ns=kubens

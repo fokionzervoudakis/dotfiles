@@ -1,4 +1,8 @@
 # AWS aliases
+
+# stop reading this file on machines without the aws CLI
+[[ -x $commands[aws] ]] || return
+
 alias awsme='aws sts get-caller-identity'
 alias awsin='aws sso login'
 alias awsout='aws sso logout'
