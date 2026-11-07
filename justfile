@@ -7,9 +7,6 @@ set quiet
 default:
     just --list
 
-# Run every recipe
-all: stow zsh brew git nvim tmux ghostty fonts util claude cloud go java
-
 # Install stow and link the dotfiles into $HOME
 [group('setup')]
 stow:

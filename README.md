@@ -17,7 +17,7 @@ rm -f ~/.zprofile # stow will not overwrite a regular file
 just stow
 just zsh
 exec zsh
-just all # or `just --list` to pick recipes individually
+just --list # then run the recipes you need
 ```
 
 Rerun `just stow` after adding a new file to the repo. Stow links files
