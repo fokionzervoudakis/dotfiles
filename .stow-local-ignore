@@ -9,6 +9,7 @@
 
 /hooks
 /docs
+/scripts
 
 README.md
 justfile

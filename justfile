@@ -82,3 +82,8 @@ go:
 [group('setup')]
 java:
     brew install openjdk # keg-only, so .zprofile puts it on PATH
+
+# Check the shell and Neovim configs for syntax and startup errors
+[group('dev')]
+test:
+    scripts/test.sh
