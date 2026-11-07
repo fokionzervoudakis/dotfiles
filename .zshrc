@@ -62,7 +62,6 @@ alias c=clear
 alias cat=bat
 alias claude='claude --dangerously-skip-permissions'
 alias cl=claude
-alias cloc='cloc --exclude-dir=node_modules'
 
 alias diff='diff --color'
 
@@ -101,6 +100,13 @@ history_clear() {
     exec zsh
 }
 alias hc=history_clear
+
+# Counts the current directory when called with no arguments (plain cloc only
+# prints its usage), and always skips node_modules.
+cloc() {
+    (( $# )) || set -- .
+    command cloc --exclude-dir=node_modules "$@"
+}
 
 # With arguments, eject those. Without, pick from /Volumes with fzf (Tab marks
 # several). Only real directories are listed, which leaves out the
