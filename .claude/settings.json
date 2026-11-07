@@ -1,8 +1,13 @@
 {
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.jq"
   },
+  "voice": {
+    "enabled": true,
+    "mode": "tap"
+  },
   "skipDangerousModePermissionPrompt": true,
-  "model": "opus"
+  "voiceEnabled": true
 }
