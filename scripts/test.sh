@@ -35,5 +35,8 @@ for f in .zshrc .zprofile .config/zsh/*.zsh; do
 done
 check "zsh startup" quiet zsh_startup
 check "nvim startup" quiet nvim --headless +qa
+# A throwaway server on its own socket, which exits once the file is read; a bad
+# line in .tmux.conf otherwise shows only as a brief message when a client attaches
+check "tmux config" tmux -L dotfiles-test -f /dev/null start-server \; source-file .tmux.conf
 
 exit $failed
