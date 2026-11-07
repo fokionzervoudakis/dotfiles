@@ -23,9 +23,15 @@ alias ctlpods='kubectl exec -it $(__kpick pods) -- /bin/sh'
 alias ctljobs='kubectl exec -it job/$(__kpick jobs) -- /bin/sh'
 alias ctllogs='kubectl logs $(__kpick pods)'
 alias ctlevents='kubectl get events --field-selector involvedObject.name=$(__kpick pods)'
-alias ctldescribe='kubectl describe pod $(__kpick pods --multi)'
 alias ctldelpods='kubectl delete pod $(__kpick pods --multi)'
 alias ctldeljobs='kubectl delete job $(__kpick jobs --multi)'
+
+# a function so a cancelled picker does nothing: with no pod name,
+# `kubectl describe pod` describes every pod in the namespace
+ctldescribe() {
+    local pods=$(__kpick pods --multi)
+    [[ -n $pods ]] && kubectl describe pod ${(f)pods}
+}
 
 # a function rather than an alias so the jq program can be single-quoted
 ctlsecrets() {
