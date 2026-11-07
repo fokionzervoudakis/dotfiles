@@ -62,6 +62,7 @@ alias c=clear
 alias cat=bat
 alias claude='claude --dangerously-skip-permissions'
 alias cl=claude
+alias cloc='cloc --exclude-dir=node_modules'
 
 alias diff='diff --color'
 
