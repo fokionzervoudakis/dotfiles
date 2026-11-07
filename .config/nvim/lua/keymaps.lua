@@ -44,7 +44,7 @@ keymap.set('n', "'", ',', { desc = 'Repeat f/t/F/T in opposite direction' })
 keymap.set('n', '<leader>cp', '<cmd>let @* = expand("%:p:~:.")<CR>', { desc = 'Copy relative file path' })
 
 -- Delete current buffer
-keymap.set('n', '<leader>db', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
+keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
 
 -- Save view of current buffer
 keymap.set('n', '<leader>mk', '<cmd>mkview<CR>', { desc = 'Save view of current buffer' })
