@@ -1,5 +1,5 @@
 # Prompt configuration. Needs emoji support, but not a Nerd Font - every glyph here
-# is plain Unicode. Neovim's icons do need one; see `just fonts`.
+# is plain Unicode. Neovim's icons do need one; see `just terminal`.
 
 add_newline = true
 palette = "catppuccin_mocha"

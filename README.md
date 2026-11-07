@@ -15,7 +15,7 @@ git clone git@github.com:zerdaks/dotfiles.git
 cd dotfiles/
 rm -f ~/.zprofile # stow will not overwrite a regular file
 just stow
-just zsh
+just shell
 exec zsh
 just --list # then run the recipes you need
 ```
