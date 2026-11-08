@@ -40,18 +40,18 @@ require('telescope').setup {
 require('telescope').load_extension 'undo'
 
 local builtin = require 'telescope.builtin'
-vim.keymap.set('n', '<leader>fb', builtin.buffers)
-vim.keymap.set('n', '<leader>ff', builtin.find_files)
-vim.keymap.set('n', '<leader>fg', builtin.live_grep)
-vim.keymap.set('n', '<leader>fh', builtin.help_tags)
-vim.keymap.set('n', '<leader>fo', builtin.oldfiles)
-vim.keymap.set('n', '<leader>u', '<cmd>Telescope undo<CR>')
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find buffers' })
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Find by grep' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find help' })
+vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = 'Find recently opened files' })
+vim.keymap.set('n', '<leader>u', '<cmd>Telescope undo<CR>', { desc = 'Browse undo history' })
 
 -- Buffer-local, so buffers without an LSP keep Vim's own gd and gr.
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('custom-telescope-lsp-attach', { clear = true }),
   callback = function(event)
-    vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = event.buf })
-    vim.keymap.set('n', 'gr', builtin.lsp_references, { buffer = event.buf })
+    vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = event.buf, desc = 'Go to definition' })
+    vim.keymap.set('n', 'gr', builtin.lsp_references, { buffer = event.buf, desc = 'Find references' })
   end,
 })
