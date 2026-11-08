@@ -34,9 +34,6 @@ keymap.set('n', '<leader>xx', function()
   end
 end, { desc = 'Toggle diagnostics quickfix list' })
 
--- Go to next spelling error, centered
-keymap.set('n', '<leader>s', ']szz', { desc = 'Go to next spelling error' })
-
 -- Repeat latest f, t, F or T in opposite direction
 keymap.set('n', "'", ',', { desc = 'Repeat f/t/F/T in opposite direction' })
 
