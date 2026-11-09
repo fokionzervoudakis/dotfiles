@@ -30,7 +30,7 @@ zsh_startup() {
     zsh -il -c exit 2>&1 | grep -v "can't change option: zle"
 }
 
-for f in .zshrc .zprofile .config/zsh/*.zsh; do
+for f in .zshrc .zprofile .config/zsh/*.zsh .config/tmux/pick-dir; do
     check "zsh syntax $f" zsh -n "$f"
 done
 check "zsh startup" quiet zsh_startup

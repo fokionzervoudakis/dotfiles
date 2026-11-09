@@ -1,0 +1,14 @@
+#!/bin/zsh
+# Pick a directory zoxide knows with fzf, then switch to its tmux window or open a new one.
+
+# list $HOME as ~, then turn the pick back into a full path
+pick=$(zoxide query -l | sed "s:^$HOME:~:" | fzf --reverse --tiebreak index --prompt '> ' --info inline-right --no-scrollbar) || exit 0
+dir=${pick/#\~/$HOME}
+
+# the first window with a pane in that directory, if any
+win=$(tmux list-panes -s -f "#{==:#{pane_current_path},$dir}" -F '#{window_index}' | head -1)
+if [[ -n $win ]]; then
+    tmux select-window -t ":$win"
+else
+    tmux new-window -c "$dir"
+fi
