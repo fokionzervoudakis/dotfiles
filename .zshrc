@@ -124,6 +124,8 @@ unmount() {
 # The source is normalized to always end in / so a bare directory (e.g. `back
 # ~/dotfiles .`) merges its contents into the destination, same as `.` does,
 # instead of nesting the source dir one level deeper.
+#
+# On exFAT/FAT32 drives, add --no-perms to stop re-listing backed-up files.
 backup_run() {
     local src=$1
     shift
