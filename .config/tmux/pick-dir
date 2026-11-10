@@ -3,7 +3,9 @@
 
 # list $HOME as ~, then turn the pick back into a full path
 pick=$(zoxide query -l | sed "s:^$HOME:~:" | fzf --reverse --tiebreak index --prompt '> ' --info inline-right --no-scrollbar) || exit 0
-dir=${pick/#\~/$HOME}
+# zoxide keeps the path as typed; tmux reports it with symlinks resolved and the
+# on-disk case (~/Google Drive -> ~/Library/CloudStorage/...), so resolve it too
+dir=${${pick/#\~/$HOME}:A}
 
 # the first window with a pane in that directory, if any
 win=$(tmux list-panes -s -f "#{==:#{pane_current_path},$dir}" -F '#{window_index}' | head -1)
