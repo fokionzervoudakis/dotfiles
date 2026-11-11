@@ -1,19 +1,9 @@
 #!/bin/zsh
-# Pick a directory zoxide knows with fzf, then switch to its tmux window or open a new one.
+# Pick a directory zoxide knows with fzf, then open a new tmux window there.
 
 # list $HOME as ~, then turn the pick back into a full path
 pick=$(zoxide query -l | sed "s:^$HOME:~:" | fzf --reverse --tiebreak index --prompt '> ' --info inline-right --no-scrollbar) || exit 0
-# zoxide keeps the path as typed; tmux reports it with symlinks resolved and the
-# on-disk case (~/Google Drive -> ~/Library/CloudStorage/...), so resolve it too
-dir=${${pick/#\~/$HOME}:A}
+dir=${pick/#\~/$HOME}
 
-# the first window with a pane in that directory, if any
-win=$(tmux list-panes -s -F '#{window_index} #{pane_current_path}' | while read -r idx p; do
-    [[ $p == "$dir" ]] && print $idx && break
-done)
-if [[ -n $win ]]; then
-    tmux select-window -t ":$win"
-else
-    # tmux expands #{...} in the directory it is given; ## is a literal #
-    tmux new-window -c "${dir//\#/##}"
-fi
+# tmux expands #{...} in the directory it is given; ## is a literal #
+tmux new-window -c "${dir//\#/##}"
