@@ -4,9 +4,9 @@ vim.pack.add { 'https://github.com/debugloop/telescope-undo.nvim' }
 
 local actions = require 'telescope.actions'
 
--- Extend default vimgrep arguments to not respect .gitignore
+-- Grep the same files find_files lists: hidden and gitignored ones too, but not .git
 local grep_args = { unpack(require('telescope.config').values.vimgrep_arguments) }
-table.insert(grep_args, '--no-ignore')
+vim.list_extend(grep_args, { '--no-ignore', '--hidden', '--glob', '!**/.git/*' })
 
 require('telescope').setup {
   defaults = {
