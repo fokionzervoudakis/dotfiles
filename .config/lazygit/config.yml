@@ -1,3 +1,5 @@
+# Esc quits once nothing is left to close (no popup, no nested view).
+quitOnTopLevelReturn: true
 os:
   editPreset: "nvim-remote"
 git:
