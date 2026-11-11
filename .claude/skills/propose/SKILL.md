@@ -62,7 +62,9 @@ ones are already applied. Don't re-pitch a close variant either (the same swap
 with a different replacement, or the same removal argued another way) unless you
 can say what makes it materially different. Rejected lines also tell you what
 this user doesn't value - if several are the same kind of idea, steer away from
-that kind.
+that kind. Lines that carry a scope show which kind of idea each scope tends to
+get accepted or rejected, so weigh most heavily the lines with this run's scope.
+Older lines have no scope field; read them the same way otherwise.
 
 Then get oriented in the setup. Map what it is made of **today** from the tree
 itself - any map written down here would go stale, and proposing something that
@@ -133,10 +135,10 @@ Add one line to `docs/proposals.md`, newest first: insert it directly below the 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 ```
 
-Each line is `- <YYYY-MM-DD> | proposed | <title> - <the What, in one sentence>`, for example:
+Each line is `- <YYYY-MM-DD> | <scope> | proposed | <title> - <the What, in one sentence>`, where scope is the run's `low` or `medium`, for example:
 
 ```markdown
-- 2026-09-26 | proposed | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them.
+- 2026-09-26 | low | proposed | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them.
 ```
 
 That line is only an illustration - don't copy it into the log. New lines always start as `proposed`. Don't stage or commit the file; the user decides whether the log goes in the repo.
@@ -152,7 +154,7 @@ Update the proposal's line in `docs/proposals.md`:
 - **Anything else** (a tweak, a question) - answer or adjust the pitch, update the line's title and summary if the change itself changed, and ask again. Don't infer a verdict the user didn't give.
 
 ```markdown
-- 2026-09-26 | rejected | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them.
+- 2026-09-26 | low | rejected | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them.
 ```
 
 Only touch the line for this proposal.
