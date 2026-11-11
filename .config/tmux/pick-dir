@@ -8,9 +8,12 @@ pick=$(zoxide query -l | sed "s:^$HOME:~:" | fzf --reverse --tiebreak index --pr
 dir=${${pick/#\~/$HOME}:A}
 
 # the first window with a pane in that directory, if any
-win=$(tmux list-panes -s -f "#{==:#{pane_current_path},$dir}" -F '#{window_index}' | head -1)
+win=$(tmux list-panes -s -F '#{window_index} #{pane_current_path}' | while read -r idx p; do
+    [[ $p == "$dir" ]] && print $idx && break
+done)
 if [[ -n $win ]]; then
     tmux select-window -t ":$win"
 else
-    tmux new-window -c "$dir"
+    # tmux expands #{...} in the directory it is given; ## is a literal #
+    tmux new-window -c "${dir//\#/##}"
 fi
