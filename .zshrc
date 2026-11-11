@@ -25,7 +25,7 @@ if [[ -r /usr/share/zsh/$ZSH_VERSION/functions/_git ]]; then
   unfunction _git
   autoload -Uz /usr/share/zsh/$ZSH_VERSION/functions/_git
 fi
-zstyle ':completion:*' menu select
+zstyle ':completion:*' menu no # fzf-tab draws the menu; menu select would fight it
 # Case-insensitive prefix, then substring.
 zstyle ':completion:*' matcher-list \
   'm:{a-z}={A-Za-z}' \
@@ -154,6 +154,9 @@ unset __zsh_conf
 #
 # zsh-syntax-highlighting must be sourced last; it wraps the widgets the
 # preceding integrations install.
+# Tab completion menus in fzf; needs compinit and bindkey -v above, and must
+# precede the widget wrappers below
+source "$HOMEBREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
 source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 export FZF_CTRL_R_OPTS='--reverse' # Ctrl-R history search with the prompt on top
 source <(fzf --zsh)

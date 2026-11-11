@@ -23,6 +23,7 @@ brew:
 shell:
     brew install starship zoxide zsh-autosuggestions zsh-syntax-highlighting
     brew install fzf # .zshrc sources `fzf --zsh` at startup, so it must land here
+    brew install fzf-tab # sourced by .zshrc; Tab completion through fzf
     brew install bat # aliased to cat; configured by .config/bat/config
     brew install eza # aliased to ls, ll, and llt
     brew install cloc # wrapped by the cloc function
