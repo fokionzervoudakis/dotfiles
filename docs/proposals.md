@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-11 | medium | rejected | golangci-lint findings inline in Neovim - have Mason install golangci-lint-langserver in custom/plugins/mason.lua and enable lspconfig's golangci_lint_ls, so each Go repo's own pinned golangci-lint reports its findings as diagnostics while editing instead of only from `just lint`.
 - 2026-11-11 | medium | built | Tab completion through fzf - install fzf-tab in the shell recipe and source it in .zshrc after compinit, so every Tab completion (files, git branches, kubectl resources, just recipes) opens in fzf instead of zsh's menu select.
 - 2026-11-11 | medium | rejected | One set of keys for nvim splits and tmux panes - add smart-splits.nvim and matching .tmux.conf bindings so ctrl-h/j/k/l moves between nvim windows and on into the neighbouring tmux pane at the edge, without the prefix.
 - 2026-11-09 | built | Jump to a directory from tmux - bind prefix f in .tmux.conf to a popup running .config/tmux/pick-dir, which lists zoxide's directories in fzf and selects the window already open in the picked directory, or opens a new window there.
