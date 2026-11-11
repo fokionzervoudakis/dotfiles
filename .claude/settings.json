@@ -3,5 +3,47 @@
     "type": "command",
     "command": "~/.claude/statusline.jq"
   },
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude 1"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude 1"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -wu -t \"$TMUX_PANE\" @claude"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -wu -t \"$TMUX_PANE\" @claude"
+          }
+        ]
+      }
+    ]
+  }
 }

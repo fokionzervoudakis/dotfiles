@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-11 | medium | built | Mark the tmux tab where Claude is waiting - add Stop, Notification and UserPromptSubmit hooks to .claude/settings.json that set and clear a tmux window option on Claude's own pane, and have the window-status formats in .tmux.conf show a colored dot before the directory while it is set, so a background window shows when its Claude session finishes or needs input.
 - 2026-11-11 | medium | rejected | golangci-lint findings inline in Neovim - have Mason install golangci-lint-langserver in custom/plugins/mason.lua and enable lspconfig's golangci_lint_ls, so each Go repo's own pinned golangci-lint reports its findings as diagnostics while editing instead of only from `just lint`.
 - 2026-11-11 | medium | built | Tab completion through fzf - install fzf-tab in the shell recipe and source it in .zshrc after compinit, so every Tab completion (files, git branches, kubectl resources, just recipes) opens in fzf instead of zsh's menu select.
 - 2026-11-11 | medium | rejected | One set of keys for nvim splits and tmux panes - add smart-splits.nvim and matching .tmux.conf bindings so ctrl-h/j/k/l moves between nvim windows and on into the neighbouring tmux pane at the edge, without the prefix.
