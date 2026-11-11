@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-11 | rejected | One set of keys for nvim splits and tmux panes - add smart-splits.nvim and matching .tmux.conf bindings so ctrl-h/j/k/l moves between nvim windows and on into the neighbouring tmux pane at the edge, without the prefix.
 - 2026-11-09 | built | Jump to a directory from tmux - bind prefix f in .tmux.conf to a popup running .config/tmux/pick-dir, which lists zoxide's directories in fzf and selects the window already open in the picked directory, or opens a new window there.
 - 2026-11-06 | built | Pick volumes to eject with fzf - turn the unmount alias in .zshrc into a function that, with no arguments, lists the real directories under /Volumes (external disks, disk images, shares; not the Macintosh HD symlink) in fzf --multi and runs diskutil eject on each pick, and still passes any arguments straight to diskutil eject.
 - 2026-11-04 | built | Install several dark schemes, enable gruvbox - add gruvbox.nvim and kanagawa.nvim next to catppuccin in custom/plugins/colorscheme.lua with gruvbox as the active scheme.
