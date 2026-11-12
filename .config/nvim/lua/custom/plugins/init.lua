@@ -19,7 +19,6 @@ require 'custom.plugins.lazygit'
 
 require 'custom.plugins.jdtls'
 
-require 'custom.plugins.obsidian'
 require 'custom.plugins.orgmode'
 
 vim.api.nvim_create_user_command('PackUpdate', function() vim.pack.update(nil, { force = true }) end, {
