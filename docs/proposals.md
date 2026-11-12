@@ -2,6 +2,9 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-12 | medium | rejected | macOS notification when Claude waits - turn on allow-passthrough in .tmux.conf and point Claude Code at its built-in Ghostty notification channel, so a finished or blocked Claude session raises a desktop notification even when Ghostty is not the front app.
+- 2026-11-12 | medium | rejected | Delta for terminal git too - set delta as core.pager and interactive.diffFilter in .gitconfig with the Catppuccin Mocha theme lazygit already uses, so g d, g dc, git show and g ap (add --patch) get syntax-highlighted, word-level diffs.
+- 2026-11-12 | medium | rejected | One Claude profile for every repo - add a tracked .claude/CLAUDE.md, stowed to ~/.claude/CLAUDE.md, holding the cross-project preferences (brevity, ASCII only, no unrequested branches, commit habits) that today are re-learned as separate memories in each repo.
 - 2026-11-11 | medium | built | Mark the tmux tab where Claude is waiting - add Stop, Notification and UserPromptSubmit hooks to .claude/settings.json that set and clear a tmux window option on Claude's own pane, and have the window-status formats in .tmux.conf show a colored dot before the directory while it is set, so a background window shows when its Claude session finishes or needs input.
 - 2026-11-11 | medium | rejected | golangci-lint findings inline in Neovim - have Mason install golangci-lint-langserver in custom/plugins/mason.lua and enable lspconfig's golangci_lint_ls, so each Go repo's own pinned golangci-lint reports its findings as diagnostics while editing instead of only from `just lint`.
 - 2026-11-11 | medium | built | Tab completion through fzf - install fzf-tab in the shell recipe and source it in .zshrc after compinit, so every Tab completion (files, git branches, kubectl resources, just recipes) opens in fzf instead of zsh's menu select.
