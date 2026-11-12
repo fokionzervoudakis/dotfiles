@@ -85,8 +85,7 @@ alias rmds='find . -name .DS_Store -delete'
 
 alias tm=tmux
 
-alias untar='tar -xzvf'
-alias unzip='7zz x'
+alias untar='tar -xvf'
 
 alias vim=nvim
 alias v=nvim

@@ -27,7 +27,6 @@ shell:
     brew install bat # aliased to cat; configured by .config/bat/config
     brew install eza # aliased to ls, ll, and llt
     brew install cloc # wrapped by the cloc function
-    brew install sevenzip # provides 7zz, aliased to unzip
 
 # Install Ghostty, the Nerd Font, and tmux
 [group('setup')]
