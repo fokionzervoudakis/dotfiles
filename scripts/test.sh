@@ -35,6 +35,9 @@ for f in .zshrc .zprofile .config/zsh/*.zsh .config/tmux/pick-dir; do
 done
 check "zsh startup" quiet zsh_startup
 check "nvim startup" quiet nvim --headless +qa
+check "nvim tools" quiet nvim --headless -c 'luafile scripts/nvim-tools.lua' +qa
+# Fails when a file in the repo would collide with a real file already in $HOME
+check "stow links" stow -n -R --no-folding --target ~ .
 # A throwaway server on its own socket, which exits once the file is read; a bad
 # line in .tmux.conf otherwise shows only as a brief message when a client attaches
 check "tmux config" tmux -L dotfiles-test -f /dev/null start-server \; source-file .tmux.conf
