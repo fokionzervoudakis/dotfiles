@@ -67,7 +67,7 @@ git:
 
 # Install Neovim and its external dependencies
 [group('setup')]
-nvim: go java
+nvim: go
     brew install neovim tree-sitter-cli
     brew install ripgrep # Telescope file search and live grep
     brew install node
@@ -76,11 +76,6 @@ nvim: go java
 [group('setup')]
 go:
     brew install go
-
-# Install a JDK for nvim-jdtls
-[group('setup')]
-java:
-    brew install openjdk # keg-only, so .zprofile puts it on PATH
 
 # Check the shell and Neovim configs for syntax and startup errors
 [group('dev')]

@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-12 | low | built | Drop the java recipe - remove the java recipe and the nvim recipe's dependency on it, since algo-java and blue-marble already brew install the JDK in their own install recipes; the JAVA_HOME and PATH lines in .zprofile stay.
 - 2026-11-12 | low | rejected | Replace oil.nvim with mini.files - delete oil.lua, its require and lockfile entry, and point - at mini.files from the mini.nvim Kickstart already loads, opened at the current file.
 - 2026-11-12 | medium | built | Render Markdown inside Neovim - add render-markdown.nvim in a new custom/plugins/markdown.lua so headings, tables, code blocks and checkboxes render in the buffer (raw text on the cursor line), replacing the trip out to glow, which then gets uninstalled.
 - 2026-11-12 | low | built | One alias for just - remove alias j=just from .zshrc and keep m, the one shell history shows in use, so just has a single shortcut.
