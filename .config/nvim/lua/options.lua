@@ -17,9 +17,6 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
   end,
 })
 
--- Conceal text for Obsidian and Orgmode
-vim.opt.conceallevel = 2
-
 -- Use fuzzy-matching to find completion matches
 vim.opt.wildoptions = 'fuzzy'
 
