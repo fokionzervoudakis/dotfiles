@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-12 | low | built | Drop czg - remove the czg formula from the git recipe and the cz alias from .gitconfig, since commits go through the /commit skill, which writes the same Conventional Commits messages.
 - 2026-11-12 | medium | rejected | macOS notification when Claude waits - turn on allow-passthrough in .tmux.conf and point Claude Code at its built-in Ghostty notification channel, so a finished or blocked Claude session raises a desktop notification even when Ghostty is not the front app.
 - 2026-11-12 | medium | rejected | Delta for terminal git too - set delta as core.pager and interactive.diffFilter in .gitconfig with the Catppuccin Mocha theme lazygit already uses, so g d, g dc, git show and g ap (add --patch) get syntax-highlighted, word-level diffs.
 - 2026-11-12 | medium | rejected | One Claude profile for every repo - add a tracked .claude/CLAUDE.md, stowed to ~/.claude/CLAUDE.md, holding the cross-project preferences (brevity, ASCII only, no unrequested branches, commit habits) that today are re-learned as separate memories in each repo.

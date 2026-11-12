@@ -5,7 +5,6 @@
     ci = commit
     cl = clean -f
     co = checkout
-    cz = czg
     d = diff
     dc = diff --cached
     f = fetch --prune

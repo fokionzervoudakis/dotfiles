@@ -60,7 +60,6 @@ kube:
 # Install Git tools and enable the repo's Git hooks
 [group('setup')]
 git:
-    brew install czg # Conventional Commits prompt, aliased to `git cz`
     brew install gh # provides the zsh completions .zshrc picks up
     brew install gitleaks # required by hooks/pre-push
     brew install lazygit # required by lazygit.nvim and .config/lazygit
