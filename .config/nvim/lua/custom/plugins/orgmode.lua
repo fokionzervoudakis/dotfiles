@@ -10,7 +10,7 @@ require('orgmode').setup {
 require('org-bullets').setup()
 vim.lsp.enable 'org'
 
-vim.pack.add { { src = 'https://github.com/chipsenkbeil/org-roam.nvim', version = '0.2.0' } }
+vim.pack.add { 'https://github.com/chipsenkbeil/org-roam.nvim' }
 
 require('org-roam').setup {
   directory = '~/orgfiles',

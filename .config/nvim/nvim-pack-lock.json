@@ -80,9 +80,8 @@
       "src": "https://github.com/nvim-orgmode/org-bullets.nvim"
     },
     "org-roam.nvim": {
-      "rev": "34d1d113cd139ea903125305310be3d7c1067484",
-      "src": "https://github.com/chipsenkbeil/org-roam.nvim",
-      "version": "'0.2.0'"
+      "rev": "aa41b86138d337c485b6cdcffa4b45a61d23edf1",
+      "src": "https://github.com/chipsenkbeil/org-roam.nvim"
     },
     "orgmode": {
       "rev": "08c3ea6ca3745d49435378cddfa93d06e0b39574",
