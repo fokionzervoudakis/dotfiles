@@ -1,13 +1,10 @@
 -- termguicolors is required by several plugins
 vim.opt.termguicolors = true
 
--- Set relative line numbers
 vim.opt.relativenumber = true
 
--- Set the command line height
 vim.opt.cmdheight = 2
 
--- Enable spell checking
 vim.opt.spell = true
 
 -- Open help windows to the right of the current window
@@ -20,13 +17,11 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 -- Use fuzzy-matching to find completion matches
 vim.opt.wildoptions = 'fuzzy'
 
--- Configure indentation
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 
--- Configure white space
 vim.opt.list = true
 vim.opt.listchars = {
   eol = '↲',
@@ -67,5 +62,4 @@ vim.lsp.enable 'copilot'
 -- attaches, including clients that start later
 vim.lsp.inline_completion.enable()
 
--- Accept the current suggestion
 vim.keymap.set('i', '<C-l>', vim.lsp.inline_completion.get, { desc = 'Accept inline completion' })

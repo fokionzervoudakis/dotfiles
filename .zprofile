@@ -19,16 +19,14 @@ export GOPATH="$HOME/go"
 export JAVA_HOME="$HOMEBREW_PREFIX/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 
 path=(
-    "$HOMEBREW_PREFIX/opt/openjdk/bin"           # Java
+    "$HOMEBREW_PREFIX/opt/openjdk/bin"
     "$GOPATH/bin"
     "$HOME/.local/bin"
     $path
 )
 
-# configure Node.js
 export NODE_PATH="$HOMEBREW_PREFIX/lib/node_modules/"
 
-# set custom colors for jq
 export JQ_COLORS='36;1:35;1:33;1:34;1:38;1:32;1:90;1:97;1:49'
 
 # starship draws the virtualenv indicator itself

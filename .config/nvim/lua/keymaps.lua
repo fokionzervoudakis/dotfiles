@@ -4,28 +4,22 @@ local keymap = vim.keymap
 
 -- NORMAL MODE
 
--- Go to previous buffer
 keymap.set('n', '<leader>,', '<cmd>bprevious<CR>', { desc = 'Go to previous buffer' })
 
--- Go to next buffer
 keymap.set('n', '<leader><leader>', '<cmd>bnext<CR>', { desc = 'Go to next buffer' })
 
--- Go to previously opened buffer
 keymap.set('n', '<leader>.', '<cmd>b#<CR>', { desc = 'Go to previously opened buffer' })
 
--- Go to next diagnostic message, centered
 keymap.set('n', '<leader>d', function()
   vim.diagnostic.jump { count = 1 }
   vim.cmd 'normal! zz'
 end, { desc = 'Go to next diagnostic' })
 
--- Go to previous diagnostic message, centered
 keymap.set('n', '<leader>D', function()
   vim.diagnostic.jump { count = -1 }
   vim.cmd 'normal! zz'
 end, { desc = 'Go to previous diagnostic' })
 
--- Toggle a quickfix list of diagnostics from all buffers
 keymap.set('n', '<leader>xx', function()
   if vim.fn.getqflist({ winid = 0 }).winid ~= 0 then
     vim.cmd.cclose()
@@ -34,19 +28,14 @@ keymap.set('n', '<leader>xx', function()
   end
 end, { desc = 'Toggle diagnostics quickfix list' })
 
--- Repeat latest f, t, F or T in opposite direction
 keymap.set('n', "'", ',', { desc = 'Repeat f/t/F/T in opposite direction' })
 
--- Copy relative file path to clipboard
 keymap.set('n', '<leader>cp', '<cmd>let @* = expand("%:p:~:.")<CR>', { desc = 'Copy relative file path' })
 
--- Delete current buffer
 keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
 
--- Save view of current buffer
 keymap.set('n', '<leader>mk', '<cmd>mkview<CR>', { desc = 'Save view of current buffer' })
 
--- Open new tab
 keymap.set('n', '<leader>to', '<cmd>tabedit<CR>', { desc = 'Open new tab' })
 
 -- Disable movement with arrow keys
