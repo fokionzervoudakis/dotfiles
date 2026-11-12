@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-12 | low | built | One alias for just - remove alias j=just from .zshrc and keep m, the one shell history shows in use, so just has a single shortcut.
 - 2026-11-12 | low | built | Drop sevenzip for macOS's tar - remove the sevenzip formula from the shell recipe and the unzip='7zz x' alias from .zshrc, and make untar 'tar -xvf', since the bsdtar macOS ships already extracts 7z, zip and tar.gz archives.
 - 2026-11-12 | low | built | Drop czg - remove the czg formula from the git recipe and the cz alias from .gitconfig, since commits go through the /commit skill, which writes the same Conventional Commits messages.
 - 2026-11-12 | medium | rejected | macOS notification when Claude waits - turn on allow-passthrough in .tmux.conf and point Claude Code at its built-in Ghostty notification channel, so a finished or blocked Claude session raises a desktop notification even when Ghostty is not the front app.

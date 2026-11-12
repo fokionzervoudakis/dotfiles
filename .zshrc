@@ -70,8 +70,6 @@ alias g=git
 # zsh's history shows only the last 16 entries; start from event 1 for all of them
 alias h='history 1'
 
-alias j=just
-
 alias ls='eza --icons=auto'
 alias ll='eza -lh --icons --git'
 alias lla='ll -a'
