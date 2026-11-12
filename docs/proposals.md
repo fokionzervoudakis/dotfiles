@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-12 | medium | built | Render Markdown inside Neovim - add render-markdown.nvim in a new custom/plugins/markdown.lua so headings, tables, code blocks and checkboxes render in the buffer (raw text on the cursor line), replacing the trip out to glow, which then gets uninstalled.
 - 2026-11-12 | low | built | One alias for just - remove alias j=just from .zshrc and keep m, the one shell history shows in use, so just has a single shortcut.
 - 2026-11-12 | low | built | Drop sevenzip for macOS's tar - remove the sevenzip formula from the shell recipe and the unzip='7zz x' alias from .zshrc, and make untar 'tar -xvf', since the bsdtar macOS ships already extracts 7z, zip and tar.gz archives.
 - 2026-11-12 | low | built | Drop czg - remove the czg formula from the git recipe and the cz alias from .gitconfig, since commits go through the /commit skill, which writes the same Conventional Commits messages.

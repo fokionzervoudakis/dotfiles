@@ -14,6 +14,7 @@ require 'custom.plugins.conform'
 require 'custom.plugins.mason'
 require 'custom.plugins.oil'
 require 'custom.plugins.telescope'
+require 'custom.plugins.markdown'
 
 require 'custom.plugins.lazygit'
 
