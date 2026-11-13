@@ -5,15 +5,22 @@ set -uo pipefail
 cd "$(dirname "$0")/.." || exit 1
 failed=0
 
-# Run one check; print its output only if it fails
+# Color only when writing to a terminal
+if [ -t 1 ]; then
+    green=$'\033[32m' red=$'\033[31m' reset=$'\033[0m'
+else
+    green='' red='' reset=''
+fi
+
+# Run one check; print its output, indented under its name, only if it fails
 check() {
     local name=$1
     shift
     if out=$("$@" 2>&1); then
-        echo "ok   $name"
+        echo "${green}PASS${reset} $name"
     else
-        echo "FAIL $name"
-        printf '%s\n' "$out"
+        echo "${red}FAIL${reset} $name"
+        [ -z "$out" ] || printf '%s\n' "$out" | sed 's/^/     /'
         failed=1
     fi
 }

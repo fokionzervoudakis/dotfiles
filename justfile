@@ -81,11 +81,12 @@ go:
 # Check the shell and Neovim configs for syntax and startup errors
 [group('dev')]
 test:
-    scripts/test.sh
+    @scripts/test.sh
 
 # Check the shell scripts for common mistakes and the Lua for formatting
 [group('dev')]
 lint:
-    shellcheck --exclude=SC2329 scripts/*.sh hooks/pre-push # SC2329 flags the functions test.sh passes to check by name
-    ~/.local/share/nvim/mason/bin/stylua --check .config/nvim # Mason's copy; stylua is not on PATH
-    ~/.local/share/nvim/mason/bin/stylua --check --config-path .config/nvim/stylua.toml scripts
+    @shellcheck --exclude=SC2329 scripts/*.sh hooks/pre-push # SC2329 flags the functions test.sh passes to check by name
+    @~/.local/share/nvim/mason/bin/stylua --check .config/nvim # Mason's copy; stylua is not on PATH
+    @~/.local/share/nvim/mason/bin/stylua --check --config-path .config/nvim/stylua.toml scripts
+    @printf '\033[32mPASS\033[0m lint\n'
