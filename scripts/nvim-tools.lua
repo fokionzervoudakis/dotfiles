@@ -16,6 +16,13 @@ for _, config in ipairs(vim.lsp.get_configs { enabled = true }) do
   if type(cmd) == 'table' and vim.fn.executable(cmd[1]) == 0 then missing['lsp ' .. config.name .. ' (' .. cmd[1] .. ')'] = true end
 end
 
+-- ftplugin/java.lua hands jdtls to nvim-jdtls, so it is not among the configs above.
+-- Run it with the start swapped out to see the command it would launch.
+require('jdtls').start_or_attach = function(config)
+  if vim.fn.executable(config.cmd[1]) == 0 then missing['lsp jdtls (' .. config.cmd[1] .. ')'] = true end
+end
+vim.cmd.runtime 'ftplugin/java.lua'
+
 for line in vim.spairs(missing) do
   print(line)
 end
