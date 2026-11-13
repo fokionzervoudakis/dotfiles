@@ -37,7 +37,7 @@ statusline() {
     [ "$got" = "$2" ] || { printf 'got  %s\nwant %s\n' "$got" "$2"; return 1; }
 }
 
-for f in .zshrc .zprofile .config/zsh/*.zsh .config/tmux/pick-dir .config/tmux/next-claude; do
+for f in .zshrc .zprofile .config/zsh/*.zsh .config/tmux/pick-dir .config/tmux/pick-file .config/tmux/next-claude; do
     check "zsh syntax $f" zsh -n "$f"
 done
 check "zsh startup" quiet zsh_startup

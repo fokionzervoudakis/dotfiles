@@ -1,0 +1,36 @@
+#!/bin/zsh
+# Pick one of the files named in a tmux pane's output with fzf, then open it in
+# nvim in a new tmux window. $1 is the pane's id. The popup starts this script
+# in the pane's directory, so the relative paths in the output resolve from here.
+
+# every word in the pane's history that could be a path, with its :line if it
+# has one; tail -r puts the latest first and awk keeps each word once
+words=(${(f)"$(tmux capture-pane -p -J -S - -t "$1" | grep -oE '[A-Za-z0-9_.~/@+-]+(:[0-9]+)?' | tail -r | awk '!seen[$0]++')"})
+
+# keep the words that name a file; a path that ends a sentence has a full stop
+# stuck to it, so try again without it
+refs=()
+for word in $words; do
+    file=${word%%:*}
+    line=${word#$file}
+    [[ -f ${file/#\~/$HOME} ]] || file=${file%.}
+    [[ -f ${file/#\~/$HOME} ]] && refs+=($file$line)
+done
+
+if (( ! $#refs )); then
+    tmux display-message 'no files in this pane'
+    exit 0
+fi
+
+pick=$(print -l -- ${(u)refs} | fzf --reverse --tiebreak index --prompt '> ' --info inline-right --no-scrollbar) || exit 0
+
+file=${pick%%:*}
+line=${pick#$file}
+file=${file/#\~/$HOME}
+
+# tmux expands #{...} in the directory it is given; ## is a literal #
+if [[ -n $line ]]; then
+    tmux new-window -c "${PWD//\#/##}" nvim "+${line#:}" "$file"
+else
+    tmux new-window -c "${PWD//\#/##}" nvim "$file"
+fi
