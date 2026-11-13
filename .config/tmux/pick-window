@@ -1,0 +1,14 @@
+#!/bin/zsh
+# Pick an open tmux window with fzf, then switch to it.
+
+# one line per window in every session, in tab order: its id, session:index,
+# directory, running command and Claude state (working, blocked, done or empty)
+# $HOME is listed as ~, and column lines the fields up
+tab=$'\t'
+windows=$(tmux list-windows -a -F "#{window_id}$tab#{session_name}:#{window_index}$tab#{pane_current_path}$tab#{pane_current_command}$tab#{@claude}" |
+    sed "s:$tab$HOME:$tab~:" | column -t -s "$tab")
+
+# the id at the start of each line is left out of the list
+pick=$(fzf --reverse --with-nth 2.. --prompt '> ' --info inline-right --no-scrollbar <<<"$windows") || exit 0
+
+tmux switch-client -t "${pick%% *}"
