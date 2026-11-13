@@ -24,6 +24,12 @@ Rerun `just stow` after adding a new file to the repo. Stow links files
 individually, so a file it has never linked does not exist as far as anything
 reading `~/.config` is concerned.
 
+## Check the configs
+
+```bash
+just test lint
+```
+
 ## Configure Neovim
 
 ```bash

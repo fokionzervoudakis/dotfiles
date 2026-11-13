@@ -3,4 +3,4 @@
 set -e
 
 gitleaks git --no-banner
-scripts/test.sh
+just lint test
