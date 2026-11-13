@@ -1,31 +1,52 @@
 {
   "hooks": {
-    "Stop": [
+    "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude 1"
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude working"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude working"
           }
         ]
       }
     ],
     "Notification": [
       {
+        "matcher": "permission_prompt|elicitation_dialog|elicitation_url_dialog|agent_needs_input",
         "hooks": [
           {
             "type": "command",
-            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude 1"
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude blocked"
           }
         ]
       }
     ],
-    "UserPromptSubmit": [
+    "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -wu -t \"$TMUX_PANE\" @claude"
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude done"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -z \"$TMUX_PANE\" ] || tmux set -w -t \"$TMUX_PANE\" @claude done"
           }
         ]
       }

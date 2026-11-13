@@ -1,12 +1,13 @@
 #!/bin/zsh
-# Switch to the next tmux window marked with *, where a Claude session finished
-# or needs input. $1 is the id of the window the key was pressed in.
+# Switch to the next tmux window marked with *, where a Claude session needs
+# input or finished. $1 is the id of the window the key was pressed in.
 
 # list every window in every session, start from the one after $1, wrap round,
-# and print the first marked one; the loop stops before it gets back to $1
+# and print the first one that is blocked or done; the loop stops before it
+# gets back to $1
 next=$(tmux list-windows -a -F '#{window_id} #{@claude}' | awk -v cur="$1" '
     { id[NR] = $1; mark[NR] = $2; if ($1 == cur) c = NR }
-    END { for (i = 1; i < NR; i++) { j = (c + i - 1) % NR + 1; if (mark[j]) { print id[j]; exit } } }')
+    END { for (i = 1; i < NR; i++) { j = (c + i - 1) % NR + 1; if (mark[j] == "blocked" || mark[j] == "done") { print id[j]; exit } } }')
 
 if [[ -n $next ]]; then
     tmux switch-client -t "$next"
