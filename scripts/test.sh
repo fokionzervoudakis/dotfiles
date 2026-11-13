@@ -30,6 +30,13 @@ zsh_startup() {
     zsh -il -c exit 2>&1 | grep -v "can't change option: zle"
 }
 
+# Feed the status line the JSON in $1 and compare what it prints with $2, colors included
+statusline() {
+    local got
+    got=$(.claude/statusline.jq <<<"$1") || return 1
+    [ "$got" = "$2" ] || { printf 'got  %s\nwant %s\n' "$got" "$2"; return 1; }
+}
+
 for f in .zshrc .zprofile .config/zsh/*.zsh .config/tmux/pick-dir; do
     check "zsh syntax $f" zsh -n "$f"
 done
@@ -41,5 +48,12 @@ check "stow links" stow -n -R --no-folding --target ~ .
 # A throwaway server on its own socket, which exits once the file is read; a bad
 # line in .tmux.conf otherwise shows only as a brief message when a client attaches
 check "tmux config" tmux -L dotfiles-test -f /dev/null start-server \; source-file .tmux.conf
+# Green below 50, yellow from 50, red from 80, and the decimals are dropped; a
+# broken script otherwise shows only as a blank status line in Claude Code
+check "statusline colors" statusline \
+    '{"model":{"display_name":"M"},"context_window":{"used_percentage":49.9},"rate_limits":{"five_hour":{"used_percentage":50},"seven_day":{"used_percentage":80}}}' \
+    $'M | context \e[32m49%\e[0m | session \e[33m50%\e[0m | weekly \e[31m80%\e[0m'
+# A new session sends the model before any of the percentages
+check "statusline without usage" statusline '{"model":{"display_name":"M"}}' 'M'
 
 exit $failed
