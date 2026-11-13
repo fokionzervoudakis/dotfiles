@@ -1,14 +1,16 @@
 #!/bin/zsh
 # Pick an open tmux window with fzf, then switch to it.
 
-# one line per window in every session, in tab order: its id, session:index,
-# directory, running command and Claude state (working, blocked, done or empty)
-# $HOME is listed as ~, and column lines the fields up
-tab=$'\t'
-windows=$(tmux list-windows -a -F "#{window_id}$tab#{session_name}:#{window_index}$tab#{pane_current_path}$tab#{pane_current_command}$tab#{@claude}" |
-    sed "s:$tab$HOME:$tab~:" | column -t -s "$tab")
+# one line per window: session:index, directory name, program and Claude state
+# tmux reports Claude as its version number (its program file is named
+# 2.1.323), so a program made only of digits and dots is listed as claude
+windows=$(tmux list-windows -a -F '#{session_name}:#{window_index} #{b:pane_current_path} #{pane_current_command} #{@claude}' |
+    sed -E 's/ [0-9.]+ / claude /' | column -t)
 
-# the id at the start of each line is left out of the list
-pick=$(fzf --reverse --with-nth 2.. --prompt '> ' --info inline-right --no-scrollbar <<<"$windows") || exit 0
+# the list opens with the window the key was pressed in highlighted: find which
+# row it is on and tell fzf to start there
+current=$(tmux display-message -p '#{session_name}:#{window_index}')
+row=$(grep -n "^$current " <<<"$windows" | cut -d: -f1)
+pick=$(fzf --reverse --cycle --prompt '> ' --info inline-right --no-scrollbar --bind "load:pos(${row:-1})" <<<"$windows") || exit 0
 
 tmux switch-client -t "${pick%% *}"

@@ -2,7 +2,7 @@
 # Pick a directory zoxide knows with fzf, then open a new tmux window there.
 
 # list $HOME as ~, then turn the pick back into a full path
-pick=$(zoxide query -l | sed "s:^$HOME:~:" | fzf --reverse --tiebreak index --prompt '> ' --info inline-right --no-scrollbar) || exit 0
+pick=$(zoxide query -l | sed "s:^$HOME:~:" | fzf --reverse --cycle --tiebreak index --prompt '> ' --info inline-right --no-scrollbar) || exit 0
 dir=${pick/#\~/$HOME}
 
 # tmux expands #{...} in the directory it is given; ## is a literal #
