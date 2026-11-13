@@ -16,6 +16,7 @@ export EDITOR=nvim VISUAL=nvim
 export GOPATH="$HOME/go"
 
 # point JAVA_HOME-aware tools (Gradle, Maven) at Homebrew's keg-only JDK
+# (each Java project's own justfile installs the JDK; this repo does not)
 export JAVA_HOME="$HOMEBREW_PREFIX/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 
 path=(
