@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-13 | low | built | Three Claude states on the tmux tab - have the hooks in .claude/settings.json set @claude to working, blocked or done instead of on/off, show a different mark for each in the window-status formats in .tmux.conf, and keep prefix a jumping only to blocked and done windows.
 - 2026-11-13 | medium | built | Jump to the waiting Claude in tmux - bind prefix a in .tmux.conf to switch to the next window whose @claude mark is set, in any session, and show a short message when none is waiting.
 - 2026-11-13 | medium | rejected | Follow note links in Neovim with markdown-oxide - have Mason install the markdown-oxide language server in custom/plugins/mason.lua and enable the config nvim-lspconfig already ships, so the existing gd and gr keys jump through [[wikilinks]] and list backlinks in ~/repos/notes.
 - 2026-11-13 | low | built | Add a lint recipe - add `just lint`, running shellcheck on scripts/test.sh and hooks/pre-push and stylua --check on the Neovim Lua, have a recipe install shellcheck, run it from hooks/pre-push, and document `just test lint` in the README.
