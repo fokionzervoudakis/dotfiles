@@ -13,10 +13,6 @@
     psf = push --force-with-lease
     r = !git log -30 --graph --pretty=format:'%Cgreen%h %Creset%cd %Cblue[%cn] %Creset%s%C(yellow)%d%Creset' --all --date=relative
     st = status -s
-    v = "!f() { files=$(git status -s); [ -n \"$files\" ] && echo \"$files\" \
-        | fzf --multi --header 'Pick files to open in nvim' \
-        | cut -c4- | sed 's/.* -> //' \
-        | xargs nvim || true ; }; f"
 [core]
     editor = nvim
     autocrlf = input
