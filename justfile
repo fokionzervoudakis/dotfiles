@@ -37,7 +37,7 @@ terminal:
 
 # Install Claude Code
 [group('setup')]
-claude:
+claude: jq
     curl -fsSL https://claude.ai/install.sh | bash # installs to ~/.local/bin, which .zprofile puts on PATH; configured by .claude
 
 # Install jq
@@ -52,7 +52,7 @@ aws:
 
 # Install kubectl, kubectx, and kubens
 [group('setup')]
-kube:
+kube: jq
     brew install kubernetes-cli # provides kubectl, used by .config/zsh/kubectl.zsh
     brew install kubectx # provides kubectx and kubens
 
@@ -67,7 +67,7 @@ git:
 
 # Install Neovim and its external dependencies
 [group('setup')]
-nvim: go
+nvim: go jq
     brew install neovim tree-sitter-cli
     brew install ripgrep # Telescope file search and live grep
     brew install node
