@@ -2,6 +2,8 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-13 | medium | built | Jump to the waiting Claude in tmux - bind prefix a in .tmux.conf to switch to the next window whose @claude mark is set, in any session, and show a short message when none is waiting.
+- 2026-11-13 | medium | rejected | Follow note links in Neovim with markdown-oxide - have Mason install the markdown-oxide language server in custom/plugins/mason.lua and enable the config nvim-lspconfig already ships, so the existing gd and gr keys jump through [[wikilinks]] and list backlinks in ~/repos/notes.
 - 2026-11-13 | low | built | Add a lint recipe - add `just lint`, running shellcheck on scripts/test.sh and hooks/pre-push and stylua --check on the Neovim Lua, have a recipe install shellcheck, run it from hooks/pre-push, and document `just test lint` in the README.
 - 2026-11-13 | low | rejected | Drop Copilot from Neovim - remove the Copilot block from options.lua (the LSP enable, inline ghost text and the insert-mode ctrl-l accept key), copilot-language-server from Mason's list and the :LspCopilotSignIn step from the README.
 - 2026-11-13 | low | rejected | Keep gruvbox, drop the other two schemes - remove catppuccin and kanagawa.nvim from custom/plugins/colorscheme.lua and the lockfile, leaving gruvbox as the one colorscheme the user layer installs.
