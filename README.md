@@ -28,6 +28,7 @@ reading `~/.config` is concerned.
 
 ```bash
 just test lint
+just health # checks this machine: zsh and Neovim start cleanly, stow can link
 ```
 
 ## Configure Neovim

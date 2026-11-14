@@ -83,16 +83,22 @@ nvim: go jq
 go:
     brew install go
 
-# Check the shell and Neovim configs for syntax and startup errors
+# Test the tmux config, the tmux scripts, and the Claude status line
 [group('dev')]
 test:
     @echo "{{RED}}{{BOLD}}Running tests...{{RESET}}"
     @bats test
 
+# Check this machine against the repo: the shell and Neovim start cleanly and stow can link
+[group('dev')]
+health:
+    @echo "{{RED}}{{BOLD}}Checking this machine...{{RESET}}"
+    @bats health
+
 # Check the shell scripts for common mistakes and the Lua for formatting
 [group('dev')]
 lint:
     @echo "{{RED}}{{BOLD}}Linting shell scripts and Lua...{{RESET}}"
-    @shellcheck hooks/pre-push test/*.bats test/*.bash
+    @shellcheck hooks/pre-push test/*.bats test/*.bash health/*.bats
     @~/.local/share/nvim/mason/bin/stylua --check .config/nvim # Mason's copy; stylua is not on PATH
     @~/.local/share/nvim/mason/bin/stylua --check --config-path .config/nvim/stylua.toml scripts
