@@ -62,7 +62,7 @@ kube: jq
 
 # Install Git tools and enable the repo's Git hooks
 [group('setup')]
-git:
+git: jq shell terminal nvim
     brew install gh # provides the zsh completions .zshrc picks up
     brew install gitleaks # required by hooks/pre-push
     brew install shellcheck # required by hooks/pre-push
