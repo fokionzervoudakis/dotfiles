@@ -1,16 +1,13 @@
 #!/bin/zsh
 # Pick an open tmux window with fzf, then switch to it.
 
-# one line per window: session:index, directory name, program and Claude state
-# tmux reports Claude as its version number (its program file is named
-# 2.1.323), so a program made only of digits and dots is listed as claude
-windows=$(tmux list-windows -a -F '#{session_name}:#{window_index} #{b:pane_current_path} #{pane_current_command} #{@claude}' |
-    sed -E 's/ [0-9.]+ / claude /' | column -t)
+# one line per window: session:index and directory name
+windows=$(tmux list-windows -a -F '#{session_name}:#{window_index} #{b:pane_current_path}' | column -t)
 
 # the list opens with the window the key was pressed in highlighted: find which
 # row it is on and tell fzf to start there
 current=$(tmux display-message -p '#{session_name}:#{window_index}')
 row=$(grep -n "^$current " <<<"$windows" | cut -d: -f1)
-pick=$(fzf --reverse --cycle --prompt '> ' --info inline-right --no-scrollbar --bind "load:pos(${row:-1})" <<<"$windows") || exit 0
+pick=$(fzf --reverse --cycle --prompt '> ' --info inline-right --no-scrollbar --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right,80%,border-left' --bind "load:pos(${row:-1})" <<<"$windows") || exit 0
 
 tmux switch-client -t "${pick%% *}"
