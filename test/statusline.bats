@@ -9,7 +9,7 @@ statusline_colors() {
 
 # Green (32) below 50, yellow (33) from 50, red (31) from 80, and the decimals
 # are dropped; a broken script otherwise shows only as a blank status line
-@test "statusline colors by percentage" {
+@test "statusline colors each percentage green, yellow or red" {
     statusline_colors \
         '{"model":{"display_name":"M"},"context_window":{"used_percentage":49.9},"rate_limits":{"five_hour":{"used_percentage":50},"seven_day":{"used_percentage":80}}}' \
         '32m49% 33m50% 31m80%'
@@ -17,6 +17,6 @@ statusline_colors() {
 
 # A new session sends the model before any of the percentages; the line should
 # still show the model instead of going blank
-@test "statusline before usage is sent" {
+@test "statusline shows the model before usage is sent" {
     .claude/statusline.jq <<<'{"model":{"display_name":"M"}}' | grep -q M
 }

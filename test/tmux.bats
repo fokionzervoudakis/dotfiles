@@ -131,7 +131,7 @@ pick_dir() {
     next_claude "$win_d" "$win_c"
 }
 
-@test "next-claude with nothing waiting elsewhere" {
+@test "next-claude stays put when nothing is waiting elsewhere" {
     marks 'done' working - -
     next_claude "$win_a" ''
 }
