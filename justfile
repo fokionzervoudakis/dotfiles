@@ -62,6 +62,7 @@ git:
     brew install gh # provides the zsh completions .zshrc picks up
     brew install gitleaks # required by hooks/pre-push
     brew install shellcheck # required by hooks/pre-push
+    brew install bats-core # required by hooks/pre-push
     brew install lazygit # required by lazygit.nvim and .config/lazygit
     brew install git-delta # diff renderer for .config/lazygit
     git config core.hooksPath hooks # run hooks/pre-push before every push
@@ -81,12 +82,12 @@ go:
 # Check the shell and Neovim configs for syntax and startup errors
 [group('dev')]
 test:
-    @scripts/test.sh
+    @bats test
 
 # Check the shell scripts for common mistakes and the Lua for formatting
 [group('dev')]
 lint:
-    @shellcheck --exclude=SC2329 scripts/*.sh hooks/pre-push # SC2329 flags the functions test.sh passes to check by name
+    @shellcheck hooks/pre-push test/*.bats test/*.bash
     @~/.local/share/nvim/mason/bin/stylua --check .config/nvim # Mason's copy; stylua is not on PATH
     @~/.local/share/nvim/mason/bin/stylua --check --config-path .config/nvim/stylua.toml scripts
     @printf '\033[32mPASS\033[0m lint\n'
