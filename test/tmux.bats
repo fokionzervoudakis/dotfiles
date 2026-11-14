@@ -24,7 +24,10 @@ case "\$1 \$2" in
 *) exec "$(command -v tmux)" "\$@" ;;
 esac
 FAKE
-    chmod +x "$tmp/bin/tmux"
+    # pick-dir asks zoxide for its directories; #S is tmux's short form for the session name
+    mkdir "$tmp/home/notes#S"
+    printf '#!/bin/sh\necho "%s"\necho "%s"\n' "$tmp/home/alpha" "$tmp/home/notes#S" >"$tmp/bin/zoxide"
+    chmod +x "$tmp/bin/tmux" "$tmp/bin/zoxide"
 
     t -f /dev/null new-session -d -s s1 -c "$tmp/home/alpha" 'sleep 600'
     t set -g default-command 'sleep 600' # what the other windows run
@@ -86,6 +89,17 @@ pick_window() {
     same "$(switched)" "$2"
 }
 
+# Type $1 with $HOME set to the throwaway home; a new window should open in
+# directory $2. The window is closed again so the other tests see the same four.
+pick_dir() {
+    local before new
+    before=$(t list-windows -a -F '#{window_id}')
+    HOME="$tmp/home" run_script "$1" .config/tmux/pick-dir || return 1
+    new=$(t list-windows -a -F '#{window_id}' | grep -vxF "$before") || true
+    same "$(t display-message -p -t "$new" '#{pane_current_path}')" "$2" || return 1
+    t kill-window -t "$new"
+}
+
 # Run each hook that writes the tab mark, as Claude would from window a; what it
 # leaves there must be a state the tab formats and next-claude know. A wrong
 # state fails silently: the * never shows and the jump key finds nothing.
@@ -125,4 +139,14 @@ pick_window() {
 # alpha is the name of window a's directory
 @test "pick-window switches to the pick" {
     pick_window alpha "$win_a"
+}
+
+# ^ matches only at the start of the line, so the list must show $HOME as ~
+@test "pick-dir lists home as ~ and opens the pick" {
+    pick_dir '^~/alpha' "$tmp/home/alpha"
+}
+
+# tmux would otherwise turn the #S into the session name and open the window elsewhere
+@test "pick-dir opens a directory with # in its name" {
+    pick_dir 'notes' "$tmp/home/notes#S"
 }
