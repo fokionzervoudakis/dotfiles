@@ -3,6 +3,10 @@
 # Recipes are quiet by default; run `just -v <recipe>` to echo commands.
 set quiet
 
+BOLD := `printf "\033[1m"`
+RED := `printf "\033[31m"`
+RESET := `printf "\033[0m"`
+
 # List available recipes
 default:
     just --list
@@ -82,12 +86,13 @@ go:
 # Check the shell and Neovim configs for syntax and startup errors
 [group('dev')]
 test:
+    @echo "{{RED}}{{BOLD}}Running tests...{{RESET}}"
     @bats test
 
 # Check the shell scripts for common mistakes and the Lua for formatting
 [group('dev')]
 lint:
+    @echo "{{RED}}{{BOLD}}Linting shell scripts and Lua...{{RESET}}"
     @shellcheck hooks/pre-push test/*.bats test/*.bash
     @~/.local/share/nvim/mason/bin/stylua --check .config/nvim # Mason's copy; stylua is not on PATH
     @~/.local/share/nvim/mason/bin/stylua --check --config-path .config/nvim/stylua.toml scripts
-    @printf '\033[32mPASS\033[0m lint\n'
