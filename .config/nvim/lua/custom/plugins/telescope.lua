@@ -45,6 +45,8 @@ vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Find by grep' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find help' })
 vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = 'Find recently opened files' })
+-- The same key as prefix g g in tmux, which opens lazygit on the changed files.
+vim.keymap.set('n', '<leader>gg', builtin.git_status, { desc = 'Git changed files' })
 vim.keymap.set('n', '<leader>u', '<cmd>Telescope undo<CR>', { desc = 'Browse undo history' })
 
 -- Buffer-local, so buffers without an LSP keep Vim's own gd and gr.
