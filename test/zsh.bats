@@ -34,3 +34,33 @@ setup_dirs() {
     backup_run "$src/a" "$dst/b"
     same "$(cat "$dst/b")" new
 }
+
+# Run one function from a zsh file on its own, the way backup_run does above.
+# $2 is zsh code that replaces the commands the function calls
+run_fn() {
+    local file=$1 fakes=$2 fn=$3 body
+    shift 3
+    body=$(sed -n "/^$fn() {/,/^}/p" "$file")
+    zsh -fc "$fakes; $body; $fn \"\$@\"" zsh "$@"
+}
+
+# With no pod name, kubectl describe pod describes every pod in the namespace
+@test "ctldescribe runs nothing when the picker is cancelled" {
+    run run_fn .config/zsh/kubectl.zsh '__kpick() { }; kubectl() { print kubectl "$@" }' ctldescribe
+    same "$output" ""
+}
+
+@test "ctldescribe describes every pod picked" {
+    run run_fn .config/zsh/kubectl.zsh '__kpick() { print -l a b }; kubectl() { print kubectl "$@" }' ctldescribe
+    same "$output" "kubectl describe pod a b"
+}
+
+@test "unmount ejects its arguments without opening the picker" {
+    run run_fn .zshrc 'fzf() { print picked }; diskutil() { print diskutil "$@" }' unmount "/Volumes/A B" /Volumes/C
+    same "$output" $'diskutil eject /Volumes/A B\ndiskutil eject /Volumes/C'
+}
+
+@test "unmount ejects each volume picked" {
+    run run_fn .zshrc 'find() { print -l "/Volumes/A B" /Volumes/C }; fzf() { cat }; diskutil() { print diskutil "$@" }' unmount
+    same "$output" $'diskutil eject /Volumes/A B\ndiskutil eject /Volumes/C'
+}
