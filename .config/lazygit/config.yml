@@ -1,7 +1,5 @@
 # Esc quits once nothing is left to close (no popup, no nested view).
 quitOnTopLevelReturn: true
-os:
-  editPreset: "nvim-remote"
 git:
   diffRenderers:
     - command: delta --dark --paging=never --syntax-theme='Catppuccin Mocha'

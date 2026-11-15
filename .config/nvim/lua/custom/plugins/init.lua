@@ -16,8 +16,6 @@ require 'custom.plugins.oil'
 require 'custom.plugins.telescope'
 require 'custom.plugins.markdown'
 
-require 'custom.plugins.lazygit'
-
 require 'custom.plugins.jdtls'
 
 require 'custom.plugins.orgmode'
