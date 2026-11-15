@@ -95,10 +95,11 @@ health:
     @echo "{{RED}}{{BOLD}}Checking this machine...{{RESET}}"
     @bats health
 
-# Check the shell scripts for common mistakes and the Lua for formatting
+# Check the shell scripts for common mistakes, the zsh files for syntax errors, and the Lua for formatting
 [group('dev')]
 lint:
     @echo "{{RED}}{{BOLD}}Linting shell scripts and Lua...{{RESET}}"
     @shellcheck hooks/pre-push test/*.bats test/*.bash health/*.bats
+    @printf '%s\n' .zshrc .zprofile .config/zsh/*.zsh .config/tmux/* | xargs -n1 zsh -n
     @~/.local/share/nvim/mason/bin/stylua --check .config/nvim # Mason's copy; stylua is not on PATH
     @~/.local/share/nvim/mason/bin/stylua --check --config-path .config/nvim/stylua.toml scripts
