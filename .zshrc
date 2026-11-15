@@ -110,7 +110,7 @@ cloc() {
 # "Macintosh HD" symlink to / and keeps external disks, disk images and shares.
 unmount() {
     local vols=("$@") vol
-    (( $# )) || vols=(${(f)"$(find /Volumes -mindepth 1 -maxdepth 1 -type d | fzf --multi)"})
+    (( $# )) || vols=(${(f)"$(find /Volumes -mindepth 1 -maxdepth 1 -type d | fzf --multi --height '~40%' --reverse --exit-0)"})
     # diskutil eject takes one volume per call
     for vol in $vols; do
         diskutil eject "$vol"
