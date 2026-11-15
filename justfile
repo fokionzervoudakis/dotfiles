@@ -15,18 +15,18 @@ default:
 [group('setup')]
 stow:
     brew install stow
-    stow -R --no-folding --target ~ . # link each file into $HOME; --no-folding links only the files in the repo, so new files in $HOME stay out of the repo
+    stow -R --no-folding --target ~ . # link file by file, so files that programs create in $HOME stay out of the repo
 
-# Configure Homebrew aliases
+# Add the `brew clean` alias
 [group('setup')]
 brew:
-    brew alias | grep -q "clean=" || brew alias clean='cleanup && brew doctor' # `brew alias` is built in; the homebrew/aliases tap is deprecated
+    brew alias | grep -q "clean=" || brew alias clean='cleanup && brew doctor' # `brew alias` is built in; no tap needed
 
 # Install the zsh prompt and plugins, and the tools .zshrc aliases
 [group('setup')]
 shell:
     brew install starship zoxide zsh-autosuggestions zsh-syntax-highlighting
-    brew install fzf # .zshrc sources `fzf --zsh` at startup, so it must land here
+    brew install fzf # sourced by .zshrc; also used by the tmux pickers and the zsh functions
     brew install fzf-tab # sourced by .zshrc; Tab completion through fzf
     brew install bat # aliased to cat; configured by .config/bat/config
     brew install eza # aliased to ls, ll, and llt
@@ -36,13 +36,13 @@ shell:
 [group('setup')]
 terminal:
     brew install --cask ghostty # configured by .config/ghostty/config
-    brew install --cask font-hack-nerd-font # Neovim's icons need a Nerd Font
+    brew install --cask font-hack-nerd-font # set in .config/ghostty/config; draws the icons in Neovim and eza
     brew install tmux
 
 # Install Claude Code
 [group('setup')]
 claude: jq
-    curl -fsSL https://claude.ai/install.sh | bash # installs to ~/.local/bin, which .zprofile puts on PATH; configured by .claude
+    curl -fsSL https://claude.ai/install.sh | bash # installs to ~/.local/bin, which .zprofile puts on PATH
 
 # Install jq
 [group('setup')]
@@ -62,34 +62,35 @@ kube: jq
 
 # Install Git tools and enable the repo's Git hooks
 [group('setup')]
-git: jq shell terminal nvim
-    brew install gh # provides the zsh completions .zshrc picks up
-    brew install gitleaks # required by hooks/pre-push
-    brew install shellcheck # required by hooks/pre-push
-    brew install bats-core # required by hooks/pre-push
-    brew install lazygit # required by lazygit.nvim and .config/lazygit
+git: jq shell terminal nvim # the pre-push hook runs lint and test, which need all four
+    brew install gh # GitHub's command-line tool
+    brew install gitleaks # run by hooks/pre-push
+    brew install shellcheck # run by `just lint`
+    brew install bats-core # runs `just test` and `just health`
+    brew install lazygit # opened by prefix g g and prefix g l in .tmux.conf
     brew install git-delta # diff renderer for .config/lazygit
     git config core.hooksPath hooks # run hooks/pre-push before every push
 
 # Install Neovim and its external dependencies
 [group('setup')]
 nvim: go jq
-    brew install neovim tree-sitter-cli
+    brew install neovim
+    brew install tree-sitter-cli # builds the parsers nvim-treesitter installs
     brew install ripgrep # Telescope file search and live grep
-    brew install node
+    brew install node # Mason installs prettier, sql-formatter and two language servers with npm
 
 # Install Go
 [group('setup')]
 go:
-    brew install go
+    brew install go # Mason builds gopls and goimports with it
 
-# Test the tmux config, the tmux scripts, and the Claude status line
+# Test the tmux config and scripts, the zsh functions, and the Claude status line
 [group('dev')]
 test:
     @echo "{{RED}}{{BOLD}}Running tests...{{RESET}}"
     @bats test
 
-# Check this machine against the repo: the shell and Neovim start cleanly and stow can link
+# Check this machine: zsh and Neovim start cleanly, Neovim's tools run, and stow can link
 [group('dev')]
 health:
     @echo "{{RED}}{{BOLD}}Checking this machine...{{RESET}}"
