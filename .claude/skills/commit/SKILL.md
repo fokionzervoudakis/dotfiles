@@ -51,6 +51,8 @@ Commit the working tree using the Commitizen (Conventional Commits) format, spli
 
    Push back against over-splitting just as hard. The goal is the fewest commits that pass the revert test, not the most commits you can justify. A zero-risk cleanup - a rename, a formatting fix, a keymap rewritten with identical behavior - has nothing to revert on its own, so fold it into whichever commit it sits nearest. A one-line commit nobody would ever revert in isolation is noise in the log, not precision.
 
+   Bookkeeping caused by a change - a leftover-log entry it resolves, a doc updated because the interface moved - goes in that change's commit and takes its type, even if the recent log split them.
+
    One hard limit on splitting: **each commit has to stand on its own.** If a group only makes sense alongside another - a function renamed in one file and its call sites in another, a config key and the code that reads it - then splitting them produces commits that don't individually work. A broken commit in the history defeats the bisect this whole step exists to protect, which makes that split worse than no split at all. When the revert test says "separate" but the pieces can't stand alone, keep them together and say why.
 
    To commit in groups, unstage and re-stage per group:
