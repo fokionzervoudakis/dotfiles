@@ -6,11 +6,12 @@ load helpers
     tmux -L dotfiles-test -f /dev/null start-server \; source-file .tmux.conf
 }
 
-# A key bound to a script that was renamed or deleted loads without complaint
-@test "tmux keys run scripts that exist" {
+# A key bound to a script that was renamed, deleted, or is no longer executable
+# loads without complaint
+@test "tmux keys run scripts that are executable" {
     local f missing=0
     while IFS= read -r f; do
-        [ -f "$f" ] || { echo "missing $f"; missing=1; }
+        [ -x "$f" ] || { echo "missing or not executable: $f"; missing=1; }
     done < <(grep -o '\.config/tmux/[^ "]*' .tmux.conf | sort -u)
     [ "$missing" = 0 ]
 }
