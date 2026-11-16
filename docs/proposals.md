@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-16 | low | built | Scan every repo for secrets before a push - add a tracked .config/git/hooks/pre-push that runs gitleaks and set it as core.hooksPath in .gitconfig, so the 8 repos with no hooks of their own (orgfiles and 7 under ~/repos) get the same secret scan as dotfiles, macros, piggy-bank, vault, agent-demo and citely, which keep their own hooks.
 - 2026-11-13 | low | built | Pick an open tmux window with fzf - rebind prefix w in .tmux.conf from tmux's built-in window tree to a popup running a new .config/tmux/pick-window, which lists every open window in fzf by directory, running command and Claude state, and switches to the pick.
 - 2026-11-13 | low | rejected | Stop loading the data plugin in Claude Code - set syncClaudeAiPlugins to false in .claude/settings.json so the data plugin synced from the Claude account (10 data-analysis skills and 8 connectors such as Snowflake, BigQuery, Amplitude and Atlassian) is no longer loaded into every session on this machine.
 - 2026-11-13 | medium | rejected | Sandbox Claude's shell commands - turn on Claude Code's built-in macOS sandbox in .claude/settings.json (sandbox.enabled, plus exclusions for git push, pull and fetch, which use SSH), so the commands Claude runs can write only inside the repo it was started in unless it deliberately retries outside the sandbox; the --dangerously-skip-permissions alias stays.
