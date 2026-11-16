@@ -1,5 +1,7 @@
 # Esc quits once nothing is left to close (no popup, no nested view).
 quitOnTopLevelReturn: true
+# After closing Neovim (or any program lazygit opened), go straight back without the "press enter to return" prompt.
+promptToReturnFromSubprocess: false
 git:
   diffRenderers:
     - command: delta --dark --paging=never --syntax-theme='Catppuccin Mocha'
