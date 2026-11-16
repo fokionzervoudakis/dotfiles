@@ -62,14 +62,18 @@ kube: jq
 
 # Install Git tools and enable the repo's Git hooks
 [group('setup')]
-git: jq shell terminal nvim # the pre-push hook runs lint and test, which need all four
+git: githooks jq shell terminal nvim # the pre-push hook runs lint and test, which need the last four
     brew install gh # GitHub's command-line tool
-    brew install gitleaks # run by hooks/pre-push
+    brew install gitleaks # run by hooks/pre-push and .config/git/hooks/pre-push
     brew install shellcheck # run by `just lint`
     brew install bats-core # runs `just test` and `just health`
     brew install lazygit # opened by prefix g g and prefix g l in .tmux.conf
     brew install git-delta # diff renderer for .config/lazygit
     [ -x ~/.local/share/nvim/mason/bin/stylua ] || nvim --headless -c 'MasonInstall stylua' -c qa # install stylua for `just lint`; otherwise it is missing until Neovim is first opened
+
+# Install Git hooks
+[group('setup')]
+githooks:
     git config core.hooksPath hooks # run hooks/pre-push before every push
 
 # Install Neovim and its external dependencies
