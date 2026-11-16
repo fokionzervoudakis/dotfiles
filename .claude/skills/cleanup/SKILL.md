@@ -1,54 +1,83 @@
 ---
 name: cleanup
-description: Bring this machine back in line with the dotfiles repo - restow so new and renamed files are linked, remove symlinks left dangling by deleted files, install brew packages a recent justfile change asks for but this machine lacks, and offer to uninstall what the repo no longer asks for (orphaned vim.pack plugins, brew packages dropped from the justfile, leftover config dirs). Use whenever the user says "restow", "sync my machine", "clean up after that", "is my machine in sync with the repo?", mentions they just pulled, added, renamed, or removed something, or invokes /cleanup - and offer it after /propose or /improve lands a change that adds, removes, or renames a file, plugin, or package. This changes the machine, not the repo; to fix the config use `improve`, to change the stack use `propose`.
+description: Bring this machine back in line with the dotfiles repo - restow so new and renamed files are linked, remove symlinks left dangling by deleted files, install brew packages a recent justfile change asks for but this machine lacks, and offer to uninstall what the repo no longer asks for (orphaned vim.pack plugins, brew packages dropped from the justfile, leftover config dirs), and to restart a tmux server still running an older `.tmux.conf`. Use whenever the user says "restow", "sync my machine", "clean up after that", "is my machine in sync with the repo?", mentions they just pulled, added, renamed, or removed something, or invokes /cleanup - and offer it after /propose or /improve lands a change that adds, removes, or renames a file, plugin, or package. This changes the machine, not the repo; to fix the config use `improve`, to change the stack use `propose`.
 ---
 
 # Cleanup
 
-`propose` and `improve` change the repo; neither undoes what the repo stopped asking for. So `$HOME` drifts: a renamed file stays linked under its old name, `vim.pack` keeps a plugin directory after its spec is gone, a package whose `brew install` line was removed stays installed, and one whose line was added in a commit pulled from elsewhere never gets installed. Nothing errors, so nobody notices. This skill makes the machine match the repo as it stands now.
+`propose` and `improve` change the repo; neither undoes what the repo stopped asking for. So `$HOME` drifts: a renamed file stays linked under its old name, `vim.pack` keeps a plugin directory after its spec is gone, a package whose `brew install` line was removed stays installed, a tmux server keeps a binding after its line is deleted from `.tmux.conf`, and a package whose line was added in a commit pulled from elsewhere never gets installed. Nothing errors, so nobody notices. This skill makes the machine match the repo as it stands now.
 
 Most runs should find nothing, and then the whole output is one line. When there is residue, the user should be able to approve all of it in one glance.
 
+## Flow
+
+1. Run the **Check** of every tool section below, from the repo root. All are read-only; empty output means nothing to do.
+2. Read each finding as its section says.
+3. Run the fixes marked **free**.
+4. Collect the fixes marked **ask** into one list and ask once (see Ask once). Run what the user approves, except a tmux restart.
+5. Verify, then report.
+6. Run an approved tmux restart, last.
+
 ## Rules
 
-- **Free:** restowing and deleting symlinks into this repo whose target is gone. Stow is idempotent and refuses to overwrite real files, and a dangling link holds no data, so both are undone by rerunning stow.
-- **Free:** `brew install` for a package a recently added justfile line asks for and that is missing here - it is what the recipe would install, and nothing is lost. Install only the missing package, never the whole recipe, which reruns its other commands.
-- **Ask first, once, as a list:** anything that deletes data or software - `vim.pack.del()`, `brew uninstall`, removing a leftover directory, resolving a stow conflict. These hold state the repo can't recreate.
+- **Free** means it loses nothing and rerunning the recipe would do the same: restowing, deleting a dangling link, installing a missing package.
+- **Ask** means it deletes data or software, or ends running programs. The repo can't recreate that state, so the user approves it first.
 - **Never edit the repo or commit.** If the repo itself is wrong - a stray file stow would link, a recipe installing something nothing uses - report it and point to `/improve`.
+- **Narrow commands only.** Each command touches the one item the user saw - no `brew autoremove` or `brew cleanup`.
 - **Plain ASCII** in everything you output: `-` not dashes, straight quotes, `->` not arrows, no emoji.
+- The history-based checks cover the last 20 commits plus uncommitted changes; if the user says the drift is older, raise the count.
 
-## 1. Survey
+## Stow
 
-Run from the repo root. All read-only; empty output means nothing to do. Stow links into the repo's *parent* directory, so that is the target:
+**Check** - conflicts, then the new links a restow would create. Stow links into the repo's *parent* directory, so that is the target:
 
 ```sh
 T=$(dirname "$PWD")
 dry=$(stow -n -v -R --no-folding . 2>&1)
-
-# Conflicts: a real file where stow wants a link
 echo "$dry" | grep -E 'conflict|cannot stow'
-
-# New links a restow would create; stow links the working tree, so flag untracked files
 echo "$dry" | awk '$1=="LINK:"{print $2}' | while read -r p; do
   [ -L "$T/$p" ] || echo "$p$(git ls-files --error-unmatch -- "$p" >/dev/null 2>&1 || echo '  (untracked)')"
 done
+```
 
-# Dangling links and leftover dirs for paths recently tracked; --no-renames, or a rename hides its old path
+**Read**
+
+- A conflict is a real file where stow wants a link. Never delete it to make room; it may be the user's only copy. Diff it against the repo version.
+- `(untracked)` marks a stray file that restowing would link into `$HOME`. This repo's `.gitignore` is a whitelist, so "ignored" says nothing about intent; judge each.
+
+**Fix**
+
+- Free: `stow -R --no-folding .` (what `just stow` runs, minus installing stow).
+- Ask: resolving a conflict, and restowing when an untracked file looks like a mistake.
+- A conflict aborts the whole restow, so no new links land until it is resolved. Say so, and restow again once the user resolves it.
+
+## Dangling links and leftover directories
+
+**Check** - paths recently tracked whose link now points at nothing, or whose directory is gone from the repo but still in `$HOME`. `--no-renames`, or a rename hides its old path:
+
+```sh
+T=$(dirname "$PWD")
 { git log -20 --no-renames --name-only --format=; git diff --name-only HEAD; } | sort -u | while read -r p; do
   [ -L "$T/$p" ] && [ ! -e "$T/$p" ] && echo "dangling: $T/$p -> $(readlink "$T/$p")"
   d=$(dirname "$p"); [ "$d" != . ] && [ ! -e "$d" ] && [ -d "$T/$d" ] && echo "leftover: $T/$d"
 done | sort -u
+```
 
-# vim.pack plugins nothing added at startup
-nvim --headless -c 'lua for _,p in ipairs(vim.pack.get()) do if not p.active then print(p.spec.name) end end' +qa 2>&1
+**Read**
 
-# Installed packages whose `brew install` line was removed and that no recipe still installs
-{ git log -20 -p --format= -- justfile; git diff HEAD -- justfile; } | grep -E '^-[^-].*brew install' \
-  | sed -E 's/#.*//; s/.*brew install//' | tr ' ' '\n' | grep -v -e '^--' -e '^$' | sort -u \
-  | grep -vxFf <(grep -o 'brew install.*' justfile | sed -E 's/#.*//; s/brew install//' | tr ' ' '\n') \
-  | grep -xFf <(brew list -1 --formula; brew list -1 --cask)
+- A dangling link holds no data.
+- A leftover directory is usually local state (history, caches). Look inside and say what is there.
 
-# Packages a recently added `brew install` line asks for, still in the justfile, but not installed
+**Fix**
+
+- Free: `rm` each dangling link by path - no trailing slash, no `-r`. Do this even when a stow conflict blocks the restow.
+- Ask: removing a leftover directory.
+
+## Brew: missing packages
+
+**Check** - packages a recently added `brew install` line asks for, still in the justfile, but not installed:
+
+```sh
 cur=$(grep -o 'brew install.*' justfile | sed -E 's/#.*//; s/brew install//' | tr ' ' '\n')
 { git log -20 -p --format= -- justfile; git diff HEAD -- justfile; } | grep -E '^\+[^+].*brew install' \
   | sed -E 's/#.*//; s/.*brew install//' \
@@ -58,38 +87,105 @@ cur=$(grep -o 'brew install.*' justfile | sed -E 's/#.*//; s/brew install//' | t
   done
 ```
 
-The history-based checks cover the last 20 commits plus uncommitted changes; if the user says the drift is older, raise the count.
+**Read**
 
-Then skim `git log --oneline -20 --stat` for residue those commands don't know about - a recipe line added that isn't a `brew install` (a `curl ... | bash` installer, a `git config`, a `brew alias`; check its effect is present, and if not, run that one line), a tool dropped from Mason's `ensure_installed` (Mason never uninstalls; `:MasonUninstall <name>`), a `brew tap` nothing needs, a cache naming a removed tool. Report only what you verified is present, or verified missing.
+- `brew list` already resolves aliases, so a `missing:` line means the package is not installed under any name.
+- If `command -v <tool>` finds it outside Homebrew, report that instead of installing a second copy.
 
-## 2. Judge the findings
+**Fix**
 
-- **Conflict** - never delete the real file to make room; it may be the user's only copy. Diff it against the repo version and put it on the ask-list.
-- **`(untracked)` new link** - a stray file restowing would link into `$HOME`. This repo's `.gitignore` is a whitelist, so "ignored" says nothing about intent; judge each. If it looks like a mistake, ask before restowing.
-- **Leftover directory** - usually local state (history, caches). Say what's inside before offering to remove it.
-- **Orphaned plugin** - grep the config for its name first, in case it is added lazily rather than at startup.
-- **Brew package** - check `brew uses --installed <pkg>`; if anything depends on it, it stays. Aliases can fake a removal (`npm` is `node`), so compare canonical names with `brew info --json=v2 <pkg> | jq -r '.formulae[].name, .casks[].token'`. If it is a general-purpose CLI the user may use outside this repo, say so in the question.
-- **Missing package** - `brew list` already resolves aliases, so a `missing:` line means it is not installed under any name. If it was installed by other means (`command -v <tool>` finds it outside Homebrew), report that instead of installing a second copy.
+- Free: run each `missing:` line's command as printed, one package per command. Never run the whole recipe, which reruns its other commands.
+- If an install fails, report the error and carry on with the rest.
 
-## 3. Restow, remove dangling links, install missing packages
+## Brew: dropped packages
 
-Run `stow -R --no-folding .` (what `just stow` runs, minus installing stow), then `rm` each dangling link by path - no trailing slash, no `-r`. A conflict aborts the whole restow, so no new links land until it is resolved; say so, still remove the dangling links, and restow again once the user resolves it.
-
-Then run each `missing:` line's command as printed, one package per command. If an install fails, report the error and carry on with the rest.
-
-## 4. Ask once
-
-List what needs approval, numbered: what it is, where, what's in it or what uses it, and the exact command. Ask with AskUserQuestion (All, Pick, None); on Pick, ask which numbers. Keep each command as narrow as its item - no `brew autoremove` or `brew cleanup`, which reach packages the user never saw. Remove plugins through Neovim so the lockfile stays consistent:
+**Check** - installed packages whose `brew install` line was removed and that no recipe still installs:
 
 ```sh
-nvim --headless -c "lua vim.pack.del({ 'name' })" +qa
+{ git log -20 -p --format= -- justfile; git diff HEAD -- justfile; } | grep -E '^-[^-].*brew install' \
+  | sed -E 's/#.*//; s/.*brew install//' | tr ' ' '\n' | grep -v -e '^--' -e '^$' | sort -u \
+  | grep -vxFf <(grep -o 'brew install.*' justfile | sed -E 's/#.*//; s/brew install//' | tr ' ' '\n') \
+  | grep -xFf <(brew list -1 --formula; brew list -1 --cask)
 ```
 
-## 5. Verify
+**Read**
 
-Rerun step 1: everything you acted on should be gone, and anything left should be what you said you'd leave. Check `nvim --headless +qa` starts clean, and `zsh -i -c exit` if anything shell-related changed. A changed `nvim-pack-lock.json` is expected after `vim.pack.del` - mention it, since the user will want to commit it.
+- Check `brew uses --installed <pkg>`; if anything depends on it, it stays.
+- Aliases can fake a removal (`npm` is `node`). Compare canonical names with `brew info --json=v2 <pkg> | jq -r '.formulae[].name, .casks[].token'`.
+- If it is a general-purpose CLI the user may use outside this repo, say so in the question.
 
-## 6. Report
+**Fix**
+
+- Ask: `brew uninstall <pkg>`.
+
+## vim.pack
+
+**Check** - plugins nothing added at startup:
+
+```sh
+nvim --headless -c 'lua for _,p in ipairs(vim.pack.get()) do if not p.active then print(p.spec.name) end end' +qa 2>&1
+```
+
+**Read**
+
+- Grep the config for the plugin's name first, in case it is added lazily rather than at startup.
+
+**Fix**
+
+- Ask: remove it through Neovim, so the lockfile stays consistent: `nvim --headless -c "lua vim.pack.del({ '<name>' })" +qa`.
+- A changed `nvim-pack-lock.json` is expected afterwards. Mention it, since the user will want to commit it.
+
+## tmux
+
+**Check** - a server that started before `.tmux.conf` last changed, or that runs a tmux older than the installed one:
+
+```sh
+s=$(tmux display -p '#{start_time} #{version}' 2>/dev/null) && {
+  [ "${s% *}" -lt "$(stat -f %m .tmux.conf)" ] && echo "stale: tmux server started before .tmux.conf last changed"
+  [ "tmux ${s#* }" != "$(tmux -V)" ] && echo "stale: tmux server runs ${s#* }, installed is $(tmux -V)"
+}
+```
+
+**Read**
+
+- Reloading with `prefix r` applies added and changed lines, but a binding or option whose line was deleted stays until the server restarts.
+- Restarting closes every session, window and pane and kills what runs in them. List them for the question: `tmux list-panes -a -F '#{session_name}:#{window_index} #{pane_current_command} #{pane_current_path}'`.
+- If `$TMUX` is set, this Claude session is one of them. Say so.
+
+**Fix**
+
+- Ask: `tmux kill-server`. The next `tmux` starts a fresh server that reads `.tmux.conf` from scratch.
+- Run it last, after the report. When `$TMUX` is set it kills this Claude session too, so nothing can run or be said after it. End the report by telling the user to run `tmux` to start the new server and `claude --continue` to pick this conversation back up.
+- If `$TMUX` is unset, Claude survives: start nothing on the user's behalf, but confirm `tmux display -p '#{pid}'` now fails.
+
+## Other residue
+
+**Check** - skim `git log --oneline -20 --stat` for changes the sections above don't know about:
+
+- A recipe line added that isn't a `brew install` (a `curl ... | bash` installer, a `git config`, a `brew alias`). Check its effect is present; if not, run that one line.
+- A tool dropped from Mason's `ensure_installed`. Mason never uninstalls; the fix is `:MasonUninstall <name>`.
+- A `brew tap` nothing needs.
+- A cache naming a removed tool.
+
+**Read**
+
+- Report only what you verified is present, or verified missing.
+
+**Fix**
+
+- Free if it only adds what a recipe line asks for; ask if it removes anything.
+
+## Ask once
+
+List what needs approval, numbered: what it is, where, what's in it or what uses it, and the exact command. Ask with AskUserQuestion (All, Pick, None); on Pick, ask which numbers.
+
+## Verify
+
+- Rerun every Check: everything you acted on should be gone, and anything left should be what you said you'd leave.
+- `nvim --headless +qa` starts clean.
+- `zsh -i -c exit` starts clean, if anything shell-related changed.
+
+## Report
 
 Only what changed or still needs the user - no lines for clean checks, no `git status` recap. If nothing was done, the whole report is:
 
@@ -103,3 +199,4 @@ Otherwise, one line per item under the headings that apply:
 - **Removed** - what the user approved, and the command each ran
 - **Left** - declined items, conflicts, and repo fixes for `/improve`
 - **Verified** - one line: survey clean and tools start, or what didn't
+- **Next** - an approved tmux restart, about to run
