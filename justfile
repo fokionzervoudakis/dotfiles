@@ -69,6 +69,7 @@ git: jq shell terminal nvim # the pre-push hook runs lint and test, which need a
     brew install bats-core # runs `just test` and `just health`
     brew install lazygit # opened by prefix g g and prefix g l in .tmux.conf
     brew install git-delta # diff renderer for .config/lazygit
+    [ -x ~/.local/share/nvim/mason/bin/stylua ] || nvim --headless -c 'MasonInstall stylua' -c qa # install stylua for `just lint`; otherwise it is missing until Neovim is first opened
     git config core.hooksPath hooks # run hooks/pre-push before every push
 
 # Install Neovim and its external dependencies
