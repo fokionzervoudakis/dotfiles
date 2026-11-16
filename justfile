@@ -96,6 +96,17 @@ health:
     @echo "{{RED}}{{BOLD}}Checking this machine...{{RESET}}"
     @bats health
 
+# Upgrade the Homebrew packages, the Neovim plugins, and the Mason tools, then check this machine
+[group('dev')]
+update:
+    @echo "{{RED}}{{BOLD}}Updating packages, plugins and tools...{{RESET}}"
+    brew upgrade --yes # no confirmation prompt
+    nvim --headless -c PackUpdate -c qa
+    @echo # nvim's output ends without a newline
+    nvim --headless -c MasonToolsUpdateSync -c qa
+    @echo
+    just health
+
 # Check the shell scripts for common mistakes, the zsh files for syntax errors, and the Lua for formatting
 [group('dev')]
 lint:

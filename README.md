@@ -34,10 +34,17 @@ just health # checks this machine: zsh and Neovim start cleanly, stow can link
 
 ```bash
 vim
-:PackUpdate # applies updates without a review buffer; :lua vim.pack.update() reviews first
-:Mason # followed by shift-u to update all
 :LspCopilotSignIn
 ```
+
+## Update
+
+```bash
+just update # upgrades the Homebrew packages, the Neovim plugins and the Mason tools, then runs just health
+```
+
+Plugin updates are applied without a review buffer; run `:lua vim.pack.update()`
+in Neovim to review them first.
 
 ## Configure tmux
 
