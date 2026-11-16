@@ -17,11 +17,6 @@ stow:
     brew install stow
     stow -R --no-folding --target ~ . # link file by file, so files that programs create in $HOME stay out of the repo
 
-# Add the `brew clean` alias
-[group('setup')]
-brew:
-    brew alias | grep -q "clean=" || brew alias clean='cleanup && brew doctor' # `brew alias` is built in; no tap needed
-
 # Install the zsh prompt and plugins, and the tools .zshrc aliases
 [group('setup')]
 shell:

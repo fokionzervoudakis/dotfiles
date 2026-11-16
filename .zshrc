@@ -52,9 +52,6 @@ zle -N zle-line-init vi_cursor
 
 # Aliases
 
-# brew's ask mode is on by default and prompts whenever a plan pulls in
-# packages beyond the ones named. b skips it; type brew in full to be asked.
-alias b='HOMEBREW_NO_ASK=1 brew'
 alias back=backup_run
 alias dback=backup_dry_run
 
