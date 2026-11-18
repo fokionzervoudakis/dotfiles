@@ -66,8 +66,6 @@ keybinding:
     createPatchOptionsMenu: <disabled> # ctrl+p
     new: <disabled> # n, create a branch
     newWorktree: <disabled> # w
-    edit: <disabled> # e, open the file in the editor
-    openFile: <disabled> # o, open the file in its default app
   files:
     commitChanges: <disabled> # c
     commitChangesWithoutHook: <disabled> # w
