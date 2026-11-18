@@ -1,5 +1,6 @@
 ---
 name: improve
+argument-hint: "[force]"
 description: Survey this repo and make one high-value, self-contained improvement - a correctness gap, a missing test, a broken or stale config, a tool the repo references but never provides, a dead setting. Works in any language and in config repos such as dotfiles. Use whenever the user asks to "improve the repo", "tidy this up", "is anything broken here?", or invokes /improve, without naming a specific file or change. The skill chooses what to improve, applies it, verifies it, and leaves it uncommitted for review. It fixes what is there; whether something should be added, removed, or replaced is `propose`'s question.
 ---
 
@@ -12,7 +13,7 @@ Pick the single highest-value improvement you can find in this repo right now, m
 You're optimizing for the change that most improves the repo per line touched. Good candidates, roughly in order of how often they pay off:
 
 - **Correctness or robustness gaps** - an unhandled error, a missing edge case, a function that misbehaves on empty or malformed input, a bad path, a misspelled option, syntax borrowed from the wrong tool, a build recipe that's broken. These are worth the most.
-- **Referenced but never provided** - something the repo names but nothing in it supplies: a binary a config shells out to, a tool a recipe assumes, a dependency missing from the manifest. See step 1a; this is the one kind of fault that survives every other kind of review, so it is the most likely to hold something real.
+- **Referenced but never provided** - something the repo names but nothing in it supplies: a binary a config shells out to, a tool a recipe assumes, a dependency missing from the manifest. See step 1d; this is the one kind of fault that survives every other kind of review, so it is the most likely to hold something real.
 - **Missing test coverage** - a function with real logic and no test, or a test that asserts almost nothing.
 - **Clarity** - a confusing function that a small refactor or a doc comment would make obvious. Don't add comments that just restate the code.
 - **Dead, redundant, or outdated** - commented-out cruft, duplicated settings, modules nothing loads, an unused helper, APIs the language or tool has moved past, options renamed across versions.
@@ -23,19 +24,35 @@ Lower value, usually skip: cosmetic reformatting (the formatter handles it), spe
 
 ### 1. Survey
 
-Start with the leftovers from the last run, if there are any. Step 6 writes the candidates it found but did not fix to `docs/improve.md`, best first, each stamped with the commit it was found at and the files it concerns:
+Four substeps, in order. 1a and 1b exist to end the survey early; 1c and 1d together are the full survey.
+
+#### 1a. Clean stamp
+
+Check whether the last run already found this exact tree clean, unless the skill was invoked with `force` (`/improve force`), which skips this check and starts at 1b. Step 6 stamps a clean survey with the commit it ran at, in a file inside the git directory:
+
+```sh
+[ "$(git rev-parse HEAD)" = "$(cat "$(git rev-parse --git-path improve-clean)" 2>/dev/null)" ] && [ -z "$(git status --porcelain)" ] && echo clean
+```
+
+If that prints `clean`, nothing in the repo has changed since a full survey came up empty, so don't survey again: reply with only `Nothing to improve: unchanged since the clean survey at <short hash>.` and stop. The stamp cannot see the machine, so a tool that has since gone missing stays hidden until a `force` run. Any other output means the stamp is stale or absent; carry on below.
+
+#### 1b. Leftovers
+
+Read the leftovers from the last run, if there are any. Step 6 writes the candidates it found but did not fix to `docs/improve.md`, best first, each tagged with the commit it was found at and the files it concerns:
 
 ```sh
 cat docs/improve.md 2>/dev/null
 ```
 
-An entry is live only while its files are unchanged since its stamp - the check compares against the working tree, so uncommitted edits count too:
+An entry is live only while its files are unchanged since that commit - the check compares against the working tree, so uncommitted edits count too:
 
 ```sh
 git diff --stat <hash> -- <files>    # empty output: the entry is live
 ```
 
-Delete every entry whose files have moved; it was found in a tree that no longer exists. Take the first live entry and verify the claim itself with one check - run the command, read the function, resolve the binary. If it holds, delete its line, skip the build, lint, coverage and reading passes below that exist to find candidates, and go to step 2; you still need `just --list` (or its equivalent) and the formatter configs, because step 4 runs them. If it doesn't hold, delete the line and try the next live entry. An empty or missing file, or no entry that survives, means the full survey.
+Delete every entry whose files have moved; it was found in a tree that no longer exists. Take the first live entry and verify the claim itself with one check - run the command, read the function, resolve the binary. If it holds, delete its line, skip 1c and 1d, and go to step 2; you still need `just --list` (or its equivalent) and the formatter configs, because step 4 runs them. If it doesn't hold, delete the line and try the next live entry. An empty or missing file, or no entry that survives, means the full survey: 1c and 1d.
+
+#### 1c. Orient and check
 
 Get oriented before you touch anything. Derive the map instead of trusting one written down here - a hardcoded list of paths and commands goes stale the moment the tree moves, and a stale map is worse than no map:
 
@@ -64,7 +81,7 @@ Don't install a missing tool unprompted, and don't skip a file because its tool 
 
 Don't over-survey. A few minutes is enough to spot something real. If two or three candidates compete, pick the one with the best value-per-line and note the others in your final summary - you're allowed to mention them, just not to do them all.
 
-### 1a. Check that referenced tools actually exist
+#### 1d. Referenced tools
 
 Config or code that names a binary is the one thing you cannot verify by reading. A formatter mapping can be valid, current, and well formatted - and completely inert because the binary isn't installed. Nothing in the file is wrong, so every other check walks past it.
 
@@ -84,7 +101,7 @@ Before editing, say in one or two sentences what you're going to improve and *wh
 
 ### 3. Apply it surgically
 
-Make the change and nothing else. The test to hold yourself to: every changed line should trace directly to the improvement you named, with `docs/improve.md` as the one exception - steps 1 and 6 maintain it. Don't "improve" adjacent code along the way, don't reformat untouched lines, match the surrounding style even where you'd personally do it differently. If your change orphans something - an import, a helper, a PATH entry, an install line, a README mention - clean up that orphan, but only that.
+Make the change and nothing else. The test to hold yourself to: every changed line should trace directly to the improvement you named, with `docs/improve.md` as the one exception - steps 1b and 6 maintain it. Don't "improve" adjacent code along the way, don't reformat untouched lines, match the surrounding style even where you'd personally do it differently. If your change orphans something - an import, a helper, a PATH entry, an install line, a README mention - clean up that orphan, but only that.
 
 If the change alters an interface something else depends on - a data file's columns or units, a CLI flag, a config schema - update the doc that describes it in the same change. A stale doc turns into wrong behavior wherever it is read.
 
@@ -94,7 +111,7 @@ Don't touch `.claude/skills/**` unless asked - those are skills, not code to lin
 
 ### 4. Verify
 
-A change isn't done until you've proven it works. Run the repo's build, test, and lint recipes, in that order, and rerun the step 1 checks against every file you touched. Where you can, exercise the thing itself: run the command, run the alias, trigger the keymap headlessly, dry-run the recipe.
+A change isn't done until you've proven it works. Run the repo's build, test, and lint recipes, in that order, and rerun the 1c and 1d checks against every file you touched. Where you can, exercise the thing itself: run the command, run the alias, trigger the keymap headlessly, dry-run the recipe.
 
 If you added or changed logic, there should be a test that exercises it - and you should have watched that test fail before your change and pass after, so you know it's actually testing the thing. For a config fix, the same goes for the check that caught it. If verification fails, fix it before reporting; don't hand back a red build.
 
@@ -105,7 +122,7 @@ Some changes have nothing to test - a swapped default that would only re-test th
 Read `git diff` as if someone else wrote it and you're the reviewer. This pass is cheap and it is the one that saves a round trip:
 
 - **Cut comments that argue.** A comment earns its place by saying something the code cannot: a non-obvious invariant, a surprising tool or API behavior, why the obvious approach is wrong. *Why the change was worth making* goes in the summary, not the source. If the doc comment is longer than the function, it's too long.
-- **Look for redundancy your change introduced** - two guards for one concern, an error path that duplicates another, a setting now made in two places, an install line that duplicates another recipe's.
+- **Look for redundancy your change introduced.** Two guards for one concern, an error path that duplicates another, a setting now made in two places, an install line that duplicates another recipe's.
 - **Take the smallest form that keeps every behavior.** Shorter is better only while nothing is lost; don't drop a wrapped error or a distinct message to save a line.
 
 ### 6. Report, uncommitted
@@ -114,11 +131,11 @@ Leave the changes in the working tree - **do not commit**. The user reviews befo
 
 First save the candidates you found and left, so the next run can start from them instead of re-auditing. Write them to `docs/improve.md`, best first, one line each:
 
-```
+```text
 - <YYYY-MM-DD> | <short HEAD hash> | <files, space-separated> | <title> - <the claim in one sentence, and how to check it>
 ```
 
-Only create the file when you have something to write; a repo that was surveyed once and came up clean should not grow an empty log. When creating it, start with the heading:
+Only create the file when you have something to write; a repo that was surveyed once and came up clean should not grow an empty log. Once it exists, keep it: when a run deletes the last entry, leave the heading in place. When creating it, start with the heading:
 
 ```markdown
 # Improve
@@ -126,15 +143,21 @@ Only create the file when you have something to write; a repo that was surveyed 
 Leftovers from /improve, so the next run can start here instead of re-auditing. Each line is stamped with the commit it was found at; a run deletes a line once its files have changed or it has acted on it.
 ```
 
-Stamp with `git rev-parse --short HEAD`. Name every file whose change would make the claim stale, and no more - the check in step 1 only looks at the files you name, and everything else you read along the way just adds false invalidations. Don't stage or commit the file; the user decides whether it goes in the repo.
+Take the hash from `git rev-parse --short HEAD`. Name every file whose change would make the claim stale, and no more - the check in step 1b only looks at the files you name, and everything else you read along the way just adds false invalidations. Don't stage or commit the file; the user decides whether it goes in the repo.
 
 End with a short summary:
 
-- **What** you changed (the files, one line each)
-- **Why** it was the highest-value pick
+- **What** - the files you changed, one line each
+- **Why** - why it was the highest-value pick
 - **Verification** - what you ran and that it's clean, plus anything you could not run
 - **Leftovers** - the entries you wrote to `docs/improve.md`, or that there were none
 
 Keep the summary tight. The diff tells most of the story; your job is to explain the judgment behind it.
 
 If nothing was worth changing, the report is shorter still: one line saying so and that the checks came back clean, then the candidates you rejected, one line each with the reason, then the leftovers. Don't list the checks you ran or their output, and don't suggest features.
+
+Stamp the tree as clean only when all three hold: the full survey (1c and 1d) ran and proposed nothing, `docs/improve.md` has no entries left, and `git status --porcelain` is empty. A run that changed something, left a leftover, or stopped early on a leftover or on the stamp itself does not write it.
+
+```sh
+git rev-parse HEAD > "$(git rev-parse --git-path improve-clean)"
+```
