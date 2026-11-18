@@ -2,6 +2,129 @@
 quitOnTopLevelReturn: true
 # After closing Neovim (or any program lazygit opened), go straight back without the "press enter to return" prompt.
 promptToReturnFromSubprocess: false
+# Do not show the release-notes popup after a lazygit upgrade.
+disableStartupPopups: true
 git:
   diffRenderers:
-    - command: delta --dark --paging=never --syntax-theme='Catppuccin Mocha'
+    # Draw diffs with delta, without the solid background blocks it normally puts
+    # behind added and removed lines: Ghostty's background is see-through, and
+    # those blocks are not, so they show as black slabs. Instead, added lines
+    # get a + and a green line number, removed lines are red text with a -, and
+    # only the exact words that changed get a tinted background.
+    - command: >-
+        delta --dark --paging=never --line-numbers --keep-plus-minus-markers
+        --syntax-theme='Catppuccin Mocha'
+        --plus-style='syntax' --plus-emph-style='syntax #404f4a'
+        --minus-style='#f38ba8' --minus-emph-style='#f38ba8 #53394c'
+        --line-numbers-plus-style='#a6e3a1' --line-numbers-minus-style='#f38ba8'
+gui:
+  theme:
+    # Background of the selected row: a soft grey instead of lazygit's bright blue bar.
+    selectedLineBgColor: ['#45475a']
+  # Inside the diff, j and k move one line at a time instead of one block of changes at a time.
+  useHunkModeInDiffView: false
+  # ctrl+d, ctrl+u, J, K and the mouse wheel scroll the diff 10 lines at a time.
+  scrollHeight: 10
+  # Hide the box in the bottom right that prints every git command lazygit runs, and its startup tip.
+  showCommandLog: false
+  showRandomTip: false
+  # Make the left-hand panel you are in 5 times as tall as each of the others.
+  expandFocusedSidePanel: true
+  expandedSidePanelWeight: 5
+  # Show file-type and branch icons.
+  nerdFontsVersion: "3"
+  # Show the number of lines added and removed next to each changed file.
+  showNumstatInFilesView: true
+  # The left-hand panels, top to bottom. Leaves out the stash panel and the worktrees, submodules and reflog tabs.
+  sidePanels:
+    - [status]
+    - [files]
+    - [branches, remotes, tags]
+    - [commits]
+# Keys that change the repo are switched off, except Space (stage or unstage;
+# check out a branch) and d (discard a file's changes, drop a commit, delete a
+# branch or tag). Each line's comment is the key it switches off.
+keybinding:
+  universal:
+    # Top and bottom of a list or diff.
+    gotoTop: g
+    gotoBottom: G
+    prevItem: <disabled> # Up; k still moves up
+    nextItem: <disabled> # Down; j still moves down
+    prevBlock: <disabled> # Left; h still goes to the previous panel
+    nextBlock: <disabled> # Right; l still goes to the next panel
+    rangeSelectUp: <disabled> # Shift+Up
+    rangeSelectDown: <disabled> # Shift+Down
+    decreaseContextInDiffView: <disabled> # {
+    increaseContextInDiffView: <disabled> # }
+    pushFiles: <disabled> # P
+    pullFiles: <disabled> # p
+    undo: <disabled> # z
+    redo: <disabled> # Z
+    executeShellCommand: <disabled> # :
+    createRebaseOptionsMenu: <disabled> # m
+    createPatchOptionsMenu: <disabled> # ctrl+p
+    new: <disabled> # n, create a branch
+    newWorktree: <disabled> # w
+    edit: <disabled> # e, open the file in the editor
+    openFile: <disabled> # o, open the file in its default app
+  files:
+    commitChanges: <disabled> # c
+    commitChangesWithoutHook: <disabled> # w
+    commitChangesWithEditor: <disabled> # C
+    amendLastCommit: <disabled> # A
+    findBaseCommitForFixup: <disabled> # ctrl+f
+    toggleStagedAll: <disabled> # a
+    stashAllChanges: <disabled> # s
+    viewStashOptions: <disabled> # S
+    viewResetOptions: <disabled> # D, menu that throws away uncommitted changes
+    ignoreFile: <disabled> # i
+    fetch: <disabled> # f
+    openMergeOptions: <disabled> # M
+  branches:
+    checkoutBranchByName: <disabled> # c
+    forceCheckoutBranch: <disabled> # F
+    checkoutPreviousBranch: <disabled> # -
+    rebaseBranch: <disabled> # r
+    renameBranch: <disabled> # R
+    mergeIntoCurrentBranch: <disabled> # M
+    moveCommitsToNewBranch: <disabled> # N
+    fastForward: <disabled> # f
+    fetchRemote: <disabled> # f, in the Remotes tab
+    createTag: <disabled> # T
+    pushTag: <disabled> # P
+    setUpstream: <disabled> # u
+    createPullRequest: <disabled> # o
+    viewPullRequestOptions: <disabled> # O
+    openPullRequestInBrowser: <disabled> # G
+    addForkRemote: <disabled> # F, in the Remotes tab
+    viewGitFlowOptions: <disabled> # i
+  commits:
+    checkoutCommit: <disabled> # Space
+    viewResetOptions: <disabled> # g, menu that moves the branch back to the commit
+    squashDown: <disabled> # s
+    markCommitAsFixup: <disabled> # f
+    createFixupCommit: <disabled> # F
+    squashAboveCommits: <disabled> # S
+    setFixupMessage: <disabled> # c
+    renameCommit: <disabled> # r, edit the commit message
+    renameCommitWithEditor: <disabled> # R
+    moveDownCommit: <disabled> # ctrl+j
+    moveUpCommit: <disabled> # ctrl+k
+    amendToCommit: <disabled> # A
+    resetCommitAuthor: <disabled> # a
+    startInteractiveRebase: <disabled> # i
+    pickCommit: <disabled> # p
+    markCommitAsBaseForRebase: <disabled> # B
+    revertCommit: <disabled> # t
+    cherryPickCopy: <disabled> # C
+    pasteCommits: <disabled> # V
+    tagCommit: <disabled> # T
+    viewBisectOptions: <disabled> # b
+    openPullRequestInBrowser: <disabled> # G
+  commitFiles:
+    checkoutCommitFile: <disabled> # c, overwrite the working copy of a file with the commit's version
+  main:
+    # Jumping between changed blocks inside the diff.
+    prevHunk: <disabled> # Left and h
+    nextHunk: <disabled> # Right and l
