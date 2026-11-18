@@ -14,17 +14,11 @@ setopt HIST_REDUCE_BLANKS
 
 # Completions
 #
-# brew shellenv in .zprofile puts Homebrew's site-functions (brew, git, just, eza,
-# gh and others) on fpath.
+# brew shellenv in .zprofile puts Homebrew's site-functions (brew, just, eza, gh
+# and others) on fpath.
 # No -C: it reuses ~/.zcompdump without rescanning fpath, so completions for
 # tools installed after the dump was written are never picked up.
 autoload -Uz compinit && compinit
-# Homebrew's git completion only matches from the start of a filename, so
-# "g add pro<Tab>" never finds .zprofile. Load zsh's built-in one instead.
-if [[ -r /usr/share/zsh/$ZSH_VERSION/functions/_git ]]; then
-  unfunction _git
-  autoload -Uz /usr/share/zsh/$ZSH_VERSION/functions/_git
-fi
 zstyle ':completion:*' menu no # fzf-tab draws the menu; menu select would fight it
 # Case-insensitive prefix, then substring.
 zstyle ':completion:*' matcher-list \
