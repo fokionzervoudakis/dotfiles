@@ -136,3 +136,5 @@ End with a short summary:
 - **Leftovers** - the entries you wrote to `docs/improve.md`, or that there were none
 
 Keep the summary tight. The diff tells most of the story; your job is to explain the judgment behind it.
+
+If nothing was worth changing, the report is shorter still: one line saying so and that the checks came back clean, then the candidates you rejected, one line each with the reason, then the leftovers. Don't list the checks you ran or their output, and don't suggest features.
