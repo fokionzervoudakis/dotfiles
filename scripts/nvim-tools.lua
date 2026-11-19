@@ -10,10 +10,13 @@ for _, names in pairs(conform.formatters_by_ft) do
   end
 end
 
--- Servers whose cmd is a function (ts_ls, org) build it at start time, so there is no binary to check
+-- Servers whose cmd is a function (ts_ls) pick their binary at start time.
+-- Run it with the process start swapped out to see the command; an in-process server (org) starts none.
+vim.lsp.rpc.start = function(cmd) return cmd end
 for _, config in ipairs(vim.lsp.get_configs { enabled = true }) do
   local cmd = config.cmd
-  if type(cmd) == 'table' and vim.fn.executable(cmd[1]) == 0 then missing['lsp ' .. config.name .. ' (' .. cmd[1] .. ')'] = true end
+  if type(cmd) == 'function' then cmd = cmd({}, {}) end
+  if vim.islist(cmd) and vim.fn.executable(cmd[1]) == 0 then missing['lsp ' .. config.name .. ' (' .. cmd[1] .. ')'] = true end
 end
 
 -- ftplugin/java.lua hands jdtls to nvim-jdtls, so it is not among the configs above.
