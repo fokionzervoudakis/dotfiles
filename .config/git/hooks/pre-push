@@ -2,10 +2,10 @@
 # Scans for secrets before every push, in any repo that has no hooks of its own.
 # A repo that sets its own core.hooksPath runs its own hooks instead of this one.
 
-# block the push rather than skip the scan when gitleaks is missing
-if ! command -v gitleaks >/dev/null; then
-    echo "gitleaks is not installed; run 'just git' in the dotfiles repo" >&2
+# block the push rather than skip the scan when betterleaks is missing
+if ! command -v betterleaks >/dev/null; then
+    echo "betterleaks is not installed; run 'just git' in the dotfiles repo" >&2
     exit 1
 fi
 
-gitleaks git --no-banner
+betterleaks git --no-banner

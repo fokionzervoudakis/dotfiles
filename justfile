@@ -59,7 +59,7 @@ kube: jq
 [group('setup')]
 git: githooks jq shell terminal nvim # the pre-push hook runs lint and test, which need the last four
     brew install gh # GitHub's command-line tool
-    brew install gitleaks # run by hooks/pre-push and .config/git/hooks/pre-push
+    brew install betterleaks # run by hooks/pre-push and .config/git/hooks/pre-push
     brew install shellcheck # run by `just lint`
     brew install bats-core # runs `just test` and `just health`
     brew install lazygit # opened by prefix g g and prefix g l in .tmux.conf
