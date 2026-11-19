@@ -2,6 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
 
+- 2026-11-19 | low | built | Replace telescope-undo with Neovim's own undo tree - remove telescope-undo.nvim from custom/plugins/telescope.lua and the lockfile, and point <leader>u at the :Undotree command from the nvim.undotree plugin that ships inside Neovim 0.12, since telescope-undo has had no commits since 2025-01-31; removed instead, with <leader>u left unbound, because the user said they never browse undo history.
 - 2026-11-18 | medium | rejected | List the repos with unfinished work from tmux - bind a prefix key in .tmux.conf to a popup running a new .config/tmux/pick-repo, which lists in fzf only the git repos zoxide knows that have uncommitted changes or unpushed commits, with a count of each and a git status preview, and opens a window in the pick.
 - 2026-11-18 | low | rejected | Ruby language server in Neovim - have Mason install ruby-lsp in custom/plugins/mason.lua and enable the ruby_lsp config nvim-lspconfig already ships, so gd, gr and diagnostics work in uav-missions the way they do in the Go, Java and TypeScript repos.
 - 2026-11-18 | low | built | Drop Homebrew's git for the one macOS ships - remove git from the README's `brew install git just` step, uninstall the Homebrew formula, and delete the block in .zshrc that swaps Homebrew's git completion for zsh's own, since without the formula zsh's own completion is the only one left.

@@ -1,6 +1,5 @@
 -- telescope, telescope-fzf-native and telescope-ui-select come from Kickstart.
--- Only this extension and the config below are ours.
-vim.pack.add { 'https://github.com/debugloop/telescope-undo.nvim' }
+-- Only the config below is ours.
 
 local actions = require 'telescope.actions'
 
@@ -37,8 +36,6 @@ require('telescope').setup {
   },
 }
 
-require('telescope').load_extension 'undo'
-
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find buffers' })
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
@@ -47,7 +44,6 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find help' })
 vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = 'Find recently opened files' })
 -- The same key as prefix g g in tmux, which opens lazygit on the changed files.
 vim.keymap.set('n', '<leader>gg', builtin.git_status, { desc = 'Git changed files' })
-vim.keymap.set('n', '<leader>u', '<cmd>Telescope undo<CR>', { desc = 'Browse undo history' })
 
 -- Buffer-local, so buffers without an LSP keep Vim's own gd and gr.
 vim.api.nvim_create_autocmd('LspAttach', {
