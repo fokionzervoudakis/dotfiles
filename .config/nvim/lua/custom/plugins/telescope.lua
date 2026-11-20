@@ -2,6 +2,24 @@
 -- Only the config below is ours.
 
 local actions = require 'telescope.actions'
+local action_state = require 'telescope.actions.state'
+
+-- Enter opens every entry marked with Tab, each in its own buffer, jumping to its line
+-- for grep results. With nothing marked, or a mark that is not a file (a help tag, say),
+-- it does what Enter normally does with the entry under the cursor.
+local function open_selected(prompt_bufnr)
+  local selections = action_state.get_current_picker(prompt_bufnr):get_multi_selection()
+  local all_files = #selections > 0
+  for _, entry in ipairs(selections) do
+    all_files = all_files and (entry.path or entry.filename) ~= nil
+  end
+  if not all_files then return actions.select_default(prompt_bufnr) end
+  actions.close(prompt_bufnr)
+  for _, entry in ipairs(selections) do
+    vim.cmd.edit(vim.fn.fnameescape(entry.path or entry.filename))
+    if entry.lnum then pcall(vim.api.nvim_win_set_cursor, 0, { entry.lnum, math.max((entry.col or 1) - 1, 0) }) end
+  end
+end
 
 -- Grep the same files find_files lists: hidden and gitignored ones too, but not .git
 local grep_args = { unpack(require('telescope.config').values.vimgrep_arguments) }
@@ -15,6 +33,10 @@ require('telescope').setup {
         ['<C-k>'] = actions.cycle_history_prev,
         ['<C-j>'] = actions.cycle_history_next,
         ['<C-f>'] = actions.to_fuzzy_refine,
+        ['<CR>'] = open_selected,
+      },
+      n = {
+        ['<CR>'] = open_selected,
       },
     },
   },
