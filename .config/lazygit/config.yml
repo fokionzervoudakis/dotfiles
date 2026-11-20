@@ -35,6 +35,8 @@ gui:
   nerdFontsVersion: "3"
   # Show the number of lines added and removed next to each changed file.
   showNumstatInFilesView: true
+  # List changed files as full paths instead of a folder tree; ` switches to the tree.
+  showFileTree: false
   # The left-hand panels, top to bottom. Leaves out the stash panel and the worktrees, submodules and reflog tabs.
   sidePanels:
     - [status]
