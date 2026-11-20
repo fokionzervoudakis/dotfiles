@@ -34,9 +34,17 @@ require('telescope').setup {
         ['<C-j>'] = actions.cycle_history_next,
         ['<C-f>'] = actions.to_fuzzy_refine,
         ['<CR>'] = open_selected,
+        -- Arrow keys do nothing, as in keymaps.lua; C-n and C-p move through results
+        ['<Up>'] = function() end,
+        ['<Down>'] = function() end,
+        ['<Left>'] = function() end,
+        ['<Right>'] = function() end,
       },
       n = {
         ['<CR>'] = open_selected,
+        -- Arrow keys fall through to the do-nothing maps in keymaps.lua; j and k move through results
+        ['<Up>'] = false,
+        ['<Down>'] = false,
       },
     },
   },
