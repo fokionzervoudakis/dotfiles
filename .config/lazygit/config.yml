@@ -1,51 +1,49 @@
-# Esc quits once nothing is left to close (no popup, no nested view).
+# Esc quits once nothing is left to close.
 quitOnTopLevelReturn: true
-# After closing Neovim (or any program lazygit opened), go straight back without the "press enter to return" prompt.
+# Return from Neovim without a prompt.
 promptToReturnFromSubprocess: false
-# Do not show the release-notes popup after a lazygit upgrade.
+# No release-notes popup after an upgrade.
 disableStartupPopups: true
 git:
   diffRenderers:
-    # Draw diffs with delta, without the solid background blocks it normally puts
-    # behind added and removed lines: Ghostty's background is see-through, and
-    # those blocks are not, so they show as black slabs. Instead, added lines
-    # get a + and a green line number, removed lines are red text with a -, and
-    # only the exact words that changed get a tinted background.
+    # delta without background blocks, which show as black slabs on Ghostty's
+    # see-through background. Only changed words get a tint. No filename banner
+    # or box above each change, so more code fits.
     - command: >-
         delta --dark --paging=never --line-numbers --keep-plus-minus-markers
+        --file-style=omit --hunk-header-style=omit
         --syntax-theme='Catppuccin Mocha'
         --plus-style='syntax' --plus-emph-style='syntax #404f4a'
         --minus-style='#f38ba8' --minus-emph-style='#f38ba8 #53394c'
         --line-numbers-plus-style='#a6e3a1' --line-numbers-minus-style='#f38ba8'
 gui:
   theme:
-    # Background of the selected row: a soft grey instead of lazygit's bright blue bar.
+    # Soft grey selected row.
     selectedLineBgColor: ['#45475a']
-  # Inside the diff, j and k move one line at a time instead of one block of changes at a time.
+  # j and k move one line at a time in the diff.
   useHunkModeInDiffView: false
-  # ctrl+d, ctrl+u, J, K and the mouse wheel scroll the diff 10 lines at a time.
+  # Scroll the diff 10 lines at a time.
   scrollHeight: 10
-  # Hide the box in the bottom right that prints every git command lazygit runs, and its startup tip.
+  # Hide the command log and startup tip.
   showCommandLog: false
   showRandomTip: false
-  # Make the left-hand panel you are in 5 times as tall as each of the others.
+  # The focused left-hand panel is 5 times as tall as the others.
   expandFocusedSidePanel: true
   expandedSidePanelWeight: 5
-  # Show file-type and branch icons.
+  # File-type and branch icons.
   nerdFontsVersion: "3"
-  # Show the number of lines added and removed next to each changed file.
+  # Lines added and removed next to each file.
   showNumstatInFilesView: true
-  # List changed files as full paths instead of a folder tree; ` switches to the tree.
+  # Full paths instead of a tree; ` switches.
   showFileTree: false
-  # The left-hand panels, top to bottom. Leaves out the stash panel and the worktrees, submodules and reflog tabs.
+  # No stash panel or worktrees, submodules and reflog tabs.
   sidePanels:
     - [status]
     - [files]
     - [branches, remotes, tags]
     - [commits]
-# Keys that change the repo are switched off, except Space (stage or unstage;
-# check out a branch) and d (discard a file's changes, drop a commit, delete a
-# branch or tag). Each line's comment is the key it switches off.
+# Keys that change the repo are off, except Space (stage, check out a branch)
+# and d (discard, drop, delete). Each comment names the key switched off.
 keybinding:
   universal:
     # Top and bottom of a list or diff.
@@ -77,7 +75,7 @@ keybinding:
     toggleStagedAll: <disabled> # a
     stashAllChanges: <disabled> # s
     viewStashOptions: <disabled> # S
-    viewResetOptions: <disabled> # D, menu that throws away uncommitted changes
+    viewResetOptions: <disabled> # D, discard menu
     ignoreFile: <disabled> # i
     fetch: <disabled> # f
     openMergeOptions: <disabled> # M
@@ -101,7 +99,7 @@ keybinding:
     viewGitFlowOptions: <disabled> # i
   commits:
     checkoutCommit: <disabled> # Space
-    viewResetOptions: <disabled> # g, menu that moves the branch back to the commit
+    viewResetOptions: <disabled> # g, reset menu
     squashDown: <disabled> # s
     markCommitAsFixup: <disabled> # f
     createFixupCommit: <disabled> # F
@@ -123,8 +121,8 @@ keybinding:
     viewBisectOptions: <disabled> # b
     openPullRequestInBrowser: <disabled> # G
   commitFiles:
-    checkoutCommitFile: <disabled> # c, overwrite the working copy of a file with the commit's version
+    checkoutCommitFile: <disabled> # c, restore file from the commit
   main:
-    # Jumping between changed blocks inside the diff.
+    # Jump between changes in the diff.
     prevHunk: <disabled> # Left and h
     nextHunk: <disabled> # Right and l
