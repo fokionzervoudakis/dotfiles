@@ -1,6 +1,8 @@
 # Proposals
 
-Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
+Logged by /propose so it doesn't repeat itself, newest first. Entries start as proposed; a run marks them accepted, rejected, or built.
+
+Columns: date | scope (if logged) | status | title - description
 
 - 2026-11-20 | medium | rejected | A scratchpad in a tmux popup - bind prefix C in .tmux.conf to a popup that attaches a hidden tmux session running a shell in the current pane's directory, and keeps it alive when the popup closes, so a side command (or a Claude started by hand) can be run over nvim or the main Claude without opening a window in the tab bar; built (first starting Claude itself, then a plain shell), then rejected and reverted.
 - 2026-11-20 | medium | rejected | Grammar checking in Neovim with Harper - have Mason install harper-ls in custom/plugins/mason.lua and enable the harper_ls config nvim-lspconfig already ships, so Markdown notes and git commit messages get grammar and style diagnostics (repeated words, a/an, agreement, run-ons) next to the spelling that `spell = true` already flags.
