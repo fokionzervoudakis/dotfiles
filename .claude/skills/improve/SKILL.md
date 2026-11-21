@@ -59,7 +59,7 @@ Status and evidence are always the last two columns, because a description can c
 |---|---|---|
 | `proposed` | Not fixed, and nobody has decided | `Unfixed, still open`, or what a recheck showed |
 | `built` | Fixed | The commit that fixed it, or for this run's uncommitted fix, what verification showed |
-| `rejected` | The user declined it | `Rejected at pitch` |
+| `rejected` | The user declined it | `Rejected at pitch`, plus ` - <reason>` if the user confirmed one |
 
 A run can't cite the hash of its own fix: it is uncommitted, and the log update lands in the same commit. Record the verification instead, such as `just test passes; new test failed before the fix`.
 
@@ -179,7 +179,7 @@ Then ask the user to accept or reject the improvement - with the AskUserQuestion
 
 ### 5. Record the verdict
 
-- **Reject** - set the entry's status to `rejected` and its evidence to `Rejected at pitch`, along with any open duplicates. Don't ask why. Then stop; offer to run again for a different idea.
+- **Reject** - set the entry's status to `rejected` and its evidence to `Rejected at pitch`, along with any open duplicates. Then propose the likeliest reason in one line, labeled as your guess, and ask the user to confirm it - AskUserQuestion if you have it (options: Use this reason, No reason; the user can type their own under Other). Append it as `Rejected at pitch - <reason>` only if the user confirms it or gives their own; never record an unconfirmed guess. Then stop; offer to run again for a different idea.
 - **Accept** - leave it `proposed` and go on to step 6.
 - **Anything else** (a tweak, a question) - answer or adjust the pitch, update the line's title and description only if it was added by this run, and ask again. Don't infer a verdict the user didn't give.
 
