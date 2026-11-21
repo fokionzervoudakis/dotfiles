@@ -1,6 +1,7 @@
 ---
 name: commit
 description: Stage all changes and create one or more Git commits using the Commitizen / Conventional Commits structure (type(scope): subject), splitting unrelated changes into separate commits. Use whenever the user wants to commit, "make a commit", "commit my changes", "commit this", or asks for a conventional/commitizen-style commit. If there is nothing to commit, say so and stop.
+argument-hint: "[staged]"
 ---
 
 Commit the working tree using the Commitizen (Conventional Commits) format, splitting unrelated changes into separate commits rather than lumping them into one.
@@ -32,7 +33,7 @@ Commit the working tree using the Commitizen (Conventional Commits) format, spli
 
    Staging first is what makes the next step possible: untracked files don't show up in a diff until they're in the index, and you can't judge what belongs together without seeing everything at once. This is not a commitment to one commit - step 5 may unstage and regroup.
 
-   If the user asks for staged changes only, skip this step and commit the index as it stands. A curated index is a deliberate choice about what belongs in this commit; `git add -A` would discard that intent, and so would regrouping it in step 5.
+   If the user runs `/commit staged` or asks for staged changes only, skip this step and commit the index as it stands. A curated index is a deliberate choice about what belongs in this commit; `git add -A` would discard that intent, and so would regrouping it in step 5.
 
 4. **Read the diff**
 
