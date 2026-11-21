@@ -79,7 +79,9 @@ Don't stage or commit the file; the user decides when it goes in the repo.
 
 ### 1. Survey
 
-Start with the log:
+#### Open queue first
+
+Read the log and settle its open entries before running anything else:
 
 ```sh
 cat docs/improve.md 2>/dev/null
@@ -95,12 +97,16 @@ git diff --stat <hash> -- <files>    # exit 0 and empty output: the files are un
 
 An error means the stamped commit is gone, so don't assume the files are unchanged. Then verify the claim itself with one check - run the command, read the function, resolve the binary, even when the files are unchanged. What you find decides what happens next:
 
-- **It holds** - it is a candidate. Skip the build, lint, coverage and reading passes below that exist to find candidates, and go to step 2. You still need `just --list` (or its equivalent) and the formatter configs, because step 7 runs them.
+- **It holds** - pitch it, and do not look for new candidates. Skip the full survey and step 1a, and go to step 2. You still need `just --list` (or its equivalent) and the formatter configs, because step 7 runs them.
 - **A commit fixed it or removed the code** - set it to `built` and cite that commit, then try the next open entry.
 - **It looks untrue** - leave it `proposed`, record what the check showed as its evidence, and try the next open entry. Only the user rejects an entry.
 - **You can't tell** - leave it `proposed` and try the next open entry. A changed file alone settles nothing.
 
-The same issue may be logged more than once with different stamps. When you settle one, settle its open duplicates the same way. An empty or missing file, or no open entry that holds, means the full survey.
+The same issue may be logged more than once with different stamps. When you settle one, settle its open duplicates the same way.
+
+#### Full survey
+
+Run this and step 1a only when the log is empty or missing, or no open entry holds.
 
 Get oriented before you pitch anything. Derive the map instead of trusting one written down here - a hardcoded list of paths and commands goes stale the moment the tree moves, and a stale map is worse than no map:
 
@@ -147,7 +153,7 @@ Check the bootstrap itself the same way: steps the top-level entry point never r
 
 ### 2. Decide
 
-Pick the one change to pitch. Check it against the log from step 1 - if it's settled there, pick again. If you can't say in a sentence why it's worth doing, it's not the right pick. If nothing genuinely worthwhile turns up (it happens in a clean repo), say so rather than inventing busywork: one line saying so and that the checks came back clean, then the candidates you rejected, one line each with the reason. Don't list the checks you ran or their output, and don't suggest features.
+Pick the one change to pitch. An open entry that holds is the pick, ahead of anything new. Otherwise, check your pick against the log from step 1 - if it's settled there, pick again. If you can't say in a sentence why it's worth doing, it's not the right pick. If nothing genuinely worthwhile turns up (it happens in a clean repo), say so rather than inventing busywork: one line saying so and that the checks came back clean, then the candidates you rejected, one line each with the reason. Don't list the checks you ran or their output, and don't suggest features.
 
 ### 3. Pitch it
 
