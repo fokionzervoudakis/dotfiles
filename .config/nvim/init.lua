@@ -1037,6 +1037,9 @@ end
 
 -- Personal configuration, loaded last so it overrides the Kickstart defaults above.
 -- options.lua ends with `vim.lsp.enable 'copilot'`, which needs nvim-lspconfig added.
+-- This file is Kickstart with three edits: this block, `vim.g.have_nerd_font = true`
+-- near the top, and the uncommented `require 'custom.plugins'` just above.
+-- Any other difference from Kickstart is a candidate for cleanup.
 require 'keymaps'
 require 'options'
 
