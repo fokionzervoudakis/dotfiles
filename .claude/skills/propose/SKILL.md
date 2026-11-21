@@ -132,7 +132,9 @@ Add one line to `docs/propose.md`, newest first: insert it directly below the he
 ```markdown
 # Proposals
 
-Logged by /propose so it doesn't repeat itself. Change a status to accepted, rejected, or built.
+Logged by /propose so it doesn't repeat itself, newest first. Entries start as proposed; a run marks them accepted, rejected, or built.
+
+Columns: date | scope (if logged) | status | title - description
 ```
 
 Each line is `- <YYYY-MM-DD> | <scope> | proposed | <title> - <the What, in one sentence>`, where scope is the run's `low` or `medium`, for example:
