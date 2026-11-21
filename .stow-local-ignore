@@ -1,10 +1,7 @@
-# commit and improve are absent on purpose: they are linked into ~/.claude to work in every repo
 .claude/skills/cleanup
-.claude/skills/propose
 
 /.git
 /.gitignore
-# Finder creates these; a real ~/.DS_Store makes stow abort the whole run
 .DS_Store
 
 /health
