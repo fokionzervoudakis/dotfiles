@@ -1,6 +1,6 @@
 ---
 name: propose
-description: Survey this dotfiles repo and pitch one high-value change to the *stack itself* - a plugin or tool to add, remove, replace, or consolidate. Use whenever the user asks "what should I add", "should I swap X for Y", "are any of my plugins obsolete", "what am I missing", "propose an improvement to my setup", "is this still the right tool", or invokes /propose, without naming a specific change. The skill checks docs/proposals.md so it never repeats an earlier idea, gives a short overview and asks the user to accept or reject it, writes a plan only if they accept, and applies it only once they approve the plan.
+description: Survey this dotfiles repo and pitch one high-value change to the *stack itself* - a plugin or tool to add, remove, replace, or consolidate. Use whenever the user asks "what should I add", "should I swap X for Y", "are any of my plugins obsolete", "what am I missing", "propose an improvement to my setup", "is this still the right tool", or invokes /propose, without naming a specific change. The skill checks docs/propose.md so it never repeats an earlier idea, gives a short overview and asks the user to accept or reject it, writes a plan only if they accept, and applies it only once they approve the plan.
 argument-hint: "[low|medium]"
 ---
 
@@ -23,13 +23,13 @@ The skill takes an optional scope: `/propose low` or `/propose medium`. With no 
 
 ## Hard rule: nothing changes until the plan is approved
 
-Until the user approves a plan (step 6), the only file you touch is `docs/proposals.md`. No config files, no lockfiles, no installed software. Surveying with read-only commands (`git ls-files`, `ls`, `grep`, `git log`, `just --list`, a headless editor start, `gh api`, web research) is expected - you need to understand the setup to propose well. Before you run any `just` recipe, read what it does in the `justfile`: anything that installs or removes software, links files into `$HOME`, starts a service, or commits is off limits. The same goes for a plugin manager's install, update, and delete calls. Don't rely on a list of recipe or command names - this file can't know about a mutating one added after it was written.
+Until the user approves a plan (step 6), the only file you touch is `docs/propose.md`. No config files, no lockfiles, no installed software. Surveying with read-only commands (`git ls-files`, `ls`, `grep`, `git log`, `just --list`, a headless editor start, `gh api`, web research) is expected - you need to understand the setup to propose well. Before you run any `just` recipe, read what it does in the `justfile`: anything that installs or removes software, links files into `$HOME`, starts a service, or commits is off limits. The same goes for a plugin manager's install, update, and delete calls. Don't rely on a list of recipe or command names - this file can't know about a mutating one added after it was written.
 
 If you catch yourself editing a config file before the user has approved a plan, stop.
 
 ## Plain ASCII only
 
-Everything this skill outputs - the pitch, the plan, your replies, and the lines in `docs/proposals.md` - is plain ASCII: `-` or `--` instead of em/en dashes, `...` instead of an ellipsis, straight quotes, `->` instead of arrows, `|` as a separator, and no emoji. The user reads these in a terminal and in plain-text files, where typographic characters get in the way. Before you send anything, check it for characters outside ASCII and replace them.
+Everything this skill outputs - the pitch, the plan, your replies, and the lines in `docs/propose.md` - is plain ASCII: `-` or `--` instead of em/en dashes, `...` instead of an ellipsis, straight quotes, `->` instead of arrows, `|` as a separator, and no emoji. The user reads these in a terminal and in plain-text files, where typographic characters get in the way. Before you send anything, check it for characters outside ASCII and replace them.
 
 ## What "high-value" means here
 
@@ -49,11 +49,11 @@ Lower value, usually skip: cosmetic swaps, "this plugin is popular" with no argu
 ### 1. Survey
 
 Start with the proposal log. Every earlier run added a line to
-`docs/proposals.md` (newest first), and repeating one of them wastes the run - the user has
+`docs/propose.md` (newest first), and repeating one of them wastes the run - the user has
 already seen it, and may have already rejected it:
 
 ```sh
-cat docs/proposals.md 2>/dev/null
+cat docs/propose.md 2>/dev/null
 ```
 
 Treat every logged proposal as taken, whatever its status - `proposed` and
@@ -127,7 +127,7 @@ No sketch, no code, no open questions, no list of alternatives - all of that eit
 
 ### 4. Log it and ask
 
-Add one line to `docs/proposals.md`, newest first: insert it directly below the heading, above the existing entries, so the latest proposal is always at the top. If the file doesn't exist, create it with the heading:
+Add one line to `docs/propose.md`, newest first: insert it directly below the heading, above the existing entries, so the latest proposal is always at the top. If the file doesn't exist, create it with the heading:
 
 ```markdown
 # Proposals
@@ -147,7 +147,7 @@ Then ask the user to accept or reject the proposal - with the AskUserQuestion to
 
 ### 5. Record the verdict
 
-Update the proposal's line in `docs/proposals.md`:
+Update the proposal's line in `docs/propose.md`:
 
 - **Reject** - set the status to `rejected`. Don't ask why. Then stop; offer to run again for a different idea.
 - **Accept** - set the status to `accepted` and go on to step 6.
