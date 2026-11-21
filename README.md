@@ -27,7 +27,7 @@ reading `~/.config` is concerned.
 
 ```bash
 just test lint
-just health # checks this machine: zsh and Neovim start cleanly, stow can link
+just health # checks this machine
 ```
 
 ## Configure Neovim
@@ -40,7 +40,7 @@ vim
 ## Update
 
 ```bash
-just update # upgrades the Homebrew packages, the Neovim plugins and the Mason tools, then runs just health
+just update # upgrades packages and plugins, then runs just health
 ```
 
 Plugin updates are applied without a review buffer; run `:lua vim.pack.update()`
