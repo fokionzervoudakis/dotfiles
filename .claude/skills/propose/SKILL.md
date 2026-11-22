@@ -142,7 +142,7 @@ Then ask the user to accept or reject the proposal - with the AskUserQuestion to
 
 Update the proposal's line in `docs/propose.md`:
 
-- **Reject** - set the status to `rejected`. Then propose the likeliest reason in one line, labeled as your guess, and ask the user to confirm it - AskUserQuestion if you have it (options: Use this reason, No reason; the user can type their own under Other). Append it as a last column, ` | Reason: <reason>`, only if the user confirms it or gives their own; never record an unconfirmed guess. Then stop; offer to run again for a different idea.
+- **Reject** - set the status to `rejected`. Then propose the likeliest reason in one line, labeled as your guess, and ask the user to confirm it - AskUserQuestion if you have it (options: Use this reason, No reason; the user can type their own under Other). Append it as a last column, ` | Reason: <reason>`, only if the user confirms it or gives their own; never record an unconfirmed guess. Word it impersonally (no "I", "me" or "my"), and confirm any rewording of the user's reason before recording it. Then stop; offer to run again for a different idea.
 - **Accept** - set the status to `accepted` and go on to step 6.
 - **Anything else** (a tweak, a question) - answer or adjust the pitch, update the line's title and description if the change itself changed, and ask again. Don't infer a verdict the user didn't give.
 

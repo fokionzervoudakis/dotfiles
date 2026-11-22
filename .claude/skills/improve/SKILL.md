@@ -179,7 +179,7 @@ Then ask the user to accept or reject the improvement - with the AskUserQuestion
 
 ### 5. Record the verdict
 
-- **Reject** - set the entry's status to `rejected` and its evidence to `Rejected at pitch`, along with any open duplicates. Then propose the likeliest reason in one line, labeled as your guess, and ask the user to confirm it - AskUserQuestion if you have it (options: Use this reason, No reason; the user can type their own under Other). Append it as `Rejected at pitch - <reason>` only if the user confirms it or gives their own; never record an unconfirmed guess. Then stop; offer to run again for a different idea.
+- **Reject** - set the entry's status to `rejected` and its evidence to `Rejected at pitch`, along with any open duplicates. Then propose the likeliest reason in one line, labeled as your guess, and ask the user to confirm it - AskUserQuestion if you have it (options: Use this reason, No reason; the user can type their own under Other). Append it as `Rejected at pitch - <reason>` only if the user confirms it or gives their own; never record an unconfirmed guess. Word it impersonally (no "I", "me" or "my"), and confirm any rewording of the user's reason before recording it. Then stop; offer to run again for a different idea.
 - **Accept** - leave it `proposed` and go on to step 6.
 - **Anything else** (a tweak, a question) - answer or adjust the pitch, update the line's title and description only if it was added by this run, and ask again. Don't infer a verdict the user didn't give.
 
