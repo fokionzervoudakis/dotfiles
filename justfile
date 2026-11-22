@@ -78,6 +78,7 @@ nvim: go jq
     brew install tree-sitter-cli # builds the parsers nvim-treesitter installs
     brew install ripgrep # Telescope file search and live grep
     brew install node # Mason installs prettier, sql-formatter and two language servers with npm
+    brew install openjdk # runs jdtls, which Mason installs
 
 # Install Go
 [group('setup')]
