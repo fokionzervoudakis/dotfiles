@@ -4,7 +4,21 @@ description: Stage all changes and create one or more Git commits using the Comm
 argument-hint: "[staged]"
 ---
 
+# Commit
+
 Commit the working tree using the Commitizen (Conventional Commits) format, splitting unrelated changes into separate commits rather than lumping them into one.
+
+```
+commit [staged]
+
+1. check     for changes                    none → say so, stop
+2. flag      secrets and unfinished work    warn, keep going
+3. stage     everything                     staged → keep the index as is
+4. read      the diff
+5. group     the changes by intent          revertable alone → separate commit
+6. write     a message for each group       purpose unclear → ask, stop
+7. commit    each group                     tree clean → stop
+```
 
 **Steps**
 
