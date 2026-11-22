@@ -14,6 +14,19 @@ Pick the single most valuable change to *what this repo is or does* and pitch it
 
 This is the sibling of `/improve`, aimed one level up. `improve` asks "is this **correct**?" and finds its answers inside the repo. `propose` asks "is this still the **right shape**?" - what could exist that doesn't, whether a tool has been superseded, whether two things are doing one job. The value is in *judgment plus restraint*: spotting the one change a thoughtful user would make next, and letting them decide cheaply before anyone spends effort on it. That's why the pitch is short - a rejected idea should cost the user ten seconds of reading, not a page.
 
+```
+propose [low|medium]
+
+1. check     the log for earlier ideas      already logged -> don't repeat
+2. survey    the repo and outside tools     nothing worthwhile -> say so, stop
+3. pitch     one change, log it             reject -> record it, stop
+4. plan      the change                     stop -> leave it accepted
+                                            change -> revise, ask again
+5. build     only the approved plan         needs more -> stop, ask
+6. verify    the change landed              fails -> fix it first
+7. finish    mark built, summarize          left uncommitted -> stop
+```
+
 ## Scope
 
 The skill takes an optional scope: `/propose low` or `/propose medium`. With no argument, use `low`.

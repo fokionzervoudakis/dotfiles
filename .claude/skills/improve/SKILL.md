@@ -16,6 +16,19 @@ One run produces one focused, reviewable change - not a sweep, and not something
 
 This is the sibling of `/propose`. `improve` asks "is this **correct**?" and finds its answers inside the repo. `propose` asks "is this still the **right shape**?" and usually has to look outside it.
 
+```
+improve [low|medium]
+
+1. check     the log's open entries         one holds -> go to 3
+2. survey    the repo and its tools         nothing worthwhile -> say so, stop
+3. pitch     one improvement, log it        reject -> record it, stop
+4. plan      the change                     stop -> leave it proposed
+                                            change -> revise, ask again
+5. build     only the approved plan         needs more -> stop, ask
+6. verify    build, tests, lint, own diff   fails -> fix it first
+7. finish    mark built, summarize          left uncommitted -> stop
+```
+
 ## Scope
 
 The skill takes an optional scope: `/improve low` or `/improve medium`. With no argument, use `low`.
