@@ -2,7 +2,7 @@
 
 Logged by /propose so it doesn't repeat itself, newest first. Entries start as proposed; a run marks them accepted, rejected, or built.
 
-Columns: date | scope (if logged) | status | title - description
+Columns: date | scope (if logged) | status | title - description | Reason: why it was rejected (if confirmed)
 
 - 2026-11-22 | low | built | Install the JDK that jdtls needs - add openjdk to the nvim recipe, reversing the 2026-11-12 "Drop the java recipe", because Mason installs jdtls on every machine and it fails at launch without a JDK; algo-java and blue-marble keep their own install lines so they still work without these dotfiles.
 - 2026-11-20 | medium | rejected | A scratchpad in a tmux popup - bind prefix C in .tmux.conf to a popup that attaches a hidden tmux session running a shell in the current pane's directory, and keeps it alive when the popup closes, so a side command (or a Claude started by hand) can be run over nvim or the main Claude without opening a window in the tab bar; built (first starting Claude itself, then a plain shell), then rejected and reverted.
