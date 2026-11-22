@@ -9,14 +9,17 @@ description: Bring this machine back in line with the dotfiles repo - restow so 
 
 Most runs should find nothing, and then the whole output is one line. When there is residue, the user should be able to approve all of it in one glance.
 
-## Flow
+```
+cleanup
 
-1. Run the **Check** of every tool section below, from the repo root. All are read-only; empty output means nothing to do.
-2. Read each finding as its section says.
-3. Run the fixes marked **free**.
-4. Collect the fixes marked **ask** into one list and ask once (see Ask once). Run what the user approves, except a tmux restart.
-5. Verify, then report.
-6. Run an approved tmux restart, last.
+1. check     every section, from repo root  nothing found -> say so, stop
+2. run       the free fixes                 restow, dangling links, missing packages
+3. ask       once about the risky fixes     removes something or ends programs
+4. run       what the user approved         except a tmux restart
+5. verify    by rerunning every check
+6. report    what changed or is left        no tmux restart -> stop
+7. restart   tmux, if approved              -> stop
+```
 
 ## Rules
 
