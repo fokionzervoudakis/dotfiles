@@ -2,6 +2,8 @@
 name: propose
 description: Survey this repo and pitch one high-value change to what it is or does - a capability to add (a command, calculation, output, or integration), or a plugin, tool, or dependency to add, remove, replace, or consolidate. Works in any repo. Use when the user invokes /propose or explicitly asks for ideas about this repo, such as "propose an extension", "what should I add to this repo", or "are any of my plugins obsolete", without naming a specific change. The skill checks docs/propose.md so it never repeats an earlier idea, gives a short overview and asks the user to accept or reject it, writes a plan only if they accept, and applies it only once they approve the plan.
 argument-hint: "[low|medium]"
+metadata:
+  verdict-log: docs/propose.md
 ---
 
 # Propose

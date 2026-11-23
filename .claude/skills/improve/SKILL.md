@@ -2,6 +2,8 @@
 name: improve
 description: Survey this repo and pitch one high-value, self-contained improvement - a correctness gap, a missing test, a broken or stale config, a tool the repo references but never provides, a dead setting. Works in any language and in config repos such as dotfiles. Use when the user invokes /improve or explicitly asks to improve this repo as a whole, such as "improve the repo" or "find something to fix in this repo", without naming a specific file or change. The skill checks docs/improve.md so it never repeats a settled idea, gives a short overview and asks the user to accept or reject it, writes a plan only if they accept, applies and verifies it only once they approve the plan, and leaves it uncommitted for review. It fixes what is there; whether something should be added, removed, or replaced is `propose`'s question.
 argument-hint: "[low|medium]"
+metadata:
+  verdict-log: docs/improve.md
 ---
 
 # Improve
