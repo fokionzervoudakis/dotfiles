@@ -69,5 +69,6 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "syncClaudeAiPlugins": false
 }
