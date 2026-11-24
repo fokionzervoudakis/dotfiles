@@ -4,6 +4,8 @@ Logged by /propose so it doesn't repeat itself, newest first. Entries start as p
 
 Columns: date | scope (if logged) | status | title - description | Reason: why it was rejected (if confirmed) | lessons
 
+- 2026-11-24 | medium | built | Open splits and new windows in the current pane's directory - add -c "#{pane_current_path}" to the prefix - and prefix | split bindings in .tmux.conf and bind prefix c to new-window with the same, so a shell opened beside or after a Claude session starts in that repo instead of in ~, where the session was started. | Lessons: 1
+
 - 2026-11-24 | medium | rejected | Name each Claude window in the tmux window picker - have the Claude hooks in .claude/settings.json copy the session's title (the /rename name, else the title Claude generates, both written to the session transcript) into a tmux window option, and have .config/tmux/pick-window list it next to the directory, so two Claude windows in the same repo can be told apart before switching. | Reason: the directory is enough to tell windows apart, and there is no room for more | Lessons: 1
 
 - 2026-11-24 | medium | built | Deny the unrecoverable git commands to Claude - add a permissions.deny list to the tracked .claude/settings.json (force push, reset --hard, clean -f, branch -D, checkout/restore of the whole tree; push to master dropped from the plan, since Claude pushes master here), which Claude Code still enforces under bypassPermissions, so every session, including the ones answered from the phone, refuses those commands and has to ask instead.

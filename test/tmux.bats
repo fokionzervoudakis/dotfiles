@@ -100,6 +100,18 @@ pick_dir() {
     t kill-window -t "$new"
 }
 
+# Press key $1 in window b (in $tmp/home; its session is in alpha); the new pane
+# should open in $tmp/home. $2 is the -t target. The pane is closed afterwards.
+new_pane() {
+    local cmd new
+    cmd=$(sed -n "s/^bind $1 //p" .tmux.conf)
+    [ -n "$cmd" ] || { echo "no binding for $1 in .tmux.conf"; return 1; }
+    cmd=$(t display-message -p -t "$win_b" "$cmd")
+    new=$(eval "t $cmd -d -P -F '#{pane_id}' -t '$2'") || return 1
+    same "$(t display-message -p -t "$new" '#{pane_current_path}')" "$tmp/home" || return 1
+    t kill-pane -t "$new"
+}
+
 # Run each hook that writes the tab mark, as Claude would from window a; what it
 # leaves there must be a state the tab formats and next-claude know. A wrong
 # state fails silently: the * never shows and the jump key finds nothing.
@@ -149,4 +161,13 @@ pick_dir() {
 # tmux would otherwise turn the #S into the session name and open the window elsewhere
 @test "pick-dir opens a directory with # in its name" {
     pick_dir 'notes' "$tmp/home/notes#S"
+}
+
+@test "splits open in the current pane's directory" {
+    new_pane "'-'" "$win_b"
+    new_pane "'|'" "$win_b"
+}
+
+@test "new windows open in the current pane's directory" {
+    new_pane c s1:
 }
