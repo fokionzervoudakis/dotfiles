@@ -19,6 +19,7 @@ This is the sibling of `/improve`, aimed one level up. `improve` asks "is this *
 ```
 propose [low|medium]
 
+0. read      memory.md, if there is one     lessons to apply this run
 1. check     the log for earlier ideas      already logged -> don't repeat
 2. survey    the repo and outside tools     nothing worthwhile -> say so, stop
 3. pitch     one change, log it             reject -> record it, stop
@@ -66,6 +67,12 @@ Lower value, usually skip: cosmetic swaps, "this is popular" with no argument fo
 **Weigh switching cost honestly.** Habits are muscle memory. A tool that is 20% better but rebinds keys the user has typed ten thousand times is a bad trade, and a pitch that hides that is not credible.
 
 ## The loop
+
+### 0. Read the lessons
+
+Read `memory.md` beside this `SKILL.md`, if there is one. It holds numbered lessons that /distill drew from earlier verdicts, each a "when X, do Y" with a scope: `all repos`, or the one repo it applies to. Keep the lessons whose scope covers this repo and apply them through the survey and the pick, as you would the rejected lines in the log.
+
+A lesson is used when it changed what this run did: it ruled out or reshaped a candidate, or decided between two. Note the numbers as you go. A lesson that matched nothing was not used. The line this run adds records them in its lessons column (step 4).
 
 ### 1. Survey
 
@@ -140,14 +147,18 @@ Add one line to `docs/propose.md`, newest first: insert it directly below the he
 
 Logged by /propose so it doesn't repeat itself, newest first. Entries start as proposed; a run marks them accepted, rejected, or built.
 
-Columns: date | scope (if logged) | status | title - description | Reason: why it was rejected (if confirmed)
+Columns: date | scope (if logged) | status | title - description | Reason: why it was rejected (if confirmed) | lessons
 ```
 
-Each line is `- <YYYY-MM-DD> | <scope> | proposed | <title> - <description, in one sentence>`, where scope is the run's `low` or `medium`, for example:
+If an existing log's `Columns:` line lacks `| lessons`, append it.
+
+Each line is `- <YYYY-MM-DD> | <scope> | proposed | <title> - <description, in one sentence> | Lessons: <numbers>`, where scope is the run's `low` or `medium`, and the numbers are the lessons from `memory.md` this run used (step 0), space-separated, or `none` if there is no `memory.md` or no lesson was used. For example:
 
 ```markdown
-- 2026-09-26 | low | proposed | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them.
+- 2026-09-26 | low | proposed | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Lessons: 2
 ```
+
+The lessons column is always last. Lines from before it have none.
 
 That line is only an illustration - don't copy it into the log. New lines always start as `proposed`. Don't stage or commit the file; the user decides whether the log goes in the repo.
 
@@ -157,12 +168,12 @@ Then ask the user to accept or reject the proposal - with the AskUserQuestion to
 
 Update the proposal's line in `docs/propose.md`:
 
-- **Reject** - set the status to `rejected`. Then propose the likeliest reason in one line, labeled as your guess, and ask the user to confirm it - AskUserQuestion if you have it (options: Use this reason, No reason; the user can type their own under Other). Append it as a last column, ` | Reason: <reason>`, only if the user confirms it or gives their own; never record an unconfirmed guess. Word it impersonally (no "I", "me" or "my"), and confirm any rewording of the user's reason before recording it. Then stop; offer to run again for a different idea.
+- **Reject** - set the status to `rejected`. Then propose the likeliest reason in one line, labeled as your guess, and ask the user to confirm it - AskUserQuestion if you have it (options: Use this reason, No reason; the user can type their own under Other). Insert it as a column just before the lessons column (or last, on a line from before that column), ` | Reason: <reason>`, only if the user confirms it or gives their own; never record an unconfirmed guess. Word it impersonally (no "I", "me" or "my"), and confirm any rewording of the user's reason before recording it. Then stop; offer to run again for a different idea.
 - **Accept** - set the status to `accepted` and go on to step 6.
 - **Anything else** (a tweak, a question) - answer or adjust the pitch, update the line's title and description if the change itself changed, and ask again. Don't infer a verdict the user didn't give.
 
 ```markdown
-- 2026-09-26 | low | rejected | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Reason: plugin B's preview is still needed
+- 2026-09-26 | low | rejected | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Reason: plugin B's preview is still needed | Lessons: 2
 ```
 
 Only touch the line for this proposal.

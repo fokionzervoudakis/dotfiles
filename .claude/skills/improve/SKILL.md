@@ -21,6 +21,7 @@ This is the sibling of `/propose`. `improve` asks "is this **correct**?" and fin
 ```
 improve [low|medium]
 
+0. read      memory.md, if there is one     lessons to apply this run
 1. check     the log's open entries         one holds -> go to 3
 2. survey    the repo and its tools         nothing worthwhile -> say so, stop
 3. pitch     one improvement, log it        reject -> record it, stop
@@ -65,10 +66,10 @@ Lower value, usually skip: cosmetic reformatting (the formatter handles it), spe
 `docs/improve.md` is the permanent record of every candidate. **Never delete or reorder an entry, and never change the first four columns of an entry from an earlier run.** New lines go directly below the header, above any existing entries, so the newest is always first:
 
 ```
-- <YYYY-MM-DD> | <short HEAD hash> | <files, space-separated> | <title> - <description: the claim in one sentence, and how to check it> | <status> | <evidence>
+- <YYYY-MM-DD> | <short HEAD hash> | <files, space-separated> | <title> - <description: the claim in one sentence, and how to check it> | <status> | <evidence> | <lessons>
 ```
 
-Status and evidence are always the last two columns, because a description can contain `|`. Stamp with `git rev-parse --short HEAD`. Name every file whose change would make the claim stale, and no more.
+Status, evidence and lessons are always the last three columns, because a description can contain `|`. Lessons are the numbers of the lessons from `memory.md` this run used, space-separated, such as `1 3`, or `none` (see step 0). Lines from before the lessons column end at evidence: a last column that is `none` or only numbers is the lessons column. Stamp with `git rev-parse --short HEAD`. Name every file whose change would make the claim stale, and no more.
 
 | Status | Meaning | Evidence |
 |---|---|---|
@@ -85,12 +86,20 @@ Only create the file when you have something to write; a repo that was surveyed 
 
 Logged by /improve so it doesn't repeat itself, newest first. Entries start as proposed; a run marks them built or rejected and records the evidence.
 
-Columns: date | commit found at | files | title - description | status | evidence
+Columns: date | commit found at | files | title - description | status | evidence | lessons
 ```
+
+If an existing log's `Columns:` line lacks `| lessons`, append it when you next write to the log.
 
 Don't stage or commit the file; the user decides when it goes in the repo.
 
 ## The loop
+
+### 0. Read the lessons
+
+Read `memory.md` beside this `SKILL.md`, if there is one. It holds numbered lessons that /distill drew from earlier verdicts, each a "when X, do Y" with a scope: `all repos`, or the one repo it applies to. Keep the lessons whose scope covers this repo and apply them through the survey and the pick, as you would the rejected lines in the log.
+
+A lesson is used when it changed what this run did: it ruled out or reshaped a candidate, or decided between two. Note the numbers as you go. A lesson that matched nothing was not used. Every line this run adds, and an open entry it pitches, gets those numbers in its lessons column; with no `memory.md`, or no lesson used, write `none`. Don't change the lessons column of any other line.
 
 ### 1. Survey
 
@@ -187,7 +196,7 @@ No sketch, no code, no open questions, no list of alternatives - all of that eit
 
 Update `docs/improve.md`:
 
-- If the pitch is a new candidate, add it as `proposed` with the evidence `Unfixed, still open`. A pitch taken from an open entry keeps its existing line.
+- If the pitch is a new candidate, add it as `proposed` with the evidence `Unfixed, still open` and this run's lessons. A pitch taken from an open entry keeps its existing line, with this run's lessons in its lessons column.
 - Add any other candidates you found and verified the same way, best first among themselves. Skip anything already logged, whatever its status.
 
 Then ask the user to accept or reject the improvement - with the AskUserQuestion tool if you have it (options: Accept, Reject), otherwise as a one-line question. Stop and wait.
