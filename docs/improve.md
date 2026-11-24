@@ -4,6 +4,8 @@ Logged by /improve so it doesn't repeat itself, newest first. Entries start as p
 
 Columns: date | commit found at | files | title - description | status | evidence
 
+- 2026-11-24 | 8f3f464 | .config/git/hooks/pre-push hooks/pre-push | Pre-push scans every ref, not the push - both hooks run a bare `betterleaks git`, which scans the history of all refs, so a secret in an unpushed local branch blocks pushing a clean branch, and a leak already pushed blocks every later push. Check: in a temp repo commit a ghp_ token on branch scratch, then push a clean master; the push is refused with "leaks found: 1". | rejected | Rejected at pitch - scanning all local history is wanted; any secret found gets removed, wherever it is
+
 - 2026-11-19 | ab0d465 | README.md | README health line is out of date - its `just health` comment says "zsh and Neovim start cleanly, stow can link" and leaves out the Neovim tools check the recipe also runs; compare with `just --list`. | built | Trimmed the health and update comments so `just --list` holds the detail; just lint test passes
 - 2026-11-15 | 5ca0c98 | justfile | The test recipe's description leaves out zsh - the justfile comment says "the tmux config, the tmux scripts, and the Claude status line" but bats test also runs test/zsh.bats. Check: just --list | grep test. | built | `701f796`
 - 2026-11-15 | 750d131 | .zshrc .config/zsh/kubectl.zsh test/zsh.bats | Untested guards in the zsh functions - ctldescribe must run nothing when the picker is cancelled (otherwise kubectl describes every pod) and unmount must eject its arguments without opening fzf; neither has a test. Check: grep -c 'ctldescribe\|unmount' test/zsh.bats prints 0. | built | `2cb0437`
