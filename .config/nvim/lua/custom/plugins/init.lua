@@ -15,6 +15,7 @@ require 'custom.plugins.mason'
 require 'custom.plugins.oil'
 require 'custom.plugins.telescope'
 require 'custom.plugins.markdown'
+require 'custom.plugins.todo-comments'
 
 require 'custom.plugins.jdtls'
 
