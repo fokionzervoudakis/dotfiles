@@ -67,6 +67,9 @@
     "type": "command",
     "command": "~/.claude/statusline.jq"
   },
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
   "skipDangerousModePermissionPrompt": true,
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
