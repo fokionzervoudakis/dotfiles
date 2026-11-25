@@ -69,7 +69,7 @@
     "command": "~/.claude/statusline.jq"
   },
   "permissions": {
-    "defaultMode": "bypassPermissions",
+    "defaultMode": "auto",
     "deny": [
       "Bash(git push --force)",
       "Bash(git push --force *)",
