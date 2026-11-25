@@ -49,6 +49,10 @@ If you catch yourself editing anything but the log before the user has approved 
 
 Everything this skill outputs - the pitch, the plan, your replies, and the lines you add to `docs/improve.md` - is plain ASCII: `-` or `--` instead of em/en dashes, `...` instead of an ellipsis, straight quotes, `->` instead of arrows, `|` as a separator, and no emoji. Before you send anything, check it for characters outside ASCII and replace them.
 
+## Backticks around keys and commands
+
+In the same places, wrap every key, command, flag, option value, and code snippet in backticks, so a reader sees where it starts and ends and does not take it for part of the sentence: `prefix a`, `<leader>u`, `ctrl-l`, `:Undotree`, `just test lint`, `--worktree`, `@claude=done`. "the green * and prefix a mean" reads as broken English; "the green * and `prefix a` mean" does not. A "Check:" command in a log line goes in backticks too. File paths, tool names, and plugin names stay bare.
+
 ## What "high-value" means here
 
 You're optimizing for the change that most improves the repo per line touched. Good candidates, roughly in order of how often they pay off:
