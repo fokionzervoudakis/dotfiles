@@ -4,6 +4,8 @@ Logged by /propose so it doesn't repeat itself, newest first. Entries start as p
 
 Columns: date | scope (if logged) | status | title - description | Reason: why it was rejected (if confirmed) | lessons
 
+- 2026-11-25 | medium | rejected | Start new Claude sessions from the phone - add a `clr` alias in .zshrc that runs `claude remote-control` (a persistent server built into Claude Code) in the current directory, so a repo left serving in a tmux window can have new sessions opened in it from the Claude app or claude.ai/code while away from the desk, not just answer the ones already running. | Reason: starting sessions from the phone is rare, and an alias is only added for a command in heavy use | Lessons: 1 (rare-situation benefit), 5 (confirm the tool supports the workflow)
+
 - 2026-11-25 | medium | built | Clear a finished Claude's mark once its window is visited - add tmux hooks in .tmux.conf that drop `@claude=done` when a window becomes current (blocked stays until answered), so the green * and `prefix a` mean "finished and not yet looked at" instead of jumping back to sessions already read. | Lessons: 1 (rare-situation benefit)
 
 - 2026-11-24 | medium | built | Open splits and new windows in the current pane's directory - add `-c "#{pane_current_path}"` to the `prefix -` and `prefix |` split bindings in .tmux.conf and bind `prefix c` to `new-window` with the same, so a shell opened beside or after a Claude session starts in that repo instead of in ~, where the session was started. | Lessons: 1 (rare-situation benefit)
