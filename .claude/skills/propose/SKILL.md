@@ -76,7 +76,7 @@ Lower value, usually skip: cosmetic swaps, "this is popular" with no argument fo
 
 Read `memory.md` beside this `SKILL.md`, if there is one. It holds numbered lessons that /distill drew from earlier verdicts, each a "when X, do Y" with a scope: `all repos`, or the one repo it applies to. Keep the lessons whose scope covers this repo and apply them through the survey and the pick, as you would the rejected lines in the log.
 
-A lesson is used when it changed what this run did: it ruled out or reshaped a candidate, or decided between two. Note the number and `Short:` line of each as you go. A lesson that matched nothing was not used. The line this run adds records them in its lessons column (step 4).
+A lesson is used when it changed what this run did: it ruled out a candidate, reshaped one, or decided between two. Note the number and `Short:` line of each as you go, and for a lesson that ruled out a candidate, that candidate's title too: it never reaches the pitch, so the log line is the only place it shows. A reshaped candidate or a choice between two shows in the pitch itself and needs no more. A lesson that matched nothing was not used. The line this run adds records them in its lessons column (step 4).
 
 ### 1. Survey
 
@@ -156,10 +156,10 @@ Columns: date | scope (if logged) | status | title - description | Reason: why i
 
 If an existing log's `Columns:` line lacks `| lessons`, append it.
 
-Each line is `- <YYYY-MM-DD> | <scope> | proposed | <title> - <description, in one sentence> | Lessons: ...`, where scope is the run's `low` or `medium`, and the last column lists the lessons from `memory.md` this run used (step 0) as `Lessons: <number> (<short>), <number> (<short>)`, where each short is the lesson's `Short:` line in `memory.md`, such as `Lessons: 1 (rare-situation benefit), 3 (hand edit is easy enough)`, or `Lessons: none` if there is no `memory.md` or no lesson was used. A lesson with no `Short:` line is written as its number alone. For example:
+Each line is `- <YYYY-MM-DD> | <scope> | proposed | <title> - <description, in one sentence> | Lessons: ...`, where scope is the run's `low` or `medium`, and the last column lists the lessons from `memory.md` this run used (step 0) as `Lessons: <number> (<short>), <number> (<short>)`, where each short is the lesson's `Short:` line in `memory.md`, such as `Lessons: 1 (rare-situation benefit), 3 (hand edit is easy enough)`, or `Lessons: none` if there is no `memory.md` or no lesson was used. A lesson with no `Short:` line is written as its number alone. A lesson that ruled out a candidate names it after the short, as `<number> (<short>; ruled out "<candidate title>")`, or `<number> (ruled out "<candidate title>")` with no short; the title is the candidate's title alone, with no `|`. For example:
 
 ```markdown
-- 2026-09-26 | low | proposed | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Lessons: 2 (finer breakdown of a summary)
+- 2026-09-26 | low | proposed | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Lessons: 1 (rare-situation benefit; ruled out "Log a past date"), 2 (finer breakdown of a summary)
 ```
 
 The lessons column is always last. Lines from before it have none.
