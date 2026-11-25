@@ -4,7 +4,7 @@ Logged by /propose so it doesn't repeat itself, newest first. Entries start as p
 
 Columns: date | scope (if logged) | status | title - description | Reason: why it was rejected (if confirmed) | lessons
 
-- 2026-11-25 | medium | proposed | Clear a finished Claude's mark once its window is visited - add tmux hooks in .tmux.conf that drop `@claude=done` when a window becomes current (blocked stays until answered), so the green * and `prefix a` mean "finished and not yet looked at" instead of jumping back to sessions already read. | Lessons: 1
+- 2026-11-25 | medium | built | Clear a finished Claude's mark once its window is visited - add tmux hooks in .tmux.conf that drop `@claude=done` when a window becomes current (blocked stays until answered), so the green * and `prefix a` mean "finished and not yet looked at" instead of jumping back to sessions already read. | Lessons: 1
 
 - 2026-11-24 | medium | built | Open splits and new windows in the current pane's directory - add `-c "#{pane_current_path}"` to the `prefix -` and `prefix |` split bindings in .tmux.conf and bind `prefix c` to `new-window` with the same, so a shell opened beside or after a Claude session starts in that repo instead of in ~, where the session was started. | Lessons: 1
 

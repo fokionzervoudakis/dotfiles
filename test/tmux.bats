@@ -171,3 +171,23 @@ new_pane() {
 @test "new windows open in the current pane's directory" {
     new_pane c s1:
 }
+
+# Load the hooks from .tmux.conf, then visit windows b and c. The visited done
+# window loses its mark; the blocked one and the unvisited done one keep theirs.
+# The jump into another session needs an attached client, which this server has
+# none of, so that hook is only checked by hand.
+@test "visiting a finished window clears its mark" {
+    local line
+    while IFS= read -r line; do
+        eval "t $line"
+    done < <(grep '^set-hook ' .tmux.conf)
+    marks 'done' blocked 'done' -
+    t select-window -t "$win_b"
+    t select-window -t "$win_c"
+    same "$(t show-options -wqv -t "$win_a" @claude)" 'done'
+    same "$(t show-options -wqv -t "$win_b" @claude)" blocked
+    same "$(t show-options -wqv -t "$win_c" @claude)" ''
+    t set-hook -gu session-window-changed
+    t set-hook -gu client-session-changed
+    t select-window -t "$win_a" # put s1 back on window a for the other tests
+}
