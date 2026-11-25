@@ -89,12 +89,13 @@ Number new lessons from the highest number in the file plus one. Append them to 
 Written by /distill from <skill>'s verdicts. Numbers are permanent.
 
 1. When <X>, <do Y>.
+   - Short: <3 to 6 words>
    - Example: <one real case from the evidence, in one line>
    - Scope: all repos
    - Evidence: <case>; <case>
 ```
 
-Every lesson has one `Example:`: what actually happened in one of its cases, in one short line. `Scope:` is `all repos` or the one repo's name. Each case in `Evidence:` is short and findable: `<repo> <date> "<entry title>"` for a rejection, `<repo> <report file stem> #<finding number>` for an audit finding, with several findings from one report written as `#1, #2`.
+Every lesson has one `Short:`: a label of three to six words that names the lesson, with no `|`, comma or parentheses, because skills cite it inside a one-line log entry. Every lesson has one `Example:`: what actually happened in one of its cases, in one short line. `Scope:` is `all repos` or the one repo's name. Each case in `Evidence:` is short and findable: `<repo> <date> "<entry title>"` for a rejection, `<repo> <report file stem> #<finding number>` for an audit finding, with several findings from one report written as `#1, #2`.
 
 ## 5. Report
 

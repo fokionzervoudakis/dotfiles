@@ -73,7 +73,7 @@ Lower value, usually skip: cosmetic reformatting (the formatter handles it), spe
 - <YYYY-MM-DD> | <short HEAD hash> | <files, space-separated> | <title> - <description: the claim in one sentence, and how to check it> | <status> | <evidence> | <lessons>
 ```
 
-Status, evidence and lessons are always the last three columns, because a description can contain `|`. Lessons are the numbers of the lessons from `memory.md` this run used, space-separated, such as `1 3`, or `none` (see step 0). Lines from before the lessons column end at evidence: a last column that is `none` or only numbers is the lessons column. Stamp with `git rev-parse --short HEAD`. Name every file whose change would make the claim stale, and no more.
+Status, evidence and lessons are always the last three columns, because a description can contain `|`. The lessons column lists the lessons from `memory.md` this run used (see step 0) as `Lessons: <number> (<short>), <number> (<short>)`, where each short is the lesson's `Short:` line in `memory.md`, such as `Lessons: 1 (pinning a working tool), 3 (automating a written manual rule)`, or `Lessons: none` if there is no `memory.md` or no lesson was used. A lesson with no `Short:` line is written as its number alone. Lines from before the lessons column end at evidence: a last column that starts with `Lessons:`, or (on older lines) is `none` or only numbers, is the lessons column. Stamp with `git rev-parse --short HEAD`. Name every file whose change would make the claim stale, and no more.
 
 | Status | Meaning | Evidence |
 |---|---|---|
@@ -103,7 +103,7 @@ Don't stage or commit the file; the user decides when it goes in the repo.
 
 Read `memory.md` beside this `SKILL.md`, if there is one. It holds numbered lessons that /distill drew from earlier verdicts, each a "when X, do Y" with a scope: `all repos`, or the one repo it applies to. Keep the lessons whose scope covers this repo and apply them through the survey and the pick, as you would the rejected lines in the log.
 
-A lesson is used when it changed what this run did: it ruled out or reshaped a candidate, or decided between two. Note the numbers as you go. A lesson that matched nothing was not used. Every line this run adds, and an open entry it pitches, gets those numbers in its lessons column; with no `memory.md`, or no lesson used, write `none`. Don't change the lessons column of any other line.
+A lesson is used when it changed what this run did: it ruled out or reshaped a candidate, or decided between two. Note the number and `Short:` line of each as you go. A lesson that matched nothing was not used. Every line this run adds, and an open entry it pitches, gets those lessons in its lessons column, in the format above; with no `memory.md`, or no lesson used, write `Lessons: none`. Don't change the lessons column of any other line.
 
 ### 1. Survey
 

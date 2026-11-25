@@ -76,7 +76,7 @@ Lower value, usually skip: cosmetic swaps, "this is popular" with no argument fo
 
 Read `memory.md` beside this `SKILL.md`, if there is one. It holds numbered lessons that /distill drew from earlier verdicts, each a "when X, do Y" with a scope: `all repos`, or the one repo it applies to. Keep the lessons whose scope covers this repo and apply them through the survey and the pick, as you would the rejected lines in the log.
 
-A lesson is used when it changed what this run did: it ruled out or reshaped a candidate, or decided between two. Note the numbers as you go. A lesson that matched nothing was not used. The line this run adds records them in its lessons column (step 4).
+A lesson is used when it changed what this run did: it ruled out or reshaped a candidate, or decided between two. Note the number and `Short:` line of each as you go. A lesson that matched nothing was not used. The line this run adds records them in its lessons column (step 4).
 
 ### 1. Survey
 
@@ -156,10 +156,10 @@ Columns: date | scope (if logged) | status | title - description | Reason: why i
 
 If an existing log's `Columns:` line lacks `| lessons`, append it.
 
-Each line is `- <YYYY-MM-DD> | <scope> | proposed | <title> - <description, in one sentence> | Lessons: <numbers>`, where scope is the run's `low` or `medium`, and the numbers are the lessons from `memory.md` this run used (step 0), space-separated, or `none` if there is no `memory.md` or no lesson was used. For example:
+Each line is `- <YYYY-MM-DD> | <scope> | proposed | <title> - <description, in one sentence> | Lessons: ...`, where scope is the run's `low` or `medium`, and the last column lists the lessons from `memory.md` this run used (step 0) as `Lessons: <number> (<short>), <number> (<short>)`, where each short is the lesson's `Short:` line in `memory.md`, such as `Lessons: 1 (rare-situation benefit), 3 (hand edit is easy enough)`, or `Lessons: none` if there is no `memory.md` or no lesson was used. A lesson with no `Short:` line is written as its number alone. For example:
 
 ```markdown
-- 2026-09-26 | low | proposed | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Lessons: 2
+- 2026-09-26 | low | proposed | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Lessons: 2 (finer breakdown of a summary)
 ```
 
 The lessons column is always last. Lines from before it have none.
@@ -177,7 +177,7 @@ Update the proposal's line in `docs/propose.md`:
 - **Anything else** (a tweak, a question) - answer or adjust the pitch, update the line's title and description if the change itself changed, and ask again. Don't infer a verdict the user didn't give.
 
 ```markdown
-- 2026-09-26 | low | rejected | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Reason: plugin B's preview is still needed | Lessons: 2
+- 2026-09-26 | low | rejected | Drop the second fuzzy finder - remove plugin B and move its two keymaps to plugin A, which already covers them. | Reason: plugin B's preview is still needed | Lessons: 2 (finer breakdown of a summary)
 ```
 
 Only touch the line for this proposal.
