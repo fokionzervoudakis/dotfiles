@@ -8,7 +8,7 @@ argument-hint: "<skill> <folders...>"
 
 Read what the user already decided, and write down the rules that would have saved them from deciding it twice. The input is a skill's verdict log across many repos. The output is a few numbered lessons appended to that skill's `memory.md`, left uncommitted for the user to review.
 
-Run as `/distill <skill> <folders...>`, for example `/distill improve ~/dotfiles ~/repos`. If no skill is given, ask which. If its `SKILL.md` has no `metadata.verdict-log`, say so and stop. If no folders are given, ask for them; never search the whole home folder.
+Run as `/distill <skill> <folders...>`, for example `/distill improve ~/repos`. If no skill is given, ask which. If its `SKILL.md` has no `metadata.verdict-log`, say so and stop. If no folders are given, ask for them; never search the whole home folder.
 
 ```
 distill <skill> <folders...>
