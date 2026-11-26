@@ -81,6 +81,8 @@ symbol = " "
 symbol = " "
 
 [java]
+# adds .classpath (Eclipse-style repos) to starship's defaults
+detect_files = [".classpath", "pom.xml", "build.gradle.kts", "build.sbt", ".java-version", "deps.edn", "project.clj", "build.boot", ".sdkmanrc"]
 symbol = " "
 
 [rust]
