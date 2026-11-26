@@ -2,8 +2,9 @@
 
 Logged by /improve so it doesn't repeat itself, newest first. Entries start as proposed; a run marks them built or rejected and records the evidence.
 
-Columns: date | commit found at | files | title - description | status | evidence
+Columns: date | commit found at | files | title - description | status | evidence | lessons
 
+- 2026-11-26 | 2b1b4f7 | .config/starship.toml | Starship symbols lost their glyphs - `[git_branch] symbol` is a plain space and `[nodejs]`/`[ruby] symbol` are empty strings (glyphs dropped when the file was created in 3e1a5c3, like the os segment fixed in 7c51ba7), so the prompt reads "on  master" with a double space and Node/Ruby versions show with no marker; switch the prompt's modules to the symbols from `starship preset nerd-font-symbols`, since Ghostty already draws Nerd Font glyphs. Check: `starship module git_branch | od -c` shows two spaces before the branch; `xxd` on the symbol lines shows no non-ASCII bytes. | built | All 12 symbols match `starship preset nerd-font-symbols`; `starship module git_branch` now shows one space before the branch, nodejs and golang modules show their glyphs, no config warnings; just lint test health passes | Lessons: none
 - 2026-11-24 | 8f3f464 | .config/git/hooks/pre-push hooks/pre-push | Pre-push scans every ref, not the push - both hooks run a bare `betterleaks git`, which scans the history of all refs, so a secret in an unpushed local branch blocks pushing a clean branch, and a leak already pushed blocks every later push. Check: in a temp repo commit a ghp_ token on branch scratch, then push a clean master; the push is refused with "leaks found: 1". | rejected | Rejected at pitch - scanning all local history is wanted; any secret found gets removed, wherever it is
 
 - 2026-11-19 | ab0d465 | README.md | README health line is out of date - its `just health` comment says "zsh and Neovim start cleanly, stow can link" and leaves out the Neovim tools check the recipe also runs; compare with `just --list`. | built | Trimmed the health and update comments so `just --list` holds the detail; just lint test passes
