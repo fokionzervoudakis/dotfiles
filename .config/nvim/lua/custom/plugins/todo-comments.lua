@@ -4,11 +4,11 @@ require('todo-comments').setup {
   signs = false,
   -- Header tags in LeetCode solutions.
   keywords = {
-    DIFFICULTY = { icon = 'D', color = 'test' },
-    SOURCE = { icon = 'S', color = 'default' },
-    SPACE = { icon = 'O', color = 'info' },
-    TIME = { icon = 'O', color = 'info' },
-    TOPICS = { icon = 'T', color = 'hint' },
-    VERDICT = { icon = 'V', color = 'warning' },
+    difficulty = { icon = 'D', color = 'test' },
+    source = { icon = 'S', color = 'default' },
+    space = { icon = 'O', color = 'info' },
+    time = { icon = 'O', color = 'info' },
+    topics = { icon = 'T', color = 'hint' },
+    verdicts = { icon = 'V', color = 'warning' },
   },
 }
