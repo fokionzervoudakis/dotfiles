@@ -1,6 +1,9 @@
 {
   "model": "opus",
   "tui": "default",
+  "env": {
+    "CLAUDE_CODE_NATIVE_CURSOR": "1"
+  },
   "hooks": {
     "UserPromptSubmit": [
       {
