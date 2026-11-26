@@ -32,11 +32,11 @@ cleanup
 
 ## Stow
 
-**Check** - conflicts, then the new links a restow would create. Stow links into the repo's *parent* directory, so that is the target:
+**Check** - conflicts, then the new links a restow would create. Stow links into `$HOME` (`--target ~`), so that is the target:
 
 ```sh
-T=$(dirname "$PWD")
-dry=$(stow -n -v -R --no-folding . 2>&1)
+T=$HOME
+dry=$(stow -n -v -R --no-folding --target ~ . 2>&1)
 echo "$dry" | grep -E 'conflict|cannot stow'
 echo "$dry" | awk '$1=="LINK:"{print $2}' | while read -r p; do
   [ -L "$T/$p" ] || echo "$p$(git ls-files --error-unmatch -- "$p" >/dev/null 2>&1 || echo '  (untracked)')"
@@ -50,7 +50,7 @@ done
 
 **Fix**
 
-- Free: `stow -R --no-folding .` (what `just stow` runs, minus installing stow).
+- Free: `stow -R --no-folding --target ~ .` (what `just stow` runs, minus installing stow).
 - Ask: resolving a conflict, and restowing when an untracked file looks like a mistake.
 - A conflict aborts the whole restow, so no new links land until it is resolved. Say so, and restow again once the user resolves it.
 
@@ -59,7 +59,7 @@ done
 **Check** - paths recently tracked whose link now points at nothing, or whose directory is gone from the repo but still in `$HOME`. `--no-renames`, or a rename hides its old path:
 
 ```sh
-T=$(dirname "$PWD")
+T=$HOME
 { git log -20 --no-renames --name-only --format=; git diff --name-only HEAD; } | sort -u | while read -r p; do
   [ -L "$T/$p" ] && [ ! -e "$T/$p" ] && echo "dangling: $T/$p -> $(readlink "$T/$p")"
   d=$(dirname "$p"); [ "$d" != . ] && [ ! -e "$d" ] && [ -d "$T/$d" ] && echo "leftover: $T/$d"
