@@ -91,7 +91,7 @@ test:
     @echo "{{RED}}{{BOLD}}Running tests...{{RESET}}"
     @bats test
 
-# Check this machine: zsh and Neovim start cleanly, Neovim's tools run, and stow can link
+# Check this machine: zsh and Neovim start cleanly, the tools the configs run are installed, and stow can link
 [group('dev')]
 health:
     @echo "{{RED}}{{BOLD}}Checking this machine...{{RESET}}"
