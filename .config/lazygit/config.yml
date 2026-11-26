@@ -36,10 +36,11 @@ gui:
   showNumstatInFilesView: true
   # Full paths instead of a tree; ` switches.
   showFileTree: false
-  # No stash panel or worktrees, submodules and reflog tabs.
+  # No stash panel or submodules and reflog tabs; worktrees sit behind files,
+  # where ] reaches them.
   sidePanels:
     - [status]
-    - [files]
+    - [files, worktrees]
     - [branches, remotes, tags]
     - [commits]
 # Keys that change the repo are off, except Space (stage, check out a branch)
