@@ -4,8 +4,8 @@ vim.pack.add {
 }
 
 require('orgmode').setup {
-  org_agenda_files = '~/orgfiles/**/*',
-  org_default_notes_file = '~/orgfiles/refile.org',
+  org_agenda_files = '~/repos/orgfiles/**/*',
+  org_default_notes_file = '~/repos/orgfiles/refile.org',
 }
 require('org-bullets').setup()
 vim.lsp.enable 'org'
@@ -13,7 +13,7 @@ vim.lsp.enable 'org'
 vim.pack.add { 'https://github.com/chipsenkbeil/org-roam.nvim' }
 
 require('org-roam').setup {
-  directory = '~/orgfiles',
+  directory = '~/repos/orgfiles',
   templates = {
     d = {
       description = 'default',
