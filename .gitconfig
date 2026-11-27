@@ -29,3 +29,6 @@
     rebase = false
 [push]
     autoSetupRemote = true
+[diff]
+    # match changes on rare lines first, so braces and blank lines do not split hunks
+    algorithm = histogram

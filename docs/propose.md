@@ -4,6 +4,8 @@ Logged by /propose so it doesn't repeat itself, newest first. Entries start as p
 
 Columns: date | scope (if logged) | status | title - description | Reason: why it was rejected (if confirmed) | lessons
 
+- 2026-11-27 | low | built | Histogram diffs everywhere - set `diff.algorithm = histogram` in .gitconfig, so every `git diff` (lazygit's delta panel, `g d`, the diffs Claude reads for commits and reviews) lines changes up on the real edits instead of on stray braces and blank lines that myers matches. | Lessons: none
+
 - 2026-11-25 | medium | built | Run Claude in auto mode instead of skipping permissions - set permissions.defaultMode to `auto` in the tracked .claude/settings.json in place of `bypassPermissions`, keeping the git deny list as a hard backstop, so every session still runs without prompts but a classifier checks each action against Claude Code's built-in block rules (`rm -rf` of an unclear target, leaking credentials, force push, deleting branches), which go well beyond the 15 git patterns. | Lessons: 5 (confirm the tool supports the workflow)
 
 - 2026-11-25 | medium | rejected | Start new Claude sessions from the phone - add a `clr` alias in .zshrc that runs `claude remote-control` (a persistent server built into Claude Code) in the current directory, so a repo left serving in a tmux window can have new sessions opened in it from the Claude app or claude.ai/code while away from the desk, not just answer the ones already running. | Reason: starting sessions from the phone is rare, and an alias is only added for a command in heavy use | Lessons: 1 (rare-situation benefit), 5 (confirm the tool supports the workflow)
