@@ -101,7 +101,7 @@ update:
 [group('dev')]
 lint:
     @echo "{{RED}}{{BOLD}}Linting shell scripts and Lua...{{RESET}}"
-    @shellcheck hooks/pre-push .config/git/hooks/pre-push test/*.bats test/*.bash health/*.bats
+    @git ls-files '*.sh' '*.bash' '*.bats' '*hooks/*' | xargs shellcheck # every tracked shell script
     @printf '%s\n' .zshrc .zprofile .config/tmux/* | xargs -n1 zsh -n
     @~/.local/share/nvim/mason/bin/stylua --check .config/nvim # Mason's copy; stylua is not on PATH
     @~/.local/share/nvim/mason/bin/stylua --check --config-path .config/nvim/stylua.toml scripts
