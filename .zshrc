@@ -131,12 +131,6 @@ backup_dry_run() {
     backup_run "$@" --dry-run
 }
 
-# Per-tool configuration
-for __zsh_conf in "$XDG_CONFIG_HOME"/zsh/*.zsh(N); do
-    source "$__zsh_conf"
-done
-unset __zsh_conf
-
 # Tool initialization
 #
 # zsh-syntax-highlighting must be sourced last; it wraps the widgets the

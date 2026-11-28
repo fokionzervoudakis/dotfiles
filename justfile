@@ -42,18 +42,7 @@ claude: jq
 # Install jq
 [group('setup')]
 jq:
-    brew install jq # runs .claude/statusline.jq; also used by conform.lua and .config/zsh/kubectl.zsh
-
-# Install the AWS CLI
-[group('setup')]
-aws:
-    brew install awscli # provides aws, used by .config/zsh/aws.zsh
-
-# Install kubectl, kubectx, and kubens
-[group('setup')]
-kube: jq
-    brew install kubernetes-cli # provides kubectl, used by .config/zsh/kubectl.zsh
-    brew install kubectx # provides kubectx and kubens
+    brew install jq # runs .claude/statusline.jq; also used by conform.lua
 
 # Install Git tools and enable the repo's Git hooks
 [group('setup')]
@@ -113,6 +102,6 @@ update:
 lint:
     @echo "{{RED}}{{BOLD}}Linting shell scripts and Lua...{{RESET}}"
     @shellcheck hooks/pre-push .config/git/hooks/pre-push test/*.bats test/*.bash health/*.bats
-    @printf '%s\n' .zshrc .zprofile .config/zsh/*.zsh .config/tmux/* | xargs -n1 zsh -n
+    @printf '%s\n' .zshrc .zprofile .config/tmux/* | xargs -n1 zsh -n
     @~/.local/share/nvim/mason/bin/stylua --check .config/nvim # Mason's copy; stylua is not on PATH
     @~/.local/share/nvim/mason/bin/stylua --check --config-path .config/nvim/stylua.toml scripts

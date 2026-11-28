@@ -2,8 +2,6 @@
 
 .config/*
 
-!.config/zsh/
-
 !.config/starship.toml
 
 !.config/lazygit/

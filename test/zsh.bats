@@ -44,17 +44,6 @@ run_fn() {
     zsh -fc "$fakes; $body; $fn \"\$@\"" zsh "$@"
 }
 
-# With no pod name, kubectl describe pod describes every pod in the namespace
-@test "ctldescribe runs nothing when the picker is cancelled" {
-    run run_fn .config/zsh/kubectl.zsh '__kpick() { }; kubectl() { print kubectl "$@" }' ctldescribe
-    same "$output" ""
-}
-
-@test "ctldescribe describes every pod picked" {
-    run run_fn .config/zsh/kubectl.zsh '__kpick() { print -l a b }; kubectl() { print kubectl "$@" }' ctldescribe
-    same "$output" "kubectl describe pod a b"
-}
-
 @test "unmount ejects its arguments without opening the picker" {
     run run_fn .zshrc 'fzf() { print picked }; diskutil() { print diskutil "$@" }' unmount "/Volumes/A B" /Volumes/C
     same "$output" $'diskutil eject /Volumes/A B\ndiskutil eject /Volumes/C'
